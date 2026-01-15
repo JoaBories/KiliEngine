@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
+#include "SDL.h"
 
 // Note : 
 // -rm for right member
@@ -22,7 +24,8 @@ namespace Struct {
 		static const Vector2 left;
 
 		Vector2() = default;
-		inline Vector2(float x_, float y_) : x{ x_ }, y{ y_ } {}
+		inline Vector2(float x_, float y_) : x( x_ ), y( y_ ) {}
+		inline Vector2(int x_, int y_) : x( (float)x_ ), y( (float)y_ ) {}
 
 		//Addition
 		inline Vector2 operator+(const Vector2& rm) const			{ return { x + rm.x, y + rm.y }; };
@@ -77,6 +80,26 @@ namespace Struct {
 
 		Vector2 normalized() const;
 		Vector2 clamp(float min, float max) const;
+
+		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y) };
+	};
+
+	//Oriented Rectangle struct with Collision | origin is the center
+	struct Rectangle2
+	{
+		Vector2 center;
+		Vector2 halfSize;
+		float rotation;
+
+		std::vector<Vector2> getCorners() const;
+
+		//Collision
+		Vector2 CheckAABB(const Rectangle2& other) const;	// ignore rot
+		Vector2 CheckOBB(const Rectangle2& other) const;
+
+		bool ContainPoint(const Vector2& point) const;	// ignore rot
+
+		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};
 }
 
@@ -101,6 +124,8 @@ namespace MathUtils {
 
 	template <typename T>
 	inline T Lerp(T a, T b, T t) { return a + (b - a) * Clamp(t, T(0), T(1)); };
+
+	float OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vector2>& b, Vector2 axis);
 
 	inline Vector2 Vect2FLerp(Vector2 a, Vector2 b, float t) { return { Lerp(a.x, b.x, t), Lerp(a.y, b.y, t) }; };
 
