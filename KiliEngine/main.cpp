@@ -1,6 +1,6 @@
-#include <iostream>
 #include <SDL.h>
 #include <glew.h>
+#include "Log.h"
 using namespace std;
 
 #define GLEW_STATIC
@@ -9,12 +9,11 @@ int main(int argc, char* argv[])
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
-
-		cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+		Log::Error(LogType::Application, "SDL initialization failed. SDL Error: ");
 	}
 	else
 	{
-		cout << "SDL initialization succeeded!";
+		Log::Info("SDL initialization succeeded!");
 	}
 	///////////SETTING UP SDL/////////////
 //Create a simple window
@@ -31,7 +30,7 @@ int main(int argc, char* argv[])
 	//Initialize glew
 	glewExperimental = GL_TRUE;
 	if (glewInit() == GLEW_OK) {
-		cout << "Glew initialized successfully\n";
+		Log::Info("Glew initialized successfully");
 	}
 	//Set the viewing frame through which we will see the objects
 	glViewport(0, 0, width, height);
@@ -154,7 +153,5 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(Window);
 	SDL_GL_DeleteContext(Context);
 
-
-	cin.get();
 	return 0;
 }
