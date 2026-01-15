@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <vector>
+#include <string>
 #include "SDL.h"
 
 // Note : 
@@ -81,11 +82,11 @@ namespace Struct {
 		Vector2 normalized() const;
 		Vector2 clamp(float min, float max) const;
 
-		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y) };
+		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y); };
 	};
 
 	//Oriented Rectangle struct with Collision | origin is the center
-	struct Rectangle2
+	struct Rectangle
 	{
 		Vector2 center;
 		Vector2 halfSize;
@@ -94,8 +95,8 @@ namespace Struct {
 		std::vector<Vector2> getCorners() const;
 
 		//Collision
-		Vector2 CheckAABB(const Rectangle2& other) const;	// ignore rot
-		Vector2 CheckOBB(const Rectangle2& other) const;
+		Vector2 CheckAABB(const Rectangle& other) const;	// ignore rot
+		Vector2 CheckOBB(const Rectangle& other) const;
 
 		bool ContainPoint(const Vector2& point) const;	// ignore rot
 

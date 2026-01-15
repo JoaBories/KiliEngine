@@ -130,12 +130,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Window.h" />

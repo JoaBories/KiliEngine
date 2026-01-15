@@ -1,7 +1,7 @@
 #include "Utils.h"
 
 using Struct::Vector2;
-using Struct::Rectangle2;
+using Struct::Rectangle;
 
 constexpr auto PI = 3.1415926536f;
 constexpr auto EPSILON = 1e-8;
@@ -95,7 +95,7 @@ Vector2 Vector2::clamp(float min, float max) const
 
 #pragma region Rectangle
 
-std::vector<Vector2> Rectangle2::getCorners() const
+std::vector<Vector2> Rectangle::getCorners() const
 {
 	std::vector<Vector2> corners(4);
 
@@ -113,7 +113,7 @@ std::vector<Vector2> Rectangle2::getCorners() const
 	return corners;
 }
 
-Vector2 Rectangle2::CheckAABB(const Rectangle2& other) const
+Vector2 Rectangle::CheckAABB(const Rectangle& other) const
 {
 	Vector2 aMin = { center.x - halfSize.x, center.y - halfSize.y };
 	Vector2 aMax = { center.x + halfSize.x, center.y + halfSize.y };
@@ -140,7 +140,7 @@ Vector2 Rectangle2::CheckAABB(const Rectangle2& other) const
 	return overlap; // if overlap == Vector2::zero false else true
 }
 
-bool Rectangle2::ContainPoint(const Vector2& point) const
+bool Rectangle::ContainPoint(const Vector2& point) const
 {
 	Vector2 aMin = { center.x - halfSize.x, center.y - halfSize.y };
 	Vector2 aMax = { center.x + halfSize.x, center.y + halfSize.y };
@@ -149,7 +149,7 @@ bool Rectangle2::ContainPoint(const Vector2& point) const
 	return point.x >= aMin.x && point.x <= aMax.x && point.y >= aMin.y && point.y <= aMax.y;
 }
 
-Vector2 Rectangle2::CheckOBB(const Rectangle2& other) const
+Vector2 Rectangle::CheckOBB(const Rectangle& other) const
 {
 	Vector2 overlap = Vector2::zero;
 
@@ -170,7 +170,7 @@ Vector2 Rectangle2::CheckOBB(const Rectangle2& other) const
 		axes.push_back((bCorners[0] - bCorners[1]).PerpendicularCW());
 		axes.push_back((bCorners[1] - bCorners[2]).PerpendicularCW());
 
-		float biggerAxisOverlap;
+		float biggerAxisOverlap = FLT_MIN;
 
 		for (const auto& axis : axes)									// Testing overlap on all axes. If there is overlap on all of them then there is collision
 		{
