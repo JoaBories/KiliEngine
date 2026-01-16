@@ -97,6 +97,7 @@ void GameEngine::Close()
 	mWindow->Close();
 	delete mWindow;
 	mWindow = nullptr;
+
 	mRenderer->Close();
 	delete mRenderer;
 	mWindow = nullptr;

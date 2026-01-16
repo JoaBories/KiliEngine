@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -136,7 +137,9 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components.h" />
+    <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="BoxCollider2D.h" />
+    <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Log.h" />

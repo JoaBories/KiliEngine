@@ -1,19 +1,19 @@
 #pragma once
 
-class Actor;
+class GameActor;
 
 class ActorComponent
 {
 protected:
 	bool mIsActive;
 	short mUpdateOrder;
-	Actor& mOwner;
+	GameActor& mOwner;
 
 public:
 
 	ActorComponent() = delete;
 
-	inline ActorComponent(Actor& owner, int updateOrder = 0) :
+	inline ActorComponent(GameActor& owner, int updateOrder = 0) :
 		mIsActive(true), mUpdateOrder(updateOrder),
 		mOwner(owner)
 	{

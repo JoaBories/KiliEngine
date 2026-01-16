@@ -30,6 +30,9 @@
     <ClCompile Include="GameRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BoxCollider2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -56,7 +59,13 @@
     <ClInclude Include="Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components.h">
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameActor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

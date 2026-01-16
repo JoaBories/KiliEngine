@@ -85,6 +85,18 @@ namespace Struct {
 		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y); };
 	};
 
+	struct Transform2D
+	{
+		Vector2 position;
+		Vector2 scale;
+		float rotation;
+
+		Transform2D(Vector2 pos = Vector2::zero, Vector2 pScale = Vector2::one, float rot = 0.0f) :
+			position(pos), scale(pScale), rotation(rot)
+		{
+		};
+	};
+
 	//Oriented Rectangle struct with Collision | origin is the center
 	struct Rectangle
 	{
@@ -100,8 +112,11 @@ namespace Struct {
 
 		bool ContainPoint(const Vector2& point) const;	// ignore rot
 
+		inline Rectangle toObjectSpace(const Transform2D& transform) const { return { transform.position + center, transform.scale * halfSize, transform.rotation + rotation }; };
+
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};
+
 }
 
 namespace MathUtils {
