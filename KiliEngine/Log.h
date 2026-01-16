@@ -26,7 +26,7 @@ public:
 	Log& operator=(const Log&) = delete;
 
 	inline static void Info(const std::string& message) { 
-		SDL_Log(message.c_str()); 
+		SDL_Log((message + "\n").c_str());
 	};
 
 	inline static void Error(LogType category, const std::string& message) { 

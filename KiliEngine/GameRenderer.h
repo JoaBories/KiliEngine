@@ -9,8 +9,9 @@ class GameRenderer
 {
 private:
 	SDL_Renderer* mSdlRenderer;
+
 public:
-	GameRenderer();
+	GameRenderer() : mSdlRenderer(nullptr) {};
 	GameRenderer(const GameRenderer&) = delete;
 	GameRenderer& operator= (const GameRenderer&) = delete;
 
@@ -19,7 +20,7 @@ public:
 	void EndDraw();
 	void Close();
 
-	void DrawRect(Rectangle& rRect);
+	void DrawRect(const Rectangle& rRect) const;
 
 };
 

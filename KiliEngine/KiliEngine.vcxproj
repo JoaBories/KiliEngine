@@ -79,7 +79,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\GL\SDL\lib\x86;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\lib\Release\Win32;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\bin\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glu32.lib;glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -96,7 +96,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\GL\SDL\lib\x86;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\lib\Release\Win32;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\bin\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glu32.lib;glew32.lib;opengl32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -136,9 +136,13 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

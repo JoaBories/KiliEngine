@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <glew.h>
 #include "GameEngine.h"
+#include "MainMenu.h"
 
 using namespace std;
 
@@ -8,7 +9,8 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	new GameEngine("KiliEngine");
+	GameEngine* spaceInvader = new GameEngine("KiliEngine", { new MainMenu() });
+	spaceInvader->Init();
 
 	return 0;
 }

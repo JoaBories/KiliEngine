@@ -1,33 +1,56 @@
 #include "GameEngine.h"
 #include <iostream>
+#include "Log.h"
+#include "Time.h"
 
-GameEngine::GameEngine(std::string title) : mIsRunning(true), mTitle(title), mWindow(nullptr)
+GameEngine::GameEngine(std::string pTitle, std::vector<Scene*> pScenes) :
+	mIsRunning(true), mTitle(pTitle), 
+	mWindow(nullptr), 
+	mRenderer(nullptr),
+	mScenes(pScenes), mCurrentScene(0)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
-		std::cout << "SDL initialization failed. SDL Error: " << SDL_GetError();
+		Log::Error(LogType::System, "SDL initialization failed. SDL Error: ");
 	}
 	else
 	{
-		std::cout << "SDL initialization succeeded!";
+		Log::Info("SDL initialized successfully");
 	}
-
-	Init();
 }
 
 void GameEngine::Init()
 {
 	mWindow = new Window(800, 800);
-	if (mWindow->Open()) Loop();
+	mRenderer = new GameRenderer();
+
+	if (mWindow->Open()) 
+	{
+		if (mRenderer->Initialize(*mWindow))
+		{
+			if (!mScenes.empty())
+			{
+				mScenes[0]->SetRenderer(mRenderer);
+				mScenes[0]->Start();
+			}
+
+			Loop();
+		}
+	}
 }
 
 void GameEngine::Loop()
 {
 	while (mIsRunning)
 	{
+		Time::ComputeDeltaTime();
+
 		CheckForInputs();
 		Update();
+
 		Render();
+
+		Time::DelayTime();
 	}
 
 	Close();
@@ -35,10 +58,16 @@ void GameEngine::Loop()
 
 void GameEngine::Render()
 {
+	mRenderer->BeginDraw();
+
+	mScenes[mCurrentScene]->Render();
+
+	mRenderer->EndDraw();
 }
 
 void GameEngine::Update()
 {
+	mScenes[mCurrentScene]->Update();
 }
 
 void GameEngine::CheckForInputs()
@@ -54,7 +83,7 @@ void GameEngine::CheckForInputs()
 				mIsRunning = false;
 				break;
 			default:
-				//send inputs
+				mScenes[mCurrentScene]->OnInput(event);
 				break;
 			}
 		}
@@ -63,5 +92,12 @@ void GameEngine::CheckForInputs()
 
 void GameEngine::Close() 
 {
+	Log::Info("Close Game");
+
 	mWindow->Close();
+	delete mWindow;
+	mWindow = nullptr;
+	mRenderer->Close();
+	delete mRenderer;
+	mWindow = nullptr;
 }

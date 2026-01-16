@@ -1,10 +1,6 @@
 #include "GameRenderer.h"
 #include "Log.h"
 
-GameRenderer::GameRenderer() : mSdlRenderer(nullptr)
-{
-}
-
 bool GameRenderer::Initialize(Window& rWindow)
 {
 	mSdlRenderer = SDL_CreateRenderer(rWindow.GetSdlWindow(), -1,
@@ -14,6 +10,10 @@ bool GameRenderer::Initialize(Window& rWindow)
 	{
 		Log::Error(LogType::Video, "Failed to create Renderer");
 		return false;
+	}
+	else
+	{
+		Log::Info("Created Renderer Successfully");
 	}
 	return true;
 }
@@ -34,7 +34,7 @@ void GameRenderer::Close()
 	SDL_DestroyRenderer(mSdlRenderer);
 }
 
-void GameRenderer::DrawRect(Rectangle& rRect)
+void GameRenderer::DrawRect(const Rectangle& rRect) const
 {
 	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
 	SDL_Rect sdlRect = rRect.toSdlRect();
