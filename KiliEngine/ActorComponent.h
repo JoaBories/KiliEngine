@@ -12,6 +12,7 @@ protected:
 public:
 
 	ActorComponent() = delete;
+	~ActorComponent() = default;
 
 	inline ActorComponent(GameActor& owner, int updateOrder = 0) :
 		mIsActive(true), mUpdateOrder(updateOrder),
@@ -19,7 +20,6 @@ public:
 	{
 	}
 
-	virtual ~ActorComponent() = 0;
 	virtual void OnStart() = 0;
 	virtual void Update() = 0;
 	virtual void OnEnd() = 0;

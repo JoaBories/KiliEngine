@@ -1,5 +1,10 @@
 #include "BoxCollider2D.h"
 #include "GameActor.h"
+#include "ICollideable.h"
+
+using Struct::Vector2;
+
+std::vector<BoxCollider2D*> BoxCollider2D::allBoxCollider = {};
 
 void BoxCollider2D::OnStart()
 {
@@ -7,6 +12,22 @@ void BoxCollider2D::OnStart()
 
 void BoxCollider2D::Update()
 {
+	for (const auto& collider : allBoxCollider)
+	{
+		if (collider != this)
+		{
+			Vector2 overlap = mBoxCollider.toObjectSpace(mOwner.GetTransform()).CheckAABB(collider->GetBoxCollider().toObjectSpace(collider->GetOwner().GetTransform()));
+
+			if (overlap != Vector2::zero)
+			{
+				ICollideable* ownerCollide = dynamic_cast<ICollideable*>(&GetOwner());
+				if (ownerCollide != nullptr)
+				{
+					ownerCollide->Collide(collider->GetOwner(), overlap);
+				}
+			}
+		}
+	}
 }
 
 void BoxCollider2D::OnEnd()

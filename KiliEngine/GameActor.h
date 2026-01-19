@@ -33,12 +33,24 @@ public:
 
 	Transform2D GetTransform() const { return mTransform; };
 
+	void AddComponent(ActorComponent* comp) {
+		mComponents.push_back(comp);
+	};
+
+	void RemoveComponent(ActorComponent* comp) {
+		for (size_t i = 0; i < mComponents.size(); i++)
+		{
+			if (mComponents.at(i) == comp)
+			{
+				mComponents.erase(mComponents.begin() + i);
+			}
+		}
+	};
+
 	virtual void Start() = 0;
-	virtual void AttachScene(Scene& scene) = 0;
-	virtual void AddComponent(ActorComponent* comp) = 0;
-	virtual void RemoveComponent(ActorComponent* comp) = 0;
-	virtual void SetActive(ActorState newState) = 0;
 	virtual void Update() = 0;
+	virtual void SetActive(ActorState newState) = 0;
+	virtual void Render() = 0;
 	virtual void Destroy() = 0;
 };
 

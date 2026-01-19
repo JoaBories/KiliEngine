@@ -129,21 +129,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Alien.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="Alien.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="ICollideable.h" />
+    <ClInclude Include="IInput.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="SpaceInvader.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Utils.h" />
