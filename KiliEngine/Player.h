@@ -1,12 +1,11 @@
 #pragma once
 #include "GameActor.h"
-#include "ICollideable.h"
-#include "IInput.h"
+
+#include "Utils.h"
+using Struct::Vector2;
 
 class Player :
-    public GameActor,
-    public ICollideable,
-    public IInput
+    public GameActor
 {
 
 private:
@@ -25,14 +24,6 @@ public:
     void Update() override;
     void Render() override;
     void Destroy() override;
-
-
-    // Inherited via ICollideable
-    void Collide(GameActor& other, Vector2 overlap) override;
-
-
-    // Inherited via IInput
-    void OnInput(SDL_Event input) override;
 
 };
 

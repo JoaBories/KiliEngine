@@ -17,40 +17,46 @@ enum ActorState
 class GameActor
 {
 protected:
-	Scene& mScene;
-	ActorState mState;
+	Scene* mScene;
+	ActorState mActiveState;
 	Transform2D mTransform;
+
 	std::vector<ActorComponent*> mComponents;
 
 public:
 
-	GameActor(Scene& scene, Transform2D transform) :
-		mScene(scene), mState(Active),
+	GameActor(Scene* scene, Transform2D transform) :
+		mScene(scene), mActiveState(Active),
 		mTransform(transform),
 		mComponents()
 	{
 	};
 
-	Transform2D GetTransform() const { return mTransform; };
+	virtual ~GameActor();
+
+	GameActor(const GameActor&) = delete;
+	GameActor& operator=(const GameActor&) = delete;
+
+	virtual void Start();
+	virtual void Update() = 0;
+	virtual void Render();
+	
+	Transform2D GetTransform() const	{ return mTransform; };
+
+	void Destroy()						{ mActiveState = ActorState::Dead; };
+	void SetActive(bool newActive)		{ mActiveState = newActive ? Active : Paused; };
+	bool GetActive() const				{ return mActiveState == Active; };
+	ActorState GetState() const			{ return mActiveState; };
+
+	void RemoveComponent(ActorComponent* comp) ;
 
 	void AddComponent(ActorComponent* comp) {
 		mComponents.push_back(comp);
 	};
 
-	void RemoveComponent(ActorComponent* comp) {
-		for (size_t i = 0; i < mComponents.size(); i++)
-		{
-			if (mComponents.at(i) == comp)
-			{
-				mComponents.erase(mComponents.begin() + i);
-			}
-		}
-	};
+	template<typename T> T* GetComponent() const;
 
-	virtual void Start() = 0;
-	virtual void Update() = 0;
-	virtual void SetActive(ActorState newState) = 0;
-	virtual void Render() = 0;
-	virtual void Destroy() = 0;
+	template<typename T> std::vector<T*> GetComponents() const;
+
 };
 

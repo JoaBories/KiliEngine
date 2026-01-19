@@ -1,22 +1,21 @@
 #pragma once
 
-#include "ActorComponent.h"
+#include "ColliderComponent.h"
 #include "Utils.h"
 using Struct::Rectangle;
 
-class BoxCollider2D : 
-	public ActorComponent
+class BoxCollider2D : public ColliderComponent
 {
 
 private:
-	Rectangle mBoxCollider;
+	Rectangle mBoxCollider; // center is local offset
 
 	static std::vector<BoxCollider2D*> allBoxCollider;
 
 public:
 
-	BoxCollider2D(GameActor& owner, short updatePriority, Rectangle box) :
-		ActorComponent(owner, updatePriority),
+	BoxCollider2D(GameActor* owner, short updatePriority, Rectangle box) :
+		ColliderComponent(owner, updatePriority),
 		mBoxCollider(box)
 	{
 		allBoxCollider.push_back(this);
@@ -38,6 +37,5 @@ public:
 	void OnEnd() override;
 
 	Rectangle GetBoxCollider() const;
-	inline GameActor& GetOwner() const { return mOwner; };
 };
 

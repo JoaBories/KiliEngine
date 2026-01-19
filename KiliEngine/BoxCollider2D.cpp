@@ -1,6 +1,5 @@
 #include "BoxCollider2D.h"
 #include "GameActor.h"
-#include "ICollideable.h"
 
 using Struct::Vector2;
 
@@ -20,11 +19,6 @@ void BoxCollider2D::Update()
 
 			if (overlap != Vector2::zero)
 			{
-				ICollideable* ownerCollide = dynamic_cast<ICollideable*>(&GetOwner());
-				if (ownerCollide != nullptr)
-				{
-					ownerCollide->Collide(collider->GetOwner(), overlap);
-				}
 			}
 		}
 	}

@@ -7,21 +7,31 @@ class ActorComponent
 protected:
 	bool mIsActive;
 	short mUpdateOrder;
-	GameActor& mOwner;
+	GameActor* mOwner;
 
 public:
 
 	ActorComponent() = delete;
-	~ActorComponent() = default;
 
-	inline ActorComponent(GameActor& owner, int updateOrder = 0) :
+	virtual ~ActorComponent() { OnEnd(); };
+
+	ActorComponent(GameActor* owner, short updateOrder = 100) :
 		mIsActive(true), mUpdateOrder(updateOrder),
 		mOwner(owner)
 	{
 	}
 
-	virtual void OnStart() = 0;
+	ActorComponent(const ActorComponent&) = delete;
+	ActorComponent& operator=(const ActorComponent&) = delete;
+
+	virtual void OnStart();
 	virtual void Update() = 0;
-	virtual void OnEnd() = 0;
+	virtual void OnEnd();
+
+	bool IsActive() const			{ return mIsActive; };
+	void SetActive(bool newActive)	{ mIsActive = newActive; };
+
+	short GetUpdateOrder() const	{ return mUpdateOrder; };
+	GameActor* GetOwner() const		{ return mOwner; };
 };
 

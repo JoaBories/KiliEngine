@@ -40,22 +40,3 @@ void Player::Render()
 void Player::Destroy()
 {
 }
-
-void Player::Collide(GameActor& other, Vector2 overlap)
-{
-	Log::Info("HasCollided");
-}
-
-void Player::OnInput(SDL_Event input)
-{
-	switch (input.key.keysym.sym)
-	{
-	case SDLK_RIGHT:
-		mVelocity += Vector2::right * mAcceleration * Time::deltaTime;
-		mInput = true;
-
-	case SDLK_LEFT:
-		mVelocity += Vector2::left * mAcceleration * Time::deltaTime;
-		mInput = true;
-	}
-}

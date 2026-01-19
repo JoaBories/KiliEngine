@@ -5,7 +5,6 @@ using Struct::Rectangle;
 #include <vector>
 #include "Player.h"
 #include "Alien.h"
-#include "IInput.h"
 
 class SpaceInvader :
     public Scene
@@ -52,14 +51,6 @@ public :
         if (input.key.type == SDL_KEYUP)
         {
             return;
-        }
-
-        for (GameActor* actor : mActors)
-        {
-            if (IInput* inputActor = dynamic_cast<IInput*>(actor))
-            {
-                inputActor->OnInput(input);
-            }
         }
         
     };
