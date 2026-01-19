@@ -15,7 +15,7 @@ void BoxCollider2D::Update()
 	{
 		if (collider != this)
 		{
-			Vector2 overlap = mBoxCollider.toObjectSpace(mOwner.GetTransform()).CheckAABB(collider->GetBoxCollider().toObjectSpace(collider->GetOwner().GetTransform()));
+			Vector2 overlap = mBoxCollider.toObjectSpace(mOwner->GetTransform()).CheckAABB(collider->GetBoxCollider().toObjectSpace(collider->GetOwner()->GetTransform()));
 
 			if (overlap != Vector2::zero)
 			{
@@ -30,5 +30,5 @@ void BoxCollider2D::OnEnd()
 
 Rectangle BoxCollider2D::GetBoxCollider() const
 {
-	return mBoxCollider.toObjectSpace(mOwner.GetTransform());
+	return mBoxCollider.toObjectSpace(mOwner->GetTransform());
 }

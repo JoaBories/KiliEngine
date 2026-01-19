@@ -16,14 +16,12 @@ private:
 
 public:
 
-    Player(Scene& scene, Transform2D transform) : GameActor(scene, transform), mVelocity(Vector2::zero) {};
+    Player(Scene* scene, Transform2D transform) : GameActor(scene, transform), mVelocity(Vector2::zero) {};
 
     // Inherited via GameActor
     void Start() override;
-    void SetActive(ActorState newState) override;
     void Update() override;
-    void Render() override;
-    void Destroy() override;
+    void Render(const GameRenderer* renderer) override;
 
 };
 

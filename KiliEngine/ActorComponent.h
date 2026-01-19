@@ -24,9 +24,9 @@ public:
 	ActorComponent(const ActorComponent&) = delete;
 	ActorComponent& operator=(const ActorComponent&) = delete;
 
-	virtual void OnStart();
+	virtual void OnStart() {};
 	virtual void Update() = 0;
-	virtual void OnEnd();
+	virtual void OnEnd() {};
 
 	bool IsActive() const			{ return mIsActive; };
 	void SetActive(bool newActive)	{ mIsActive = newActive; };

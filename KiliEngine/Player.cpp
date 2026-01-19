@@ -6,11 +6,7 @@
 
 void Player::Start()
 {
-	AddComponent(new BoxCollider2D(*this, 0, Rectangle{ Vector2::zero, Vector2(50,50) }));
-}
 
-void Player::SetActive(ActorState newState)
-{
 }
 
 void Player::Update()
@@ -32,11 +28,7 @@ void Player::Update()
 
 }
 
-void Player::Render()
+void Player::Render(const GameRenderer* renderer)
 {
-	mScene.GetRenderer()->DrawRect(Rectangle{ mTransform.position, Vector2(50, 50) * mTransform.scale, 0.0f });
-}
-
-void Player::Destroy()
-{
+	mScene->GetRenderer()->DrawRect(Rectangle{ mTransform.position, Vector2(50, 50) * mTransform.scale, 0.0f });
 }

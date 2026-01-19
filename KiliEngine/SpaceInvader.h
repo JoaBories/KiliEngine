@@ -5,19 +5,32 @@ using Struct::Rectangle;
 #include <vector>
 #include "Player.h"
 #include "Alien.h"
+#include "BoxCollider2D.h"
 
 class SpaceInvader :
     public Scene
 {
 
 private :
+    Player* pPlayer;
+    std::vector<Alien*> pAliens;
 
 public :
 
-    inline SpaceInvader() : Scene("Game")
+    SpaceInvader() : Scene("Game")
     {
-        mActors.push_back(new Player(*this, Transform2D(Vector2( 400, 700))));
-        mActors.push_back(new Alien(*this, Transform2D()));
+        pPlayer = new Player(this, Transform2D(Vector2(400, 700)));
+        pPlayer->AddComponent(new BoxCollider2D(pPlayer, 10, Rectangle{ Vector2::zero, Vector2(50,50) }));
+
+        for (size_t i = 0; i < 6; i++)
+        {
+            Alien* alien = new Alien(this, Transform2D(Vector2(100, (i+1)*100)));
+            alien->AddComponent(new BoxCollider2D(alien, 10, Rectangle{ Vector2::zero, Vector2(50,50) }));
+            pAliens.push_back(alien);
+            mActors.push_back(alien);
+        }
+
+        mActors.push_back(pPlayer);
     }
 
     // Inherited via Scene
@@ -42,7 +55,7 @@ public :
     inline void Render() override {
         for (const auto& actor : mActors)
         {
-            actor->Render();
+            actor->Render(mRenderer);
         }
     };
 

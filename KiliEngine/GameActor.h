@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ActorComponent.h"
+#include "GameRenderer.h"
 
 #include "Utils.h"
 using Struct::Transform2D;
@@ -37,9 +38,9 @@ public:
 	GameActor(const GameActor&) = delete;
 	GameActor& operator=(const GameActor&) = delete;
 
-	virtual void Start();
+	virtual void Start() = 0;
 	virtual void Update() = 0;
-	virtual void Render();
+	virtual void Render(const GameRenderer* renderer) = 0;
 	
 	Transform2D GetTransform() const	{ return mTransform; };
 
