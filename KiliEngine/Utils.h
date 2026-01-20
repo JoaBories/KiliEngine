@@ -117,6 +117,14 @@ namespace Struct {
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};
 
+	struct Color
+	{
+		char r, g, b, a;
+
+		static const Color WHITE;
+		static const Color BLACK;
+	};
+
 }
 
 namespace MathUtils {

@@ -4,6 +4,7 @@
 
 #include "Utils.h"
 using Struct::Rectangle;
+using Struct::Color;
 
 class GameRenderer
 {
@@ -20,7 +21,7 @@ public:
 	void EndDraw();
 	void Close();
 
-	void DrawRect(const Rectangle& rRect) const;
+	void DrawRect(const Rectangle& rRect, Color color = Color::WHITE) const;
 
 };
 

@@ -34,7 +34,7 @@ void GameRenderer::Close()
 	SDL_DestroyRenderer(mSdlRenderer);
 }
 
-void GameRenderer::DrawRect(const Rectangle& rRect) const
+void GameRenderer::DrawRect(const Rectangle& rRect, Color color = Color::WHITE) const
 {
 	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
 	SDL_Rect sdlRect = rRect.toSdlRect();

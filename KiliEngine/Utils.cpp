@@ -2,6 +2,7 @@
 
 using Struct::Vector2;
 using Struct::Rectangle;
+using Struct::Color;
 
 constexpr auto PI = 3.1415926536f;
 constexpr auto EPSILON = 1e-8;
@@ -190,6 +191,13 @@ Vector2 Rectangle::CheckOBB(const Rectangle& other) const
 
 	return overlap;
 }
+
+#pragma endregion
+
+#pragma region Color
+
+const Color Color::WHITE = { 255,255,255,255 };
+const Color Color::BLACK = { 0,0,0,255 };
 
 #pragma endregion
 
