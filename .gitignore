@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+!Debug/
+!Debug/glew32.dll
+!Debug/x86/SDL2.dll
+
+!Release/
+!Release/glew32.dll
+!Release/SDL2.dll
