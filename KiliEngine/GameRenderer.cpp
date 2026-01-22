@@ -1,5 +1,9 @@
 #include "GameRenderer.h"
 #include "Log.h"
+#include "SDL_rect.h"
+#include "SDL_render.h"
+#include "Utils.h"
+#include "Window.h"
 
 bool GameRenderer::Initialize(Window& rWindow)
 {
@@ -34,7 +38,7 @@ void GameRenderer::Close()
 	SDL_DestroyRenderer(mSdlRenderer);
 }
 
-void GameRenderer::DrawRect(const Rectangle& rRect, Color color = Color::WHITE) const
+void GameRenderer::DrawRect(const Rectangle& rRect, Color color) const
 {
 	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
 	SDL_Rect sdlRect = rRect.toSdlRect();

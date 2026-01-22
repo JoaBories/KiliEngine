@@ -1,4 +1,7 @@
 #include "GameActor.h"
+#include "ActorComponent.h"
+#include <algorithm>
+#include <vector>
 
 GameActor::~GameActor()
 {
@@ -22,21 +25,4 @@ void GameActor::RemoveComponent(ActorComponent* comp)
 		mComponents.erase(it);
 		it = std::find(mComponents.begin(), mComponents.end(), comp);
 	}
-}
-
-template<typename T>
-T* GameActor::GetComponent() const
-{
-	for (ActorComponent* c : mComponents)
-		if (T* comp = dynamic_cast<T*>(c)) return comp;
-	return nullptr;
-}
-
-template<typename T>
-std::vector<T*> GameActor::GetComponents() const
-{
-	std::vector<T*> comps = {};
-	for (ActorComponent* c : mComponents)
-		if (T* comp = dynamic_cast<T*>(c)) comps.push_back(comp);
-	return comps;
 }

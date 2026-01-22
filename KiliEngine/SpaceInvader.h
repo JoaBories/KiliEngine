@@ -6,6 +6,10 @@ using Struct::Rectangle;
 #include "Player.h"
 #include "Alien.h"
 #include "BoxCollider2D.h"
+#include "SDL_events.h"
+#include "SDL_keycode.h"
+#include "GameRenderer.h"
+#include "Bullet.h"
 
 class SpaceInvader :
     public Scene
@@ -14,6 +18,10 @@ class SpaceInvader :
 private :
     Player* pPlayer;
     std::vector<Alien*> pAliens;
+    std::vector<Bullet*> pPlayerBullets;
+    std::vector<Bullet*> pAlienBullets;
+
+    void SpawnBullet(Vector2 pos, bool player);
 
 public :
 
@@ -65,10 +73,44 @@ public :
         {
             return;
         }
+
+        switch (input.key.keysym.sym)
+        {
+        case SDLK_RIGHT:
+            pPlayer->OnInputMove(1.0f);
+            break;
+        case SDLK_LEFT:
+            pPlayer->OnInputMove(-1.0f);
+            break;
+
+        case SDLK_SPACE:
+            SpawnBullet(pPlayer->GetTransform().position, true);
+            break;
+
+        default:
+            break;
+        }
         
     };
 
     inline void Close() override {
     };
+
 };
 
+void SpaceInvader::SpawnBullet(Vector2 pos, bool player)
+{
+    Bullet* bullet = new Bullet(this, Transform2D(pos), player ? Vector2::down : Vector2::up);
+    bullet->AddComponent(new BoxCollider2D(bullet, 50, { Vector2::zero, Vector2(10,50), 0 }));
+    
+    if (player)
+    {
+        pPlayerBullets.push_back(bullet);
+    }
+    else
+    {
+        pAlienBullets.push_back(bullet);
+    }
+
+    mActors.push_back(bullet);
+}

@@ -55,9 +55,20 @@ public:
 		mComponents.push_back(comp);
 	};
 
-	template<typename T> T* GetComponent() const;
+	template<typename T> T* GetComponent() const
+	{
+		for (ActorComponent* c : mComponents)
+			if (T* comp = dynamic_cast<T*>(c)) return comp;
+		return nullptr;
+	};
 
-	template<typename T> std::vector<T*> GetComponents() const;
+	template<typename T> std::vector<T*> GetComponents() const
+	{
+		std::vector<T*> comps = {};
+		for (ActorComponent* c : mComponents)
+			if (T* comp = dynamic_cast<T*>(c)) comps.push_back(comp);
+		return comps;
+	};
 
 };
 

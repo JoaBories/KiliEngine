@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "SDL_render.h"
 
 #include "Utils.h"
 using Struct::Rectangle;
@@ -24,4 +25,3 @@ public:
 	void DrawRect(const Rectangle& rRect, Color color = Color::WHITE) const;
 
 };
-

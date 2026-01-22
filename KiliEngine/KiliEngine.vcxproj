@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="Alien.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="Alien.h" />
     <ClInclude Include="BoxCollider2D.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />

@@ -119,7 +119,7 @@ namespace Struct {
 
 	struct Color
 	{
-		char r, g, b, a;
+		unsigned short r, g, b, a;
 
 		static const Color WHITE;
 		static const Color BLACK;

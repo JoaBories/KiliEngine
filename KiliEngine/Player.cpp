@@ -1,7 +1,7 @@
 #include "Player.h"
-#include "BoxCollider2D.h"
-#include "Log.h"
 #include "Scene.h"
+#include "GameRenderer.h"
+#include "Utils.h"
 #include "Time.h"
 
 void Player::Start()
@@ -16,13 +16,22 @@ void Player::Update()
 		component->Update();
 	}
 
-	mVelocity = mVelocity.clamp(0, mMaxSpeed);
 	mTransform.position += mVelocity * Time::deltaTime;
-	mTransform.position = mTransform.position.clamp(0, 800);
+
+	if (mTransform.position.x < 50.0f)
+	{
+		mTransform.position.x = 50.0f;
+		mVelocity = Vector2::zero;
+	}
+	else if (mTransform.position.x > 750.0f)
+	{
+		mTransform.position.x = 750.0f;
+		mVelocity = Vector2::zero;
+	}
 
 	if (!mInput)
 	{
-		mVelocity *= 0.9f;
+		mVelocity *= 0.95f;
 	}
 	mInput = false;
 
@@ -31,4 +40,9 @@ void Player::Update()
 void Player::Render(const GameRenderer* renderer)
 {
 	mScene->GetRenderer()->DrawRect(Rectangle{ mTransform.position, Vector2(50, 50) * mTransform.scale, 0.0f });
+}
+
+void Player::OnInputMove(float side)
+{
+	mVelocity += Vector2::right * mAcceleration * side * Time::deltaTime * 1000.0f;
 }
