@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL.h>
-#include "Utils.h"
+#include "Struct.h"
 using Struct::Vector2;
 
 class Window

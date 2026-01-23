@@ -1,7 +1,7 @@
 #pragma once
 #include "GameActor.h"
 #include "GameRenderer.h"
-#include "Utils.h"
+#include "Struct.h"
 
 class Bullet :
     public GameActor

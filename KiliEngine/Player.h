@@ -3,7 +3,7 @@
 #include "GameRenderer.h"
 #include "Scene.h"
 
-#include "Utils.h"
+#include "Struct.h"
 using Struct::Vector2;
 
 class Player :

@@ -41,6 +41,9 @@ public :
 	void Start();
 
 	void SetRenderer(GameRenderer* pRenderer);
+
+	virtual void AssetLoad() = 0;
+	virtual void Unload();
 	
 	virtual void OnStart() = 0;
 	virtual void OnUpdate() = 0;

@@ -2,7 +2,7 @@
 #include "Time.h"
 #include "BoxCollider2D.h"
 #include "GameRenderer.h"
-#include "Utils.h"
+#include "Struct.h"
 
 void Bullet::Start()
 {

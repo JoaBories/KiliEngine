@@ -1,33 +1,41 @@
-#include "Utils.h"
+#include "Struct.h"
+#include "MathUtils.h"
 
-using Struct::Vector2;
-using Struct::Rectangle;
-using Struct::Color;
+using namespace MathUtils;
+using namespace Struct;
 
-constexpr auto PI = 3.1415926536f;
-constexpr auto EPSILON = 1e-8;
-#define DEG2RAD PI/180
-#define RAD2DEG 180/PI
-
-#pragma region MathUtils
-
-float MathUtils::OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vector2>& b, Vector2 axis)
+float Struct::OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vector2>& b, Vector2 axis)
 {
-	return 0.0f;
+	float aMin = FLT_MAX, aMax = -FLT_MAX;
+	float bMin = FLT_MAX, bMax = -FLT_MAX;
+
+	for (const auto& point : a)
+	{
+		float projection = point.dot(axis);
+		aMin = Min(projection, aMin);
+		aMax = Max(projection, aMax);
+	}
+
+	for (const auto& point : b)
+	{
+		float projection = point.dot(axis);
+		bMin = Min(projection, bMin);
+		bMax = Max(projection, bMax);
+	}
+
+	return Min(aMax, bMax) - Max(aMin, bMin);
 }
 
-Vector2 MathUtils::Vect2FromRot(float rot)
+Vector2 Struct::Vect2FromRot(float rot)
 {
 	Vector2 vector = { cosf(rot * DEG2RAD), sinf(rot * DEG2RAD) };
 	return vector.normalized();
 }
 
-bool MathUtils::NearlyEqual(const float a, const float b)
+Vector2 Struct::Vect2FLerp(Vector2 a, Vector2 b, float t)
 {
-	return Abs(a - b) < EPSILON;
+	return { Lerp(a.x, b.x, t), Lerp(a.y, b.y, t) };
 }
-
-#pragma endregion
 
 #pragma region Structs
 
@@ -42,10 +50,10 @@ const Vector2 Vector2::left = { -1,0 };
 
 bool Vector2::operator==(const Vector2& rm) const
 {
-	return (MathUtils::NearlyEqual(x, rm.x) && MathUtils::NearlyEqual(y, rm.y));
+	return (NearlyEqual(x, rm.x) && NearlyEqual(y, rm.y));
 }
 
-bool Struct::Vector2::operator<(const Vector2& rm) const
+bool Vector2::operator<(const Vector2& rm) const
 {
 	return (sqrLength()) < rm.sqrLength();
 }
@@ -58,6 +66,11 @@ float Vector2::getRot() const
 	if (a < 0) a += 360.0f;
 
 	return a;
+}
+
+float Vector2::length() const
+{
+	return Sqrt(sqrLength());
 }
 
 Vector2 Vector2::normalized() const
@@ -96,6 +109,8 @@ Vector2 Vector2::clamp(float min, float max) const
 
 #pragma region Rectangle
 
+const Rectangle Rectangle::Null = Rectangle{ Vector2(0, 0), Vector2(0, 0), 0.0f };
+
 std::vector<Vector2> Rectangle::getCorners() const
 {
 	std::vector<Vector2> corners(4);
@@ -125,8 +140,8 @@ Vector2 Rectangle::CheckAABB(const Rectangle& other) const
 
 	if (aMin.x <= bMax.x && aMax.x >= bMin.x && aMin.y <= bMax.y && aMax.y >= bMin.y)
 	{
-		overlap.x = MathUtils::Min(aMax.x, bMax.x) - MathUtils::Max(aMin.x, bMin.x);
-		overlap.y = MathUtils::Min(aMax.y, bMax.y) - MathUtils::Max(aMin.y, bMin.y);
+		overlap.x = Min(aMax.x, bMax.x) - Max(aMin.x, bMin.x);
+		overlap.y = Min(aMax.y, bMax.y) - Max(aMin.y, bMin.y);
 
 		if (overlap.x < overlap.y) // Getting minimal overlap and his axis
 		{
@@ -175,7 +190,7 @@ Vector2 Rectangle::CheckOBB(const Rectangle& other) const
 
 		for (const auto& axis : axes)									// Testing overlap on all axes. If there is overlap on all of them then there is collision
 		{
-			float axisOverlap = MathUtils::OverlapOnAxis(aCorners, bCorners, axis);
+			float axisOverlap = OverlapOnAxis(aCorners, bCorners, axis);
 
 			if (axisOverlap < 0)
 			{

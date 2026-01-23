@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ColliderComponent.h"
-#include "Utils.h"
+#include "Struct.h"
 using Struct::Rectangle;
 
 class BoxCollider2D : public ColliderComponent

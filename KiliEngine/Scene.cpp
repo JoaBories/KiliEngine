@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include <vector>
 #include <algorithm>
+#include "AssetManager.h"
 
 Scene* Scene::ActiveScene = nullptr;
 
@@ -65,7 +66,6 @@ void Scene::Killa()
     {
         if (actor->GetState() == Dead)
         {
-            RemoveActor(actor);
             delete actor;
         }
     }
@@ -91,6 +91,16 @@ void Scene::RemoveActor(GameActor* actor)
 void Scene::SetRenderer(GameRenderer* pRenderer)
 {
     mRenderer = pRenderer;
+}
+
+void Scene::Unload()
+{
+    while (!mActors.empty())
+    {
+        delete mActors.back();
+    }
+
+    AssetManager::Clear();
 }
 
 void Scene::Start()

@@ -77,7 +77,7 @@ namespace Struct {
 
 		//Squared Length and Length
 		inline float sqrLength() const								{ return x * x + y * y; };
-		inline float length() const									{ return sqrtf(sqrLength()); };
+		float length() const;
 
 		Vector2 normalized() const;
 		Vector2 clamp(float min, float max) const;
@@ -104,6 +104,11 @@ namespace Struct {
 		Vector2 halfSize;
 		float rotation;
 
+		static const Rectangle Null;
+
+		bool operator==(const Rectangle& rm) const { return center == rm.center && halfSize == rm.halfSize && rotation == rm.rotation; };
+		bool operator!=(const Rectangle& rm) const { return !(*this == rm); };
+
 		std::vector<Vector2> getCorners() const;
 
 		//Collision
@@ -125,35 +130,10 @@ namespace Struct {
 		static const Color BLACK;
 	};
 
-}
-
-namespace MathUtils {
-
-	using Struct::Vector2;
-
-	template <typename T>
-	inline T Min(T a, T b) { return (a <= b) ? a : b; };
-
-	template <typename T>
-	inline T Max(T a, T b) { return (a >= b) ? a : b; };
-
-	template <typename T>
-	inline T Clamp(T value, T min, T max) { return Max(Min(value, max), min); };
-
-	template <typename T>
-	inline T Abs(T value) { return (value < 0) ? -value : value; };
-
-	template <typename T>
-	inline T Sign(T value) { return (value > 0) ? T(1) : (value < 0 ? T(-1) : T(0)); };
-
-	template <typename T>
-	inline T Lerp(T a, T b, T t) { return a + (b - a) * Clamp(t, T(0), T(1)); };
-
 	float OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vector2>& b, Vector2 axis);
 
-	inline Vector2 Vect2FLerp(Vector2 a, Vector2 b, float t) { return { Lerp(a.x, b.x, t), Lerp(a.y, b.y, t) }; };
+	inline Vector2 Vect2FLerp(Vector2 a, Vector2 b, float t);
 
 	Vector2 Vect2FromRot(float rot);
 
-	bool NearlyEqual(const float a, const float b);
-};
+}

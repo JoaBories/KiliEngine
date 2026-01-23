@@ -3,7 +3,7 @@
 #include "ActorComponent.h"
 #include "GameRenderer.h"
 
-#include "Utils.h"
+#include "Struct.h"
 using Struct::Transform2D;
 
 class Scene;
@@ -54,6 +54,7 @@ public:
 	ActorState GetState() const			{ return mActiveState; };
 
 	ActorTags GetTag() const			{ return mTag; };
+	Scene* GetScene() const				{ return mScene; };
 
 	void SetScene(Scene* scene) {
 		mScene = scene;

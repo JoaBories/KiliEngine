@@ -22,6 +22,8 @@ GameActor::~GameActor()
 	}
 
 	mComponents.clear();
+
+	mScene->RemoveActor(this);
 }
 
 void GameActor::RemoveComponent(ActorComponent* comp)

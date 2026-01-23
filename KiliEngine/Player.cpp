@@ -1,14 +1,15 @@
 #include "Player.h"
 #include "Scene.h"
 #include "GameRenderer.h"
-#include "Utils.h"
+#include "Struct.h"
 #include "Time.h"
 #include "Inputs.h"
 #include "Bullet.h"
+#include "BoxCollider2D.h"
 
 void Player::Start()
 {
-
+	AddComponent(new BoxCollider2D(this, 10, Rectangle{ Vector2::zero, Vector2(50,50) }));
 }
 
 void Player::Update()
