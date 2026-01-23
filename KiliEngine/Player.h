@@ -17,14 +17,12 @@ private:
 
 public:
 
-    Player(Scene* scene, Transform2D transform) : 
-        GameActor(scene, transform), mVelocity(Vector2::zero) {};
+    Player(Transform2D transform) : 
+        GameActor(transform), mVelocity(Vector2::zero) {};
 
     // Inherited via GameActor
     void Start() override;
     void Update() override;
     void Render(const GameRenderer* renderer) override;
-
-    void OnInputMove(float side);
 };
 

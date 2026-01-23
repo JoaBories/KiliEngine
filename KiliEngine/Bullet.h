@@ -12,8 +12,8 @@ private:
     float mSpeed = 1.0f;
 
 public:
-    Bullet(Scene* scene, Transform2D transform, Vector2 direction) :
-        GameActor(scene, transform), mDirection(direction) {};
+    Bullet(Transform2D transform, Vector2 direction) :
+        GameActor(transform), mDirection(direction) {};
 
     // Inherited via GameActor
     void Start() override;

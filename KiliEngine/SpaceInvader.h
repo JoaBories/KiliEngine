@@ -27,81 +27,38 @@ public :
 
     SpaceInvader() : Scene("Game")
     {
-        pPlayer = new Player(this, Transform2D(Vector2(400, 700)));
+        pPlayer = new Player(Transform2D(Vector2(400, 700)));
         pPlayer->AddComponent(new BoxCollider2D(pPlayer, 10, Rectangle{ Vector2::zero, Vector2(50,50) }));
 
         for (size_t i = 0; i < 6; i++)
         {
-            Alien* alien = new Alien(this, Transform2D(Vector2(100, (i+1)*100)));
+            Alien* alien = new Alien(Transform2D(Vector2(100, (i+1)*100)));
             alien->AddComponent(new BoxCollider2D(alien, 10, Rectangle{ Vector2::zero, Vector2(50,50) }));
             pAliens.push_back(alien);
-            mActors.push_back(alien);
+            AddActor(alien);
         }
 
-        mActors.push_back(pPlayer);
+        AddActor(pPlayer);
     }
 
-    // Inherited via Scene
-    inline void SetRenderer(GameRenderer* pRenderer) override {   
-        mRenderer = pRenderer;
+    void OnStart() override {
     };
 
-    inline void Start() override {
-        for (const auto& actor : mActors)
-        {
-            actor->Start();
-        }
+    void OnUpdate() override {
     };
 
-    inline void Update() override {
-        for (const auto& actor : mActors)
-        {
-            actor->Update();
-        }
+    void OnRender() override {
     };
 
-    inline void Render() override {
-        for (const auto& actor : mActors)
-        {
-            actor->Render(mRenderer);
-        }
-    };
-
-    inline void OnInput(SDL_Event input) override {
-
-        if (input.key.type == SDL_KEYUP)
-        {
-            return;
-        }
-
-        switch (input.key.keysym.sym)
-        {
-        case SDLK_RIGHT:
-            pPlayer->OnInputMove(1.0f);
-            break;
-        case SDLK_LEFT:
-            pPlayer->OnInputMove(-1.0f);
-            break;
-
-        case SDLK_SPACE:
-            SpawnBullet(pPlayer->GetTransform().position, true);
-            break;
-
-        default:
-            break;
-        }
-        
-    };
-
-    inline void Close() override {
+    void Scene::OnClose() override {
     };
 
 };
 
 void SpaceInvader::SpawnBullet(Vector2 pos, bool player)
 {
-    Bullet* bullet = new Bullet(this, Transform2D(pos), player ? Vector2::down : Vector2::up);
-    bullet->AddComponent(new BoxCollider2D(bullet, 50, { Vector2::zero, Vector2(10,50), 0 }));
+    Bullet* bullet = new Bullet(Transform2D(pos), player ? Vector2::down : Vector2::up);
+    bullet->AddComponent(new BoxCollider2D(bullet, 50, { Vector2::zero, Vector2(5,20), 0 }));
     
     if (player)
     {
@@ -112,5 +69,5 @@ void SpaceInvader::SpawnBullet(Vector2 pos, bool player)
         pAlienBullets.push_back(bullet);
     }
 
-    mActors.push_back(bullet);
+    AddActor(bullet);
 }

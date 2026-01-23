@@ -3,6 +3,8 @@
 #include "GameRenderer.h"
 #include "Utils.h"
 #include "Time.h"
+#include "Inputs.h"
+#include "Bullet.h"
 
 void Player::Start()
 {
@@ -16,6 +18,19 @@ void Player::Update()
 		component->Update();
 	}
 
+
+	int side = 0;
+
+	if (Inputs::IsKeyPressed(SDLK_RIGHT)) side = 1;
+	else if (Inputs::IsKeyPressed(SDLK_LEFT)) side = -1;
+
+	mVelocity += Vector2::right * mAcceleration * side * Time::deltaTime * 1000.0f;
+
+	if (Inputs::IsKeyPressed(SDLK_SPACE))
+	{
+		mScene->AddActor(new Bullet(mTransform.position, Vector2::down));
+	}
+	
 	mTransform.position += mVelocity * Time::deltaTime;
 
 	if (mTransform.position.x < 50.0f)
@@ -39,10 +54,5 @@ void Player::Update()
 
 void Player::Render(const GameRenderer* renderer)
 {
-	mScene->GetRenderer()->DrawRect(Rectangle{ mTransform.position, Vector2(50, 50) * mTransform.scale, 0.0f });
-}
-
-void Player::OnInputMove(float side)
-{
-	mVelocity += Vector2::right * mAcceleration * side * Time::deltaTime * 1000.0f;
+	renderer->DrawRect(Rectangle{ mTransform.position, Vector2(50, 50) * mTransform.scale, 0.0f });
 }

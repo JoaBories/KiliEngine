@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Log.h"
 #include "Time.h"
+#include "Inputs.h"
 
 GameEngine::GameEngine(std::string pTitle, std::vector<Scene*> pScenes) :
 	mIsRunning(true), mTitle(pTitle), 
@@ -32,9 +33,8 @@ void GameEngine::Init()
 			{
 				mScenes[0]->SetRenderer(mRenderer);
 				mScenes[0]->Start();
-			}
-
-			Loop();
+				Loop();
+			}			
 		}
 	}
 }
@@ -83,7 +83,7 @@ void GameEngine::CheckForInputs()
 				mIsRunning = false;
 				break;
 			default:
-				mScenes[mCurrentScene]->OnInput(event);
+				Inputs::InputUpdate(event);
 				break;
 			}
 		}

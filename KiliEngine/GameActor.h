@@ -15,25 +15,29 @@ enum ActorState
 	Dead
 };
 
+enum ActorTags
+{
+	ActorDefault,
+	ActorAlien,
+	ActorPlayer,
+	ActorBullet
+};
+
 class GameActor
 {
 protected:
 	Scene* mScene;
 	ActorState mActiveState;
 	Transform2D mTransform;
+	ActorTags mTag;
+	
 
 	std::vector<ActorComponent*> mComponents;
 
 public:
 
-	GameActor(Scene* scene, Transform2D transform) :
-		mScene(scene), mActiveState(Active),
-		mTransform(transform),
-		mComponents()
-	{
-	};
-
-	virtual ~GameActor();
+	GameActor(Transform2D transform, ActorTags tag = ActorDefault);
+	~GameActor();
 
 	GameActor(const GameActor&) = delete;
 	GameActor& operator=(const GameActor&) = delete;
@@ -48,6 +52,12 @@ public:
 	void SetActive(bool newActive)		{ mActiveState = newActive ? Active : Paused; };
 	bool GetActive() const				{ return mActiveState == Active; };
 	ActorState GetState() const			{ return mActiveState; };
+
+	ActorTags GetTag() const			{ return mTag; };
+
+	void SetScene(Scene* scene) {
+		mScene = scene;
+	};
 
 	void RemoveComponent(ActorComponent* comp) ;
 

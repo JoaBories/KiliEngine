@@ -6,7 +6,7 @@ class Alien :
 	public GameActor
 {
 public :
-	Alien(Scene* scene, Transform2D transform) : GameActor(scene, transform) {};
+	Alien(Transform2D transform) : GameActor(transform) {};
 
 	// Inherited via GameActor
 	void Start() override;
