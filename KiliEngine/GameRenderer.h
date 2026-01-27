@@ -9,6 +9,7 @@
 #include "Struct.h"
 using Struct::Rectangle;
 using Struct::Color;
+using Struct::Transform2D;
 
 class SpriteComponent;
 
@@ -39,7 +40,7 @@ public:
 	SDL_Renderer* GetSdlRenderer() const { return mSdlRenderer; };
 
 	void DrawSprites();
-	void DrawSprite(const GameActor& owner, const Texture& text, Rectangle size, Vector2 pivot, Flip flip) const;
+	void DrawSprite(const GameActor& owner, const Texture& text, Transform2D pSpriteTransform, Rectangle size, Vector2 pivot, Flip flip) const;
 	void AddSprite(SpriteComponent* pSprite);
 	void RemoveSprite(SpriteComponent* pSprite);
 

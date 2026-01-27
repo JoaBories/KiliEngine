@@ -33,6 +33,8 @@ void GameEngine::Init()
 			{
 				mScenes[0]->SetRenderer(mRenderer);
 				mScenes[0]->Start();
+				mScenes[0]->AssetLoad();
+
 				Loop();
 			}			
 		}
@@ -60,6 +62,7 @@ void GameEngine::Render()
 {
 	mRenderer->BeginDraw();
 
+	mRenderer->DrawSprites();
 	mScenes[mCurrentScene]->Render();
 
 	mRenderer->EndDraw();
@@ -93,6 +96,8 @@ void GameEngine::CheckForInputs()
 void GameEngine::Close() 
 {
 	Log::Info("Close Game");
+
+	mScenes[mCurrentScene]->Close();
 
 	mWindow->Close();
 	delete mWindow;

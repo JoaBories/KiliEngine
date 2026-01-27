@@ -67,14 +67,14 @@ void GameRenderer::DrawSprites()
 	}
 }
 
-void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, Flip flip) const
+void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle pSourceRect, Vector2 pOrigin, Flip flip) const
 {
 	SDL_Rect destinationRect;
 	Transform2D transform = pActor.GetTransform();
-	destinationRect.w = static_cast<int>(pTex.GetWidth() * transform.scale.x);
-	destinationRect.h = static_cast<int>(pTex.GetHeight() * transform.scale.y);
-	destinationRect.x = static_cast<int>(transform.position.x - pOrigin.x);
-	destinationRect.y = static_cast<int>(transform.position.y - pOrigin.y);
+	destinationRect.w = static_cast<int>(pTex.GetWidth() * transform.scale.x * pSpriteTransform.scale.x);
+	destinationRect.h = static_cast<int>(pTex.GetHeight() * transform.scale.y * pSpriteTransform.scale.y);
+	destinationRect.x = static_cast<int>(transform.position.x + pSpriteTransform.position.x - pOrigin.x * pSpriteTransform.scale.x);
+	destinationRect.y = static_cast<int>(transform.position.y + pSpriteTransform.position.y - pOrigin.y * pSpriteTransform.scale.y);
 
 	SDL_Rect* sourceSDL = nullptr;
 	if (pSourceRect != Rectangle::Null)
@@ -86,7 +86,7 @@ void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Rect
 		pTex.GetTexture(),
 		sourceSDL,
 		&destinationRect,
-		-transform.rotation,
+		-(transform.rotation + pSpriteTransform.rotation),
 		nullptr,
 		SDL_FLIP_NONE);
 
@@ -95,9 +95,19 @@ void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Rect
 
 void GameRenderer::AddSprite(SpriteComponent* pSprite)
 {
+	int spriteDrawOrder = pSprite->GetDrawOrder();
+	std::vector<SpriteComponent*>::iterator sc;
+	for (sc = mSpriteComponents.begin(); sc != mSpriteComponents.end(); ++sc)
+	{
+		if (spriteDrawOrder < (*sc)->GetDrawOrder()) break;
+	}
+	mSpriteComponents.insert(sc, pSprite);
 }
 
 void GameRenderer::RemoveSprite(SpriteComponent* pSprite)
 {
+	std::vector<SpriteComponent*>::iterator sc;
+	sc = std::find(mSpriteComponents.begin(), mSpriteComponents.end(), pSprite);
+	mSpriteComponents.erase(sc);
 }
 

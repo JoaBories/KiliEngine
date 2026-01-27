@@ -10,6 +10,7 @@ using Struct::Rectangle;
 #include "SDL_keycode.h"
 #include "GameRenderer.h"
 #include "Bullet.h"
+#include "AssetManager.h"
 
 class SpaceInvader :
     public Scene
@@ -40,6 +41,7 @@ public :
     };
 
     void AssetLoad() override {
+        AssetManager::LoadTexture(*mRenderer, "Resources/pokeball.png", "ball");
     };
 
 };

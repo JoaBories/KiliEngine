@@ -2,17 +2,23 @@
 
 #include "ActorComponent.h"
 #include "Texture.h"
+#include "Struct.h"
+
+using Struct::Transform2D;
+using Struct::Vector2;
 
 class SpriteComponent : public ActorComponent
 {
 protected:
+	Transform2D mTransform;
 	Texture mTexture;
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;
 
+
 public:
-	SpriteComponent(GameActor* pOwner, Texture& pTexture, int pDrawOrder = 100);
+	SpriteComponent(GameActor* pOwner, Texture& pTexture, Transform2D pTransform = Transform2D{Vector2::zero, Vector2::one, 0}, int pDrawOrder = 100);
 	virtual ~SpriteComponent();
 
 	SpriteComponent() = delete;
@@ -26,5 +32,8 @@ public:
 	int GetDrawOrder() const { return mDrawOrder; }
 	int GetTexWidth() const { return mTexWidth; }
 	int GetTexHeight() const { return mTexHeight; }
+
+	// Inherited via ActorComponent
+	void Update() override;
 };
 

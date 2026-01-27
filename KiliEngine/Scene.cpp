@@ -48,6 +48,7 @@ void Scene::RenderAllActors()
 void Scene::AddActor(GameActor* actor)
 {
     actor->SetScene(this);
+    actor->Start();
 
     if (mIsUpdatingActors)
     {
@@ -118,6 +119,7 @@ void Scene::Start()
 void Scene::Close()
 {
     OnClose();
+    Unload();
 }
 
 GameActor* Scene::GetActorByTag(ActorTags tag) const
