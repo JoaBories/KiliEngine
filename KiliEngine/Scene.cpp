@@ -31,20 +31,6 @@ void Scene::UpdateAllActors()
     mIsUpdatingActors = false;
 }
 
-void Scene::Render() 
-{
-    RenderAllActors();
-    OnRender();
-}
-
-void Scene::RenderAllActors()
-{
-    for (const auto& actor : mActors)
-    {
-        actor->Render(mRenderer);
-    }
-}
-
 void Scene::AddActor(GameActor* actor)
 {
     actor->SetScene(this);

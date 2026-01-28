@@ -1,7 +1,6 @@
 #pragma once
 #include "Scene.h"
 #include "Struct.h"
-using Struct::Rectangle;
 #include <vector>
 #include "Player.h"
 #include "Alien.h"
@@ -11,6 +10,7 @@ using Struct::Rectangle;
 #include "GameRenderer.h"
 #include "Bullet.h"
 #include "AssetManager.h"
+using Struct::Rectangle;
 
 class SpaceInvader :
     public Scene
@@ -20,21 +20,18 @@ public :
 
     SpaceInvader() : Scene("Game")
     {
+    }
+
+    void OnStart() override {
         for (size_t i = 0; i < 6; i++)
         {
             AddActor(new Alien(Transform2D(Vector2(100, (i + 1) * 100))));
         }
 
         AddActor(new Player(Transform2D(Vector2(400, 700))));
-    }
-
-    void OnStart() override {
     };
 
     void OnUpdate() override {
-    };
-
-    void OnRender() override {
     };
 
     void Scene::OnClose() override {
@@ -42,6 +39,11 @@ public :
 
     void AssetLoad() override {
         AssetManager::LoadTexture(*mRenderer, "Resources/pokeball.png", "ball");
+        for (size_t i = 0; i < 22; i++)
+        {
+            std::string name = "run_" + std::to_string(i);
+            AssetManager::LoadTexture(*mRenderer, "Resources/run/" + name + ".png", name);
+        }
     };
 
 };

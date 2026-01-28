@@ -5,55 +5,64 @@
 #include "Time.h"
 #include "Inputs.h"
 #include "Bullet.h"
-#include "BoxCollider2D.h"
+#include <vector>
+#include "AssetManager.h"
+#include "Log.h"
 
 void Player::Start()
 {
-	AddComponent(new BoxCollider2D(this, 10, Rectangle{ Vector2::zero, Vector2(50,50) }));
+	std::vector<Texture*> anims;
+	for (size_t i = 0; i < 22; i++)
+	{
+		anims.push_back(&AssetManager::GetTexture("run_" + std::to_string(i)));
+	}
+
+	mSprite = new AnimatedSpriteComponent(this, Transform2D::one, anims, 30.0f);
+	AddComponent(mSprite);
+
+	mBoxCollider = new BoxCollider2D(this, 10, Rectangle{ Vector2::zero, Vector2(50,50) });
+	AddComponent(mBoxCollider);
+
+	mMoveComp = new MoveComponent(this, 450.0f, 0.93f, 10);
+	AddComponent(mMoveComp);
 }
 
 void Player::Update()
 {
-	for (const auto& component : mComponents)
+	for (ActorComponent* component : mComponents)
 	{
 		component->Update();
 	}
 
-
 	int side = 0;
 
-	if (Inputs::IsKeyPressed(SDLK_RIGHT)) side = 1;
-	else if (Inputs::IsKeyPressed(SDLK_LEFT)) side = -1;
+	if (Inputs::IsKeyPressed(SDLK_RIGHT)) side = 1000;
+	else if (Inputs::IsKeyPressed(SDLK_LEFT)) side = -1000;
 
-	mVelocity += Vector2::right * mAcceleration * side * Time::deltaTime * 1000.0f;
+	mMoveComp->AddVelocity(mTransform.Right() * mAcceleration * side * Time::deltaTime);
 
 	if (Inputs::IsKeyPressed(SDLK_SPACE))
 	{
 		mScene->AddActor(new Bullet(mTransform.position, Vector2::down));
 	}
-	
-	mTransform.position += mVelocity * Time::deltaTime;
 
 	if (mTransform.position.x < 50.0f)
 	{
 		mTransform.position.x = 50.0f;
-		mVelocity = Vector2::zero;
+		mMoveComp->SetVelocity(Vector2::zero);
 	}
 	else if (mTransform.position.x > 750.0f)
 	{
 		mTransform.position.x = 750.0f;
-		mVelocity = Vector2::zero;
+		mMoveComp->SetVelocity(Vector2::zero);
 	}
 
-	if (!mInput)
+	if (mMoveComp->GetVelocity().x > 0)
 	{
-		mVelocity *= 0.95f;
+		mSprite->SetFlipX(false);
 	}
-	mInput = false;
-
-}
-
-void Player::Render(const GameRenderer* renderer)
-{
-	renderer->DrawRect(Rectangle{ mTransform.position, Vector2(50, 50) * mTransform.scale, 0.0f });
+	else
+	{
+		mSprite->SetFlipX(true);
+	}
 }

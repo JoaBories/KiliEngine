@@ -30,7 +30,6 @@ public :
 	GameRenderer* GetRenderer() const { return mRenderer; };
 
 	void UpdateAllActors();
-	void RenderAllActors();
 	void RemoveActor(GameActor* actor);
 	void AddActor(GameActor* actor);
 	void Killa();
@@ -47,7 +46,6 @@ public :
 	
 	virtual void OnStart() = 0;
 	virtual void OnUpdate() = 0;
-	virtual void OnRender() = 0;
 	virtual void OnClose() = 0;
 
 	GameActor* GetActorByTag(ActorTags tag) const;

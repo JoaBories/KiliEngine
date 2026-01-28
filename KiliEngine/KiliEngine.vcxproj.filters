@@ -37,15 +37,15 @@
     <Filter Include="Header Files\Engine\Assets">
       <UniqueIdentifier>{4bf9fd9a-9984-43d9-8461-9694da2e611e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{3d6eae69-e728-4b28-9933-55f4e70eaa2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{e7fb6503-4231-4ae8-ba57-a86652e93143}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Alien.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameEngine.cpp">
@@ -69,9 +69,6 @@
     <ClCompile Include="Struct.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -90,17 +87,23 @@
     <ClCompile Include="SpriteComponent.cpp">
       <Filter>Source Files\Engine\Components</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedSpriteComponent.cpp">
+      <Filter>Source Files\Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Alien.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveComponent.cpp">
+      <Filter>Source Files\Engine\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SpaceInvader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Alien.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ActorComponent.h">
       <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
@@ -134,9 +137,6 @@
     <ClInclude Include="ColliderComponent.h">
       <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AssetManager.h">
       <Filter>Header Files\Engine\Assets</Filter>
     </ClInclude>
@@ -151,6 +151,24 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Engine\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedSpriteComponent.h">
+      <Filter>Header Files\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Alien.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceInvader.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveComponent.h">
+      <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -67,7 +67,7 @@ void GameRenderer::DrawSprites()
 	}
 }
 
-void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle pSourceRect, Vector2 pOrigin, Flip flip) const
+void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
 {
 	SDL_Rect destinationRect;
 	Transform2D transform = pActor.GetTransform();
@@ -88,7 +88,7 @@ void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Tran
 		&destinationRect,
 		-(transform.rotation + pSpriteTransform.rotation),
 		nullptr,
-		SDL_FLIP_NONE);
+		flip);
 
 	delete sourceSDL;
 }

@@ -12,7 +12,3 @@ void Alien::Start()
 void Alien::Update()
 {
 }
-
-void Alien::Render(const GameRenderer* renderer)
-{
-}

@@ -1,13 +1,15 @@
 #include "SpriteComponent.h"
 #include "GameActor.h"
 #include "Scene.h"
+#include "Log.h"
+#include "SDL_image.h"
 
 using Struct::Transform2D;
 
-SpriteComponent::SpriteComponent(GameActor* pOwner, Texture& pTexture, Transform2D pTransform, int pDrawOrder) :
+SpriteComponent::SpriteComponent(GameActor* pOwner, Transform2D pTransform, Texture& pTexture, int pDrawOrder) :
 	ActorComponent(pOwner),
 	mTexture(pTexture), mDrawOrder(pDrawOrder),
-	mTransform(pTransform)
+	mTransform(pTransform), mFlipX(false)
 {
 	mTexture.UpdateInfo(mTexWidth, mTexHeight);
 	mOwner->GetScene()->GetRenderer()->AddSprite(this);
@@ -27,7 +29,7 @@ void SpriteComponent::SetTexture(const Texture& pTexture)
 void SpriteComponent::Draw(GameRenderer& pRenderer)
 {
 	Vector2 origin{ mTexWidth / 2.0f, mTexHeight / 2.0f };
-	pRenderer.DrawSprite(*mOwner, mTexture, mTransform, Rectangle(), origin, Flip::None);
+	pRenderer.DrawSprite(*mOwner, mTexture, mTransform, Rectangle(), origin, (mFlipX) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
 
 void SpriteComponent::Update()

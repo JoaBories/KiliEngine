@@ -13,13 +13,6 @@ using Struct::Transform2D;
 
 class SpriteComponent;
 
-enum class Flip
-{
-	None = SDL_FLIP_NONE,
-	Horizontal = SDL_FLIP_HORIZONTAL,
-	Vertical = SDL_FLIP_VERTICAL
-};
-
 class GameRenderer
 {
 private:
@@ -40,8 +33,7 @@ public:
 	SDL_Renderer* GetSdlRenderer() const { return mSdlRenderer; };
 
 	void DrawSprites();
-	void DrawSprite(const GameActor& owner, const Texture& text, Transform2D pSpriteTransform, Rectangle size, Vector2 pivot, Flip flip) const;
+	void DrawSprite(const GameActor& owner, const Texture& text, Transform2D pSpriteTransform, Rectangle size, Vector2 pivot, SDL_RendererFlip flip) const;
 	void AddSprite(SpriteComponent* pSprite);
 	void RemoveSprite(SpriteComponent* pSprite);
-
 };

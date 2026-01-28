@@ -63,7 +63,6 @@ void GameEngine::Render()
 	mRenderer->BeginDraw();
 
 	mRenderer->DrawSprites();
-	mScenes[mCurrentScene]->Render();
 
 	mRenderer->EndDraw();
 }

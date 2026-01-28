@@ -18,6 +18,5 @@ public:
     // Inherited via GameActor
     void Start() override;
     void Update() override;
-    void Render(const GameRenderer* renderer) override;
 };
 

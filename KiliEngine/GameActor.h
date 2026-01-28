@@ -36,7 +36,7 @@ protected:
 
 public:
 
-	GameActor(Transform2D transform, ActorTags tag = ActorDefault);
+	GameActor(Transform2D pTransform, ActorTags pTag = ActorDefault);
 	~GameActor();
 
 	GameActor(const GameActor&) = delete;
@@ -44,20 +44,23 @@ public:
 
 	virtual void Start() = 0;
 	virtual void Update() = 0;
-	virtual void Render(const GameRenderer* renderer) = 0;
 	
-	Transform2D GetTransform() const	{ return mTransform; };
+	Transform2D GetTransform() const			{ return mTransform; };
+	void SetTransform(Transform2D pTransform)	{ mTransform = pTransform; };
+	void SetPosition(Vector2 pPosition)			{ mTransform.position = pPosition; };
+	void SetScale(Vector2 pScale)				{ mTransform.scale = pScale; };
+	void SetRotation(float pRotation)			{ mTransform.rotation = pRotation; };
 
-	void Destroy()						{ mActiveState = ActorState::Dead; };
-	void SetActive(bool newActive)		{ mActiveState = newActive ? Active : Paused; };
-	bool GetActive() const				{ return mActiveState == Active; };
-	ActorState GetState() const			{ return mActiveState; };
+	void Destroy()								{ mActiveState = ActorState::Dead; };
+	void SetActive(bool pNewActive)				{ mActiveState = pNewActive ? Active : Paused; };
+	bool GetActive() const						{ return mActiveState == Active; };
+	ActorState GetState() const					{ return mActiveState; };
 
-	ActorTags GetTag() const			{ return mTag; };
-	Scene* GetScene() const				{ return mScene; };
+	ActorTags GetTag() const					{ return mTag; };
+	Scene* GetScene() const						{ return mScene; };
 
-	void SetScene(Scene* scene) {
-		mScene = scene;
+	void SetScene(Scene* pScene) {
+		mScene = pScene;
 	};
 
 	void RemoveComponent(ActorComponent* comp) ;

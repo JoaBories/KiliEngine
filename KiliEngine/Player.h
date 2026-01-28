@@ -3,6 +3,10 @@
 #include "GameRenderer.h"
 #include "Scene.h"
 
+#include "AnimatedSpriteComponent.h"
+#include "BoxCollider2D.h"
+#include "MoveComponent.h"
+
 #include "Struct.h"
 using Struct::Vector2;
 
@@ -11,18 +15,20 @@ class Player :
 {
 
 private:
-    Vector2 mVelocity;
     float mAcceleration = 30.0f;
-    bool mInput = false;
+
+    AnimatedSpriteComponent* mSprite;
+    BoxCollider2D* mBoxCollider;
+    MoveComponent* mMoveComp;
 
 public:
 
     Player(Transform2D transform) : 
-        GameActor(transform), mVelocity(Vector2::zero) {};
+        GameActor(transform)
+    {};
 
     // Inherited via GameActor
     void Start() override;
     void Update() override;
-    void Render(const GameRenderer* renderer) override;
 };
 

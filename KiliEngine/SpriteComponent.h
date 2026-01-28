@@ -15,10 +15,10 @@ protected:
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;
-
+	bool mFlipX;
 
 public:
-	SpriteComponent(GameActor* pOwner, Texture& pTexture, Transform2D pTransform = Transform2D{Vector2::zero, Vector2::one, 0}, int pDrawOrder = 100);
+	SpriteComponent(GameActor* pOwner, Transform2D pTransform, Texture& pTexture, int pDrawOrder = 100);
 	virtual ~SpriteComponent();
 
 	SpriteComponent() = delete;
@@ -27,6 +27,8 @@ public:
 
 	virtual void SetTexture(const Texture& pTexture);
 	virtual void Draw(GameRenderer& pRenderer);
+
+	void SetFlipX(bool pFlipx) { mFlipX = pFlipx; };
 
 	//Getters
 	int GetDrawOrder() const { return mDrawOrder; }

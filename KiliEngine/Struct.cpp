@@ -26,9 +26,9 @@ float Struct::OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vec
 	return Min(aMax, bMax) - Max(aMin, bMin);
 }
 
-Vector2 Struct::Vect2FromRot(float rot)
+Vector2 Struct::Vector2FromRot(float rot)
 {
-	Vector2 vector = { cosf(rot * DEG2RAD), sinf(rot * DEG2RAD) };
+	Vector2 vector = { sinf(rot * DEG2RAD), -cosf(rot * DEG2RAD) };
 	return vector.normalized();
 }
 
@@ -84,23 +84,34 @@ Vector2 Vector2::normalized() const
 	return { x / l, y / l };
 }
 
-Vector2 Vector2::clamp(float min, float max) const
+void Struct::Vector2::normalize()
+{
+	if (*this == Vector2::zero)
+	{
+		x = 0.0f;
+		y = 0.0f;
+	}
+
+	float l = length();
+	x = x / l;
+	y = y / l;
+}
+
+void Vector2::clamp(float min, float max)
 {
 	float sqrL = sqrLength();
 
 	if (sqrL < min * min)
 	{
-		return normalized() * min;
+		normalize();
+		*this *= min;
 	}
 	else
 	{
 		if (sqrL > max * max)
 		{
-			return normalized() * max;
-		}
-		else
-		{
-			return *this;
+			normalize();
+			*this *= max;
 		}
 	}
 }
@@ -209,6 +220,22 @@ Vector2 Rectangle::CheckOBB(const Rectangle& other) const
 
 #pragma endregion
 
+#pragma region Transform
+
+Vector2 Struct::Transform2D::Up() const
+{
+	return Vector2FromRot(rotation);
+}
+
+Vector2 Struct::Transform2D::Right() const
+{
+	return Up().PerpendicularCCW();
+}
+
+const Transform2D Transform2D::one = { Vector2::zero, Vector2::one, 0 };
+
+#pragma endregion
+
 #pragma region Color
 
 const Color Color::WHITE = { 255,255,255,255 };
@@ -217,4 +244,5 @@ const Color Color::BLACK = { 0,0,0,255 };
 #pragma endregion
 
 #pragma endregion
+
 

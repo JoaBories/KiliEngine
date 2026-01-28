@@ -80,7 +80,8 @@ namespace Struct {
 		float length() const;
 
 		Vector2 normalized() const;
-		Vector2 clamp(float min, float max) const;
+		void normalize();
+		void clamp(float min, float max);
 
 		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y); };
 	};
@@ -95,6 +96,11 @@ namespace Struct {
 			position(pos), scale(pScale), rotation(rot)
 		{
 		};
+
+		Vector2 Up() const;
+		Vector2 Right() const;
+
+		static const Transform2D one;
 	};
 
 	//Oriented Rectangle struct with Collision | origin is the center
@@ -134,6 +140,5 @@ namespace Struct {
 
 	inline Vector2 Vect2FLerp(Vector2 a, Vector2 b, float t);
 
-	Vector2 Vect2FromRot(float rot);
-
+	Vector2 Vector2FromRot(float rot);
 }

@@ -8,15 +8,10 @@
 
 void Bullet::Start()
 {
-	AddComponent(new SpriteComponent(this, AssetManager::GetTexture("ball"), Transform2D{Vector2::zero, Vector2(0.1f, 0.1f)}, 10));
+	AddComponent(new SpriteComponent(this, Transform2D{ Vector2::zero, Vector2(0.1f, 0.1f) }, AssetManager::GetTexture("ball"), 10));
 }
 
 void Bullet::Update()
 {
 	mTransform.position += mDirection * mSpeed * Time::deltaTime * 1000.0f;
-}
-
-void Bullet::Render(const GameRenderer* renderer)
-{
-	renderer->DrawRect(Rectangle{ mTransform.position, Vector2(5, 20) * mTransform.scale, 0.0f }, {255,255,0,255});
 }
