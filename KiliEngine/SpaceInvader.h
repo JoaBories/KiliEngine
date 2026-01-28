@@ -1,15 +1,10 @@
 #pragma once
 #include "Scene.h"
 #include "Struct.h"
-#include <vector>
 #include "Player.h"
-#include "Alien.h"
-#include "BoxCollider2D.h"
-#include "SDL_events.h"
-#include "SDL_keycode.h"
 #include "GameRenderer.h"
-#include "Bullet.h"
 #include "AssetManager.h"
+
 using Struct::Rectangle;
 
 class SpaceInvader :
@@ -23,11 +18,6 @@ public :
     }
 
     void OnStart() override {
-        for (size_t i = 0; i < 6; i++)
-        {
-            AddActor(new Alien(Transform2D(Vector2(100, (i + 1) * 100))));
-        }
-
         AddActor(new Player(Transform2D(Vector2(400, 700))));
     };
 

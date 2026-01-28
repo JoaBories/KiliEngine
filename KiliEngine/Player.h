@@ -5,7 +5,7 @@
 
 #include "AnimatedSpriteComponent.h"
 #include "BoxCollider2D.h"
-#include "MoveComponent.h"
+#include "PlayerComponent.h"
 
 #include "Struct.h"
 using Struct::Vector2;
@@ -15,16 +15,15 @@ class Player :
 {
 
 private:
-    float mAcceleration = 30.0f;
-
     AnimatedSpriteComponent* mSprite;
     BoxCollider2D* mBoxCollider;
-    MoveComponent* mMoveComp;
+    PlayerComponent* mPlayerComp;
 
 public:
 
     Player(Transform2D transform) : 
-        GameActor(transform)
+        GameActor(transform),
+        mSprite(nullptr), mBoxCollider(nullptr), mPlayerComp(nullptr)
     {};
 
     // Inherited via GameActor
