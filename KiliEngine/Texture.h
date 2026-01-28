@@ -3,7 +3,7 @@
 #include "SDL.h"
 #include <string>
 
-class GameRenderer;
+class SdlRenderer;
 
 class Texture
 {
@@ -18,7 +18,7 @@ public:
 	Texture();
 	~Texture();
 
-	bool Load(GameRenderer&, const std::string& filename);
+	bool Load(SdlRenderer&, const std::string& filename);
 	bool Unload();
 	void UpdateInfo(int& wOut, int& hOut);
 

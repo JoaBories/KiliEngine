@@ -10,7 +10,7 @@ private:
 	bool mIsRunning;
 	std::string mTitle;
 	Window* mWindow;
-	GameRenderer* mRenderer;
+	SdlRenderer* mRenderer;
 	std::vector<Scene*> mScenes;
 	int mCurrentScene;
 

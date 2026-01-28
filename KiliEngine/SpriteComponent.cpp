@@ -26,7 +26,7 @@ void SpriteComponent::SetTexture(const Texture& pTexture)
 	mTexture.UpdateInfo(mTexWidth, mTexHeight);
 }
 
-void SpriteComponent::Draw(GameRenderer& pRenderer)
+void SpriteComponent::Draw(SdlRenderer& pRenderer)
 {
 	Vector2 origin{ mTexWidth / 2.0f, mTexHeight / 2.0f };
 	pRenderer.DrawSprite(*mOwner, mTexture, mTransform, Rectangle(), origin, (mFlipX) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);

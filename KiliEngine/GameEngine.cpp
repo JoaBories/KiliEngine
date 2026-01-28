@@ -23,7 +23,7 @@ GameEngine::GameEngine(std::string pTitle, std::vector<Scene*> pScenes) :
 void GameEngine::Init()
 {
 	mWindow = new Window(800, 800);
-	mRenderer = new GameRenderer();
+	mRenderer = new SdlRenderer();
 
 	if (mWindow->Open()) 
 	{

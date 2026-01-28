@@ -139,8 +139,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -154,16 +152,15 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="Inputs.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MathUtils.h" />
     <ClInclude Include="MoveComponent.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerComponent.h" />
-    <ClInclude Include="SpaceInvader.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />

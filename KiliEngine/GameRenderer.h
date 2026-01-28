@@ -1,39 +1,41 @@
 #pragma once
 
-#include "Window.h"
+#include "IRenderer.h"
+
 #include "SDL_render.h"
 #include "SDL_image.h"
-#include "Texture.h"
 #include "GameActor.h"
 
-#include "Struct.h"
-using Struct::Rectangle;
-using Struct::Color;
-using Struct::Transform2D;
-
+class GameActor;
 class SpriteComponent;
 
-class GameRenderer
+class SdlRenderer : public IRenderer
 {
 private:
 	SDL_Renderer* mSdlRenderer;
 	std::vector<SpriteComponent*> mSpriteComponents;
 
 public:
-	GameRenderer() : mSdlRenderer(nullptr) {};
-	GameRenderer(const GameRenderer&) = delete;
-	GameRenderer& operator= (const GameRenderer&) = delete;
+	SdlRenderer() : mSdlRenderer(nullptr) {};
 
-	bool Initialize(Window& rWindow);
-	void BeginDraw();
-	void EndDraw();
-	void Close();
+	SdlRenderer(const SdlRenderer&) = delete;
+	SdlRenderer& operator= (const SdlRenderer&) = delete;
+
+	bool Initialize(Window& rWindow) override;
+	void Close() override;
+	void BeginDraw() override;
+	void EndDraw() override;
+	void Draw() override;
+	void DrawSprites() override;
+	void RendererType GetType() override
 
 	void DrawRect(const Rectangle& rRect, Color color = Color::WHITE) const;
 	SDL_Renderer* GetSdlRenderer() const { return mSdlRenderer; };
 
-	void DrawSprites();
 	void DrawSprite(const GameActor& owner, const Texture& text, Transform2D pSpriteTransform, Rectangle size, Vector2 pivot, SDL_RendererFlip flip) const;
 	void AddSprite(SpriteComponent* pSprite);
 	void RemoveSprite(SpriteComponent* pSprite);
+
+	// Inherited via IRenderer
+	RendererType GetType() override;
 };

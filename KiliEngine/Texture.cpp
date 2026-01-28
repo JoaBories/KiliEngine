@@ -13,7 +13,7 @@ Texture::~Texture()
 {
 }
 
-bool Texture::Load(GameRenderer& renderer, const std::string& filename)
+bool Texture::Load(SdlRenderer& renderer, const std::string& filename)
 {
 	mFileName = filename;
 	SDL_Surface* surface = IMG_Load(mFileName.c_str());

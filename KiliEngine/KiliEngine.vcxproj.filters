@@ -43,6 +43,9 @@
     <Filter Include="Header Files\Game">
       <UniqueIdentifier>{e7fb6503-4231-4ae8-ba57-a86652e93143}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine\Renderer">
+      <UniqueIdentifier>{1a6091b7-aa0f-4a3a-acf5-9c8272055aef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,9 +72,6 @@
     <ClCompile Include="Struct.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Inputs.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -90,14 +90,11 @@
     <ClCompile Include="AnimatedSpriteComponent.cpp">
       <Filter>Source Files\Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="MoveComponent.cpp">
       <Filter>Source Files\Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerComponent.cpp">
-      <Filter>Source Files\Game</Filter>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +114,6 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
@@ -152,17 +146,17 @@
     <ClInclude Include="AnimatedSpriteComponent.h">
       <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceInvader.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="MoveComponent.h">
       <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerComponent.h">
+    <ClInclude Include="DefaultScene.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderer.h">
+      <Filter>Header Files\Engine\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

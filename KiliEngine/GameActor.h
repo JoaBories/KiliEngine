@@ -30,8 +30,6 @@ protected:
 	ActorState mActiveState;
 	Transform2D mTransform;
 	ActorTags mTag;
-	
-
 	std::vector<ActorComponent*> mComponents;
 
 public:

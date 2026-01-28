@@ -9,7 +9,7 @@
 
 using namespace MathUtils;
 
-bool GameRenderer::Initialize(Window& rWindow)
+bool SdlRenderer::Initialize(Window& rWindow)
 {
 	mSdlRenderer = SDL_CreateRenderer(rWindow.GetSdlWindow(), -1,
 		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -36,30 +36,30 @@ bool GameRenderer::Initialize(Window& rWindow)
 	return true;
 }
 
-void GameRenderer::BeginDraw()
+void SdlRenderer::BeginDraw()
 {
 	SDL_SetRenderDrawColor(mSdlRenderer, 120, 120, 255, 255);
 	SDL_RenderClear(mSdlRenderer);
 }
 
-void GameRenderer::EndDraw()
+void SdlRenderer::EndDraw()
 {
 	SDL_RenderPresent(mSdlRenderer);
 }
 
-void GameRenderer::Close()
+void SdlRenderer::Close()
 {
 	SDL_DestroyRenderer(mSdlRenderer);
 }
 
-void GameRenderer::DrawRect(const Rectangle& rRect, Color color) const
+void SdlRenderer::DrawRect(const Rectangle& rRect, Color color) const
 {
 	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
 	SDL_Rect sdlRect = rRect.toSdlRect();
 	SDL_RenderFillRect(mSdlRenderer, &sdlRect);
 }
 
-void GameRenderer::DrawSprites()
+void SdlRenderer::DrawSprites()
 {
 	for (SpriteComponent* sc : mSpriteComponents)
 	{
@@ -67,7 +67,7 @@ void GameRenderer::DrawSprites()
 	}
 }
 
-void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
+void SdlRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
 {
 	SDL_Rect destinationRect;
 	Transform2D transform = pActor.GetTransform();
@@ -93,7 +93,7 @@ void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Tran
 	delete sourceSDL;
 }
 
-void GameRenderer::AddSprite(SpriteComponent* pSprite)
+void SdlRenderer::AddSprite(SpriteComponent* pSprite)
 {
 	int spriteDrawOrder = pSprite->GetDrawOrder();
 	std::vector<SpriteComponent*>::iterator sc;
@@ -104,7 +104,7 @@ void GameRenderer::AddSprite(SpriteComponent* pSprite)
 	mSpriteComponents.insert(sc, pSprite);
 }
 
-void GameRenderer::RemoveSprite(SpriteComponent* pSprite)
+void SdlRenderer::RemoveSprite(SpriteComponent* pSprite)
 {
 	std::vector<SpriteComponent*>::iterator sc;
 	sc = std::find(mSpriteComponents.begin(), mSpriteComponents.end(), pSprite);

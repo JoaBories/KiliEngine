@@ -8,7 +8,7 @@ class Scene
 {
 protected:
 	std::string mTitle;
-	GameRenderer* mRenderer;
+	SdlRenderer* mRenderer;
 
 	std::vector<GameActor*> mActors;
 	std::vector<GameActor*> mPendingActors;
@@ -27,7 +27,7 @@ public :
 
 	static Scene* ActiveScene;
 
-	GameRenderer* GetRenderer() const { return mRenderer; };
+	SdlRenderer* GetRenderer() const { return mRenderer; };
 
 	void UpdateAllActors();
 	void RemoveActor(GameActor* actor);
@@ -39,7 +39,7 @@ public :
 	void Close();
 	void Start();
 
-	void SetRenderer(GameRenderer* pRenderer);
+	void SetRenderer(SdlRenderer* pRenderer);
 
 	virtual void AssetLoad() = 0;
 	virtual void Unload();
