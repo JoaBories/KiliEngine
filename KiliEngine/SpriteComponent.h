@@ -26,7 +26,7 @@ public:
 	SpriteComponent& operator= (const SpriteComponent&) = delete;
 
 	virtual void SetTexture(const Texture& pTexture);
-	virtual void Draw(SdlRenderer& pRenderer);
+	virtual void Draw(IRenderer* pRenderer);
 
 	void SetFlipX(bool pFlipx) { mFlipX = pFlipx; };
 

@@ -236,13 +236,6 @@ const Transform2D Transform2D::one = { Vector2::zero, Vector2::one, 0 };
 
 #pragma endregion
 
-#pragma region Color
-
-const Color Color::WHITE = { 255,255,255,255 };
-const Color Color::BLACK = { 0,0,0,255 };
-
-#pragma endregion
-
 #pragma endregion
 
 

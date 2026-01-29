@@ -75,7 +75,7 @@ void Scene::RemoveActor(GameActor* actor)
     }
 }
 
-void Scene::SetRenderer(SdlRenderer* pRenderer)
+void Scene::SetRenderer(IRenderer* pRenderer)
 {
     mRenderer = pRenderer;
 }

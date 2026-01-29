@@ -134,7 +134,8 @@
     <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="GameRenderer.cpp" />
+    <ClCompile Include="OpenGlRenderer.cpp" />
+    <ClCompile Include="SdlRenderer.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtils.cpp" />
@@ -155,7 +156,8 @@
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
-    <ClInclude Include="GameRenderer.h" />
+    <ClInclude Include="OpenGlRenderer.h" />
+    <ClInclude Include="SdlRenderer.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Log.h" />

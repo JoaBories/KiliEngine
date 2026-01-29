@@ -1,13 +1,8 @@
 #pragma once
 
-#include "IRenderer.h"
-
 #include "SDL_render.h"
 #include "SDL_image.h"
-#include "GameActor.h"
-
-class GameActor;
-class SpriteComponent;
+#include "IRenderer.h"
 
 class SdlRenderer : public IRenderer
 {
@@ -21,21 +16,19 @@ public:
 	SdlRenderer(const SdlRenderer&) = delete;
 	SdlRenderer& operator= (const SdlRenderer&) = delete;
 
+	// Inherited via IRenderer
 	bool Initialize(Window& rWindow) override;
 	void Close() override;
 	void BeginDraw() override;
 	void EndDraw() override;
 	void Draw() override;
 	void DrawSprites() override;
-	void RendererType GetType() override
+	RendererType GetType() override;
+	void DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override;
 
-	void DrawRect(const Rectangle& rRect, Color color = Color::WHITE) const;
 	SDL_Renderer* GetSdlRenderer() const { return mSdlRenderer; };
 
-	void DrawSprite(const GameActor& owner, const Texture& text, Transform2D pSpriteTransform, Rectangle size, Vector2 pivot, SDL_RendererFlip flip) const;
-	void AddSprite(SpriteComponent* pSprite);
-	void RemoveSprite(SpriteComponent* pSprite);
+	void AddSprite(SpriteComponent* pSprite) override;
+	void RemoveSprite(SpriteComponent* pSprite) override;
 
-	// Inherited via IRenderer
-	RendererType GetType() override;
 };

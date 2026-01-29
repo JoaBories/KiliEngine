@@ -1,10 +1,10 @@
 #pragma once
 
 #include "ActorComponent.h"
-#include "GameRenderer.h"
 
 #include "Struct.h"
 using Struct::Transform2D;
+using Struct::Vector2;
 
 class Scene;
 

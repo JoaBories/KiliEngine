@@ -1,0 +1,112 @@
+#include "SdlRenderer.h"
+#include "Log.h"
+#include "Struct.h"
+#include "SpriteComponent.h"
+#include "MathUtils.h"
+
+using namespace MathUtils;
+
+bool SdlRenderer::Initialize(Window& rWindow)
+{
+	mSdlRenderer = SDL_CreateRenderer(rWindow.GetSdlWindow(), -1,
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+	if (!mSdlRenderer)
+	{
+		Log::Error(LogType::Video, "Failed to create Renderer");
+		return false;
+	}
+	else
+	{
+		Log::Info("Created Renderer Successfully");
+	}
+
+	const int flags = IMG_INIT_PNG;
+	const int initted = IMG_Init(flags);
+	if ((initted & flags) != flags)
+	{
+		std::string ErrorMsg = std::string("Unable to initialize SDL_Image") + IMG_GetError();
+		Log::Error(LogType::Video, "Unable to initialize SDL_Image" + ErrorMsg);
+		return false;
+	}
+
+	return true;
+}
+
+void SdlRenderer::BeginDraw()
+{
+	SDL_SetRenderDrawColor(mSdlRenderer, 120, 120, 255, 255);
+	SDL_RenderClear(mSdlRenderer);
+}
+
+void SdlRenderer::EndDraw()
+{
+	SDL_RenderPresent(mSdlRenderer);
+}
+
+void SdlRenderer::Draw()
+{
+}
+
+void SdlRenderer::Close()
+{
+	SDL_DestroyRenderer(mSdlRenderer);
+}
+
+void SdlRenderer::DrawSprites()
+{
+	for (SpriteComponent* sc : mSpriteComponents)
+	{
+		sc->Draw(this);
+	}
+}
+
+void SdlRenderer::AddSprite(SpriteComponent* pSprite)
+{
+	int spriteDrawOrder = pSprite->GetDrawOrder();
+	std::vector<SpriteComponent*>::iterator sc;
+	for (sc = mSpriteComponents.begin(); sc != mSpriteComponents.end(); ++sc)
+	{
+		if (spriteDrawOrder < (*sc)->GetDrawOrder()) break;
+	}
+	mSpriteComponents.insert(sc, pSprite);
+}
+
+void SdlRenderer::RemoveSprite(SpriteComponent* pSprite)
+{
+	std::vector<SpriteComponent*>::iterator sc;
+	sc = std::find(mSpriteComponents.begin(), mSpriteComponents.end(), pSprite);
+	mSpriteComponents.erase(sc);
+}
+
+void SdlRenderer::DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
+{
+	SDL_Rect destinationRect;
+	Transform2D transform = pActor->GetTransform();
+	destinationRect.w = static_cast<int>(pTex.GetWidth() * transform.scale.x);
+	destinationRect.h = static_cast<int>(pTex.GetHeight() * transform.scale.y);
+	destinationRect.x = static_cast<int>(transform.position.x - pOrigin.x);
+	destinationRect.y = static_cast<int>(transform.position.y - pOrigin.y);
+
+	SDL_Rect* sourceSDL = nullptr;
+	if (pSourceRect != Rectangle::Null)
+	{
+		sourceSDL = new SDL_Rect{ pSourceRect.toSdlRect() };
+	}
+
+	SDL_RenderCopyEx(mSdlRenderer,
+		pTex.GetTexture(),
+		sourceSDL,
+		&destinationRect,
+		-transform.rotation,
+		nullptr,
+		flip);
+
+	delete sourceSDL;
+}
+
+RendererType SdlRenderer::GetType()
+{
+	return SDL;
+}
+

@@ -128,14 +128,6 @@ namespace Struct {
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};
 
-	struct Color
-	{
-		unsigned short r, g, b, a;
-
-		static const Color WHITE;
-		static const Color BLACK;
-	};
-
 	float OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vector2>& b, Vector2 axis);
 
 	inline Vector2 Vect2FLerp(Vector2 a, Vector2 b, float t);
