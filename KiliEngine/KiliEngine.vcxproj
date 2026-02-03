@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="AnimatedSpriteComponent.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="GameActor.h" />
@@ -163,7 +165,7 @@
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerComponent.h" />
-    <ClInclude Include="SpaceInvader.h" />
+    <ClInclude Include="ScenePlatformer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />

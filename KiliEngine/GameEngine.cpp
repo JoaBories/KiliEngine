@@ -32,8 +32,8 @@ void GameEngine::Init()
 			if (!mScenes.empty())
 			{
 				mScenes[0]->SetRenderer(mRenderer);
-				mScenes[0]->Start();
 				mScenes[0]->AssetLoad();
+				mScenes[0]->Start();
 
 				Loop();
 			}			

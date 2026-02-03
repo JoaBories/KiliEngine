@@ -94,11 +94,6 @@ void Scene::Start()
 {
     ActiveScene = this;
 
-    for (const auto& actor : mActors)
-    {
-        actor->Start();
-    }
-
     OnStart();
 }
 

@@ -18,9 +18,8 @@ enum ActorState
 enum ActorTags
 {
 	ActorDefault,
-	ActorAlien,
-	ActorPlayer,
-	ActorBullet
+	ActorBlock,
+	ActorPlayer
 };
 
 class GameActor

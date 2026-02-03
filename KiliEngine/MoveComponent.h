@@ -9,12 +9,9 @@ class MoveComponent : public ActorComponent
 {
 protected:
 	Vector2 mVelocity;
-	float mVelocityDecay;
-	float mMaxVelocity;
-	bool mUpdated;
 
 public:
-	MoveComponent(GameActor* pOwner, float pMaxVelocity, float pVelocityDecay = 1.0f, int pUpdateOrder = 100);
+	MoveComponent(GameActor* pOwner, int pUpdateOrder = 100);
 
 	MoveComponent() = delete;
 	MoveComponent(const MoveComponent&) = delete;

@@ -22,9 +22,10 @@ private:
 public:
 
     Player(Transform2D transform) : 
-        GameActor(transform),
+        GameActor(transform, ActorPlayer),
         mSprite(nullptr), mBoxCollider(nullptr), mPlayerComp(nullptr)
-    {};
+    {
+    };
 
     // Inherited via GameActor
     void Start() override;

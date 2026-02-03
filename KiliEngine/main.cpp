@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <glew.h>
 #include "GameEngine.h"
-#include "SpaceInvader.h"
+#include "ScenePlatformer.h"
 
 using namespace std;
 
@@ -9,7 +9,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	GameEngine* spaceInvader = new GameEngine("KiliEngine", { new SpaceInvader() });
+	GameEngine* spaceInvader = new GameEngine("KiliEngine", { new ScenePlatformer() });
 	spaceInvader->Init();
 
 	return 0;
