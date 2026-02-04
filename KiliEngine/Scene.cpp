@@ -16,7 +16,7 @@ void Scene::Update()
     }
     mPendingActors.clear();
 
-    Killa();
+    KillAllDead();
 }
 
 void Scene::UpdateAllActors()
@@ -47,12 +47,13 @@ void Scene::AddActor(GameActor* actor)
 
 }
 
-void Scene::Killa()
+void Scene::KillAllDead()
 {
     for (GameActor* actor : mActors)
     {
         if (actor->GetState() == Dead)
         {
+            RemoveActor(actor);
             delete actor;
         }
     }
@@ -82,10 +83,11 @@ void Scene::SetRenderer(GameRenderer* pRenderer)
 
 void Scene::Unload()
 {
-    while (!mActors.empty())
+    for (GameActor* i : mActors)
     {
-        delete mActors.back();
+        delete i;
     }
+    mActors.clear();
 
     AssetManager::Clear();
 }

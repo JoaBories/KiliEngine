@@ -32,7 +32,7 @@ public :
 	void UpdateAllActors();
 	void RemoveActor(GameActor* actor);
 	void AddActor(GameActor* actor);
-	void Killa();
+	void KillAllDead();
 
 	void Update();
 	void Render();
@@ -40,6 +40,8 @@ public :
 	void Start();
 
 	void SetRenderer(GameRenderer* pRenderer);
+
+	bool IsUpdatingActors() const { return mIsUpdatingActors; };
 
 	virtual void AssetLoad() = 0;
 	virtual void Unload();

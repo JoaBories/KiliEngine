@@ -4,16 +4,23 @@
 #include "Time.h"
 #include "Log.h"
 #include "MathUtils.h"
+#include "SceneManager.h"
 
 PlayerComponent::PlayerComponent(GameActor* pOwner, int pUpdateOrder) :
 	MoveComponent(pOwner, pUpdateOrder),
 	mIsGrounded(true)
 {
+	mStartPos = mOwner->GetTransform().position;
 }
 
 void PlayerComponent::Update()
 {
 	MoveComponent::Update();
+	
+	if (Inputs::IsKeyPressed(SDLK_r))
+	{
+		SceneManager::ReloadScene();
+	}
 
 	// Movement X
 	int side = 0;
@@ -38,4 +45,8 @@ void PlayerComponent::Update()
 
 	mVelocity.y = MathUtils::Clamp(mVelocity.y, -PLAYER_MAXYSPEED, PLAYER_MAXYSPEED);
 
+	if (mOwner->GetTransform().position.y >= 800)
+	{
+		mOwner->SetPosition(mStartPos);
+	}
 }

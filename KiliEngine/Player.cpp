@@ -7,20 +7,11 @@
 
 void Player::Start()
 {
-	std::vector<Texture*> anims;
-	for (size_t i = 0; i < 22; i++)
-	{
-		anims.push_back(&AssetManager::GetTexture("run_" + std::to_string(i)));
-	}
+	mSprite = GetComponent<AnimatedSpriteComponent>();
 
-	mSprite = new AnimatedSpriteComponent(this, {Vector2::one, Vector2(0.5f,0.5f), 0}, anims, 30.0f);
-	AddComponent(mSprite);
+	mBoxCollider = GetComponent<BoxCollider2D>();
 
-	mBoxCollider = new BoxCollider2D(this, 10, Rectangle{ Vector2::zero, Vector2(60,60) });
-	AddComponent(mBoxCollider);
-
-	mPlayerComp = new PlayerComponent(this, 10);
-	AddComponent(mPlayerComp);
+	mPlayerComp = GetComponent<PlayerComponent>();
 }
 
 void Player::Update()

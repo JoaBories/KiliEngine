@@ -14,6 +14,7 @@ class PlayerComponent : public MoveComponent
 
 private :
 	bool mIsGrounded;
+	Vector2 mStartPos;
 
 public :
 	PlayerComponent(GameActor* pOwner, int pUpdateOrder);

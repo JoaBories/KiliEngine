@@ -58,14 +58,13 @@ public:
 	ActorTags GetTag() const					{ return mTag; };
 	Scene* GetScene() const						{ return mScene; };
 
-	void SetScene(Scene* pScene) {
-		mScene = pScene;
-	};
+	void SetScene(Scene* pScene)				{ mScene = pScene; };
 
 	void RemoveComponent(ActorComponent* comp) ;
 
 	void AddComponent(ActorComponent* comp) {
 		mComponents.push_back(comp);
+		comp->OnStart();
 	};
 
 	template<typename T> T* GetComponent() const

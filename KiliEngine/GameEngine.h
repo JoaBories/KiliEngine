@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Scene.h"
+#include "SceneManager.h"
 #include "Window.h"
 #include "GameRenderer.h"
 
@@ -11,11 +11,9 @@ private:
 	std::string mTitle;
 	Window* mWindow;
 	GameRenderer* mRenderer;
-	std::vector<Scene*> mScenes;
-	int mCurrentScene;
 
 public:
-	GameEngine(std::string pTitle, std::vector<Scene*> pScenes);
+	GameEngine(std::string pTitle);
 
 	void Init();
 	void Loop();
