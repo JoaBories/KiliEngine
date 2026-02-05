@@ -23,5 +23,7 @@ public :
 	static void SetScenes(std::vector<Scene*> pScenes);
 
 	static void FreeScenes();
+
+	static Scene* ActiveScene() { return Scenes[CurrentScene]; };
 };
 

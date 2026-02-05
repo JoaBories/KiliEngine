@@ -116,13 +116,24 @@ void Vector2::clamp(float min, float max)
 	}
 }
 
+Vector2 Struct::Vector2::rotated(float angle)
+{
+	float c = cos(angle);
+	float s = sin(angle);
+
+	return {
+		x * c - y * s,
+		x * s + y * c
+	};
+}
+
 #pragma endregion
 
 #pragma region Rectangle
 
-const Rectangle Rectangle::Null = Rectangle{ Vector2(0, 0), Vector2(0, 0), 0.0f };
+const Rectangle2 Rectangle2::Null = Rectangle2{ Vector2(0, 0), Vector2(0, 0), 0.0f };
 
-std::vector<Vector2> Rectangle::getCorners() const
+std::vector<Vector2> Rectangle2::getCorners() const
 {
 	std::vector<Vector2> corners(4);
 
@@ -140,7 +151,12 @@ std::vector<Vector2> Rectangle::getCorners() const
 	return corners;
 }
 
-Vector2 Rectangle::CheckAABB(const Rectangle& other) const
+float Struct::Rectangle2::GetRadius() const
+{
+	return halfSize.length();
+}
+
+Vector2 Rectangle2::CheckAABB(const Rectangle2& other) const
 {
 	Vector2 aMin = { center.x - halfSize.x, center.y - halfSize.y };
 	Vector2 aMax = { center.x + halfSize.x, center.y + halfSize.y };
@@ -167,7 +183,7 @@ Vector2 Rectangle::CheckAABB(const Rectangle& other) const
 	return overlap; // if overlap == Vector2::zero false else true
 }
 
-bool Rectangle::ContainPoint(const Vector2& point) const
+bool Rectangle2::ContainPoint(const Vector2& point) const
 {
 	Vector2 aMin = { center.x - halfSize.x, center.y - halfSize.y };
 	Vector2 aMax = { center.x + halfSize.x, center.y + halfSize.y };
@@ -176,7 +192,7 @@ bool Rectangle::ContainPoint(const Vector2& point) const
 	return point.x >= aMin.x && point.x <= aMax.x && point.y >= aMin.y && point.y <= aMax.y;
 }
 
-Vector2 Rectangle::CheckOBB(const Rectangle& other) const
+Vector2 Rectangle2::CheckOBB(const Rectangle2& other) const
 {
 	Vector2 overlap = Vector2::zero;
 

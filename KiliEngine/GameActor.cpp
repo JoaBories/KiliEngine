@@ -1,11 +1,12 @@
 #include "GameActor.h"
 #include "ActorComponent.h"
+#include "SceneManager.h"
 #include "Scene.h"
 #include <algorithm>
 #include <vector>
 
 GameActor::GameActor(Transform2D transform, ActorTags tag) :
-	mScene(Scene::ActiveScene), mActiveState(Active),
+	mScene(SceneManager::ActiveScene()), mActiveState(Active),
 	mTransform(transform), mTag(tag),
 	mComponents()
 {

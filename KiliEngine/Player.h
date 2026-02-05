@@ -19,16 +19,16 @@ private:
     BoxCollider2D* mBoxCollider;
     PlayerComponent* mPlayerComp;
 
+    int mScore;
+
 public:
 
-    Player(Transform2D transform) : 
-        GameActor(transform, ActorPlayer),
-        mSprite(nullptr), mBoxCollider(nullptr), mPlayerComp(nullptr)
-    {
-    };
+    Player(Transform2D transform);
 
     // Inherited via GameActor
     void Start() override;
     void Update() override;
+
+    int GetScore() const { return mScore; };
 };
 

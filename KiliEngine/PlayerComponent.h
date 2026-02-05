@@ -7,14 +7,13 @@ constexpr float PLAYER_VELOCITYPOWER = 1.0f;
 constexpr float PLAYER_SPEED = 400.0f;
 constexpr float PLAYER_GRAVITY = 750.0f;
 constexpr float PLAYER_MAXYSPEED = 500.0f;
-constexpr float PLAYER_JUMPFORCE = 450.0f;
+constexpr float PLAYER_JUMPFORCE = 400.0f;
 
 class PlayerComponent : public MoveComponent
 {
 
 private :
 	bool mIsGrounded;
-	Vector2 mStartPos;
 
 public :
 	PlayerComponent(GameActor* pOwner, int pUpdateOrder);

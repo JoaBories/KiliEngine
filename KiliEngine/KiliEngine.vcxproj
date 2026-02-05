@@ -133,6 +133,7 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameRenderer.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BoxCollider2D.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
@@ -168,14 +170,18 @@
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="SceneLevel.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ScenePlatformer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GameOver.level" />
+    <None Include="Resources\Level1.level" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

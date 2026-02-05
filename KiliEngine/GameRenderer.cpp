@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "SpriteComponent.h"
 #include "MathUtils.h"
+#include "SceneManager.h"
 
 using namespace MathUtils;
 
@@ -44,6 +45,10 @@ void GameRenderer::BeginDraw()
 
 void GameRenderer::EndDraw()
 {
+#ifdef _DEBUG
+	SceneManager::ActiveScene()->DebugDraw();
+#endif
+
 	SDL_RenderPresent(mSdlRenderer);
 }
 
@@ -52,11 +57,59 @@ void GameRenderer::Close()
 	SDL_DestroyRenderer(mSdlRenderer);
 }
 
-void GameRenderer::DrawRect(const Rectangle& rRect, Color color) const
+void GameRenderer::DrawRect(const Rectangle2& rRect, Color color) const
 {
 	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
 	SDL_Rect sdlRect = rRect.toSdlRect();
 	SDL_RenderFillRect(mSdlRenderer, &sdlRect);
+}
+
+void GameRenderer::DrawRectOutline(const Rectangle2& rRect, Color color) const
+{
+	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
+	SDL_Rect sdlRect = rRect.toSdlRect();
+	SDL_RenderDrawRect(mSdlRenderer, &sdlRect);
+}
+
+void GameRenderer::DrawCircle(Vector2 pos, float radius, Color color) const
+{
+	SDL_SetRenderDrawColor(mSdlRenderer, 255, 255, 255, 255);
+
+	const int32_t diameter = (radius * 2);
+
+	int32_t x = (radius - 1);
+	int32_t y = 0;
+	int32_t tx = 1;
+	int32_t ty = 1;
+	int32_t error = (tx - diameter);
+
+	while (x >= y)
+	{
+		// Each of the following renders an octant of the circle
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x + x, pos.y - y);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x + x, pos.y + y);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x - x, pos.y - y);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x - x, pos.y + y);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x + y, pos.y - x);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x + y, pos.y + x);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x - y, pos.y - x);
+		SDL_RenderDrawPoint(mSdlRenderer, pos.x - y, pos.y + x);
+
+		if (error <= 0)
+		{
+			++y;
+			error += ty;
+			ty += 2;
+		}
+
+		if (error > 0)
+		{
+			--x;
+			tx += 2;
+			error += (tx - diameter);
+		}
+
+	}
 }
 
 void GameRenderer::DrawSprites()
@@ -67,7 +120,7 @@ void GameRenderer::DrawSprites()
 	}
 }
 
-void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
+void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Transform2D pSpriteTransform, Rectangle2 pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
 {
 	SDL_Rect destinationRect;
 	Transform2D transform = pActor.GetTransform();
@@ -77,7 +130,7 @@ void GameRenderer::DrawSprite(const GameActor& pActor, const Texture& pTex, Tran
 	destinationRect.y = static_cast<int>(transform.position.y + pSpriteTransform.position.y - pOrigin.y * pSpriteTransform.scale.y);
 
 	SDL_Rect* sourceSDL = nullptr;
-	if (pSourceRect != Rectangle::Null)
+	if (pSourceRect != Rectangle2::Null)
 	{
 		sourceSDL = new SDL_Rect{ pSourceRect.toSdlRect() };
 	}

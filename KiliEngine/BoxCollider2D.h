@@ -2,40 +2,34 @@
 
 #include "ColliderComponent.h"
 #include "Struct.h"
-using Struct::Rectangle;
+using Struct::Rectangle2;
+using Struct::Vector2;
 
 class BoxCollider2D : public ColliderComponent
 {
 
 private:
-	Rectangle mBoxCollider; // center is local offset
-
-	static std::vector<BoxCollider2D*> allBoxCollider;
+	Rectangle2 mBoxCollider; // center is local offset
+	float mRadius;
 
 public:
 
-	BoxCollider2D(GameActor* owner, short updatePriority, Rectangle box) :
+	BoxCollider2D(GameActor* owner, short updatePriority, Rectangle2 box) :
 		ColliderComponent(owner, updatePriority),
 		mBoxCollider(box)
 	{
-		allBoxCollider.push_back(this);
+		mRadius = mBoxCollider.GetRadius();
 	};
 
-	~BoxCollider2D() {
-		for (size_t i = 0; i < allBoxCollider.size(); i++)
-		{
-			if (allBoxCollider.at(i) == this) 
-			{
-				allBoxCollider.erase(allBoxCollider.begin() + i);
-			}
-		}
-	}
+	~BoxCollider2D() = default;
 
-	// Inherited via ActorComponent
-	void OnStart() override;
-	void Update() override;
-	void OnEnd() override;
+	Rectangle2 GetBoxCollider() const { return mBoxCollider; };
+	void SetBoxCollider(Rectangle2 rect) { 
+		mBoxCollider = rect; mRadius = mBoxCollider.GetRadius(); 
+	};
 
-	Rectangle GetBoxCollider() const;
+	float GetRadius() const { return mRadius; };
+
+	Vector2 Collide(BoxCollider2D* other) const;
 };
 

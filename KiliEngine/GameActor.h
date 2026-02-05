@@ -19,7 +19,8 @@ enum ActorTags
 {
 	ActorDefault,
 	ActorBlock,
-	ActorPlayer
+	ActorPlayer,
+	ActorCoin
 };
 
 class GameActor

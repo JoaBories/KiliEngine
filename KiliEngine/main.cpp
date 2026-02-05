@@ -13,7 +13,9 @@
 #include <SDL.h>
 #include <glew.h>
 #include "GameEngine.h"
-#include "ScenePlatformer.h"
+#include "SceneLevel.h"
+
+#include <iostream>
 
 using namespace std;
 
@@ -21,7 +23,9 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new ScenePlatformer() });
+	SceneManager::SetScenes({ 
+		new SceneLevel("Resources/Level1.level", "Platformer"), 
+		new SceneLevel("Resources/GameOver.level", "GameOver") });
 
 	GameEngine* Kili = new GameEngine("KiliEngine");
 	Kili->Init();

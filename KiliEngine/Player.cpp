@@ -4,6 +4,15 @@
 #include "Log.h"
 #include "MathUtils.h"
 #include "Block.h"
+#include "Coin.h"
+
+Player::Player(Transform2D transform) :
+	GameActor(transform, ActorPlayer),
+	mSprite(nullptr), mBoxCollider(nullptr), mPlayerComp(nullptr),
+	mScore(0)
+{
+	Log::Info("Score : " + std::to_string(mScore));
+};
 
 void Player::Start()
 {
@@ -23,24 +32,38 @@ void Player::Update()
 	}
 
 	//collisions
-	Rectangle playerRect = mBoxCollider->GetBoxCollider().toObjectSpace(mTransform);
+	bool CollidedWithGround = false;
 
 	for (Block* block : mScene->GetActorsOfClass<Block>()) 
 	{
-		Rectangle blockRect = block->GetComponent<BoxCollider2D>()->GetBoxCollider().toObjectSpace(block->GetTransform());
-		
-		Vector2 collision = playerRect.CheckAABB(blockRect);
+		Vector2 collision = mBoxCollider->Collide(block->GetComponent<BoxCollider2D>());
+
 		if (collision != Vector2::zero)
 		{
-			mTransform.position += collision / 2;
+			mTransform.position += collision;
 			Vector2 axis = collision.normalized();
 			Vector2 perpendicular = axis * mPlayerComp->GetVelocity().dot(axis);
 			mPlayerComp->AddVelocity(-perpendicular);
 
 			if (axis == Vector2::down)
 			{
-				mPlayerComp->SetGrounded(true);
+				CollidedWithGround = true;
 			}
+		}
+	}
+
+	mPlayerComp->SetGrounded(CollidedWithGround);
+
+
+	for (Coin* coin : mScene->GetActorsOfClass<Coin>())
+	{
+		Vector2 collision = mBoxCollider->Collide(coin->GetComponent<BoxCollider2D>());
+
+		if (collision != Vector2::zero)
+		{
+			coin->Destroy();
+			mScore++;
+			Log::Info("Score : " + std::to_string(mScore));
 		}
 	}
 

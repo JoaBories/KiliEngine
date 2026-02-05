@@ -83,6 +83,8 @@ namespace Struct {
 		void normalize();
 		void clamp(float min, float max);
 
+		Vector2 rotated(float angle);
+
 		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y); };
 	};
 
@@ -104,26 +106,27 @@ namespace Struct {
 	};
 
 	//Oriented Rectangle struct with Collision | origin is the center
-	struct Rectangle
+	struct Rectangle2
 	{
 		Vector2 center;
 		Vector2 halfSize;
 		float rotation;
 
-		static const Rectangle Null;
+		static const Rectangle2 Null;
 
-		bool operator==(const Rectangle& rm) const { return center == rm.center && halfSize == rm.halfSize && rotation == rm.rotation; };
-		bool operator!=(const Rectangle& rm) const { return !(*this == rm); };
+		bool operator==(const Rectangle2& rm) const { return center == rm.center && halfSize == rm.halfSize && rotation == rm.rotation; };
+		bool operator!=(const Rectangle2& rm) const { return !(*this == rm); };
 
 		std::vector<Vector2> getCorners() const;
+		float GetRadius() const; //return the radius of the minimal circle
 
 		//Collision
-		Vector2 CheckAABB(const Rectangle& other) const;	// ignore rot
-		Vector2 CheckOBB(const Rectangle& other) const;
+		Vector2 CheckAABB(const Rectangle2& other) const;	// ignore rot
+		Vector2 CheckOBB(const Rectangle2& other) const;
 
 		bool ContainPoint(const Vector2& point) const;	// ignore rot
 
-		inline Rectangle toObjectSpace(const Transform2D& transform) const { return { transform.position + center, transform.scale * halfSize, transform.rotation + rotation }; };
+		inline Rectangle2 toObjectSpace(const Transform2D& transform) const { return { transform.position + center * transform.scale, transform.scale * halfSize, transform.rotation + rotation }; };
 
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};

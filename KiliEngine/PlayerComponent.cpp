@@ -10,7 +10,6 @@ PlayerComponent::PlayerComponent(GameActor* pOwner, int pUpdateOrder) :
 	MoveComponent(pOwner, pUpdateOrder),
 	mIsGrounded(true)
 {
-	mStartPos = mOwner->GetTransform().position;
 }
 
 void PlayerComponent::Update()
@@ -35,7 +34,10 @@ void PlayerComponent::Update()
 	AddVelocity(mOwner->GetTransform().Right() * movement * Time::deltaTime);
 
 	// Gravity
-	AddVelocity(mOwner->GetTransform().Up() * PLAYER_GRAVITY * Time::deltaTime);
+	if (!mIsGrounded)
+	{
+		AddVelocity(mOwner->GetTransform().Up() * PLAYER_GRAVITY * Time::deltaTime);
+	}
 
 	if (Inputs::IsKeyPressed(SDLK_SPACE) && mIsGrounded)
 	{
@@ -47,6 +49,13 @@ void PlayerComponent::Update()
 
 	if (mOwner->GetTransform().position.y >= 800)
 	{
-		mOwner->SetPosition(mStartPos);
+		if (mOwner->GetScene()->GetTitle() == "Platformer")
+		{
+			SceneManager::ChangeScene(1);
+		}
+		else
+		{
+			SceneManager::ChangeScene(0);
+		}
 	}
 }

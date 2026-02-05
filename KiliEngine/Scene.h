@@ -25,8 +25,6 @@ protected:
 
 public :
 
-	static Scene* ActiveScene;
-
 	GameRenderer* GetRenderer() const { return mRenderer; };
 
 	void UpdateAllActors();
@@ -49,6 +47,10 @@ public :
 	virtual void OnStart() = 0;
 	virtual void OnUpdate() = 0;
 	virtual void OnClose() = 0;
+
+	virtual void DebugDraw() = 0;
+
+	std::string GetTitle() const { return mTitle; };
 
 	GameActor* GetActorByTag(ActorTags tag) const;
 	std::vector<GameActor*> GetActorsByTag(ActorTags tag) const;

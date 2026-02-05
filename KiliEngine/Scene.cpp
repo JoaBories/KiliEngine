@@ -3,8 +3,6 @@
 #include <algorithm>
 #include "AssetManager.h"
 
-Scene* Scene::ActiveScene = nullptr;
-
 void Scene::Update() 
 {
     UpdateAllActors();
@@ -94,8 +92,6 @@ void Scene::Unload()
 
 void Scene::Start()
 {
-    ActiveScene = this;
-
     OnStart();
 }
 

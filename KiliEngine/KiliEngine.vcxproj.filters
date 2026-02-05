@@ -108,6 +108,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorComponent.h">
@@ -164,9 +167,6 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="ScenePlatformer.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="MoveComponent.h">
       <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
@@ -182,5 +182,19 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLevel.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Level1.level">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\GameOver.level">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
