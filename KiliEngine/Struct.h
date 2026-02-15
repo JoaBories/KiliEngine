@@ -83,6 +83,8 @@ namespace Struct {
 		void normalize();
 		void clamp(float min, float max);
 
+		Vector2 rotated(float angle);
+
 		inline std::string toString() const							{ return " x : " + std::to_string(x) + " | y : " + std::to_string(y); };
 	};
 
@@ -116,6 +118,7 @@ namespace Struct {
 		bool operator!=(const Rectangle& rm) const { return !(*this == rm); };
 
 		std::vector<Vector2> getCorners() const;
+		float GetRadius() const; //return the radius of the minimal circle
 
 		//Collision
 		Vector2 CheckAABB(const Rectangle& other) const;	// ignore rot
@@ -123,7 +126,7 @@ namespace Struct {
 
 		bool ContainPoint(const Vector2& point) const;	// ignore rot
 
-		inline Rectangle toObjectSpace(const Transform2D& transform) const { return { transform.position + center, transform.scale * halfSize, transform.rotation + rotation }; };
+		inline Rectangle toObjectSpace(const Transform2D& transform) const { return { transform.position + center * transform.scale, transform.scale * halfSize, transform.rotation + rotation }; };
 
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};

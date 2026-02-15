@@ -141,6 +141,7 @@
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />

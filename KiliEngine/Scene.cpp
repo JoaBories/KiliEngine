@@ -3,8 +3,6 @@
 #include <algorithm>
 #include "AssetManager.h"
 
-Scene* Scene::ActiveScene = nullptr;
-
 void Scene::Update() 
 {
     UpdateAllActors();
@@ -16,7 +14,7 @@ void Scene::Update()
     }
     mPendingActors.clear();
 
-    Killa();
+    KillAllDead();
 }
 
 void Scene::UpdateAllActors()
@@ -47,12 +45,13 @@ void Scene::AddActor(GameActor* actor)
 
 }
 
-void Scene::Killa()
+void Scene::KillAllDead()
 {
     for (GameActor* actor : mActors)
     {
         if (actor->GetState() == Dead)
         {
+            RemoveActor(actor);
             delete actor;
         }
     }
@@ -82,23 +81,17 @@ void Scene::SetRenderer(IRenderer* pRenderer)
 
 void Scene::Unload()
 {
-    while (!mActors.empty())
+    for (GameActor* i : mActors)
     {
-        delete mActors.back();
+        delete i;
     }
+    mActors.clear();
 
     AssetManager::Clear();
 }
 
 void Scene::Start()
 {
-    ActiveScene = this;
-
-    for (const auto& actor : mActors)
-    {
-        actor->Start();
-    }
-
     OnStart();
 }
 

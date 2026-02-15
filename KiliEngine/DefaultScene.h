@@ -18,5 +18,8 @@ public :
 
 	void OnClose() override {
 	};
+
+	void DebugDraw() override {
+	};
 };
 

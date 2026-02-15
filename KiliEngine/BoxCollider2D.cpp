@@ -1,34 +1,18 @@
 #include "BoxCollider2D.h"
 #include "GameActor.h"
 
-using Struct::Vector2;
-
-std::vector<BoxCollider2D*> BoxCollider2D::allBoxCollider = {};
-
-void BoxCollider2D::OnStart()
+Vector2 BoxCollider2D::Collide(BoxCollider2D* other) const
 {
-}
+	Vector2 pos = mOwner->GetTransform().position + mBoxCollider.center;
+	Vector2 otherPos = other->GetOwner()->GetTransform().position +other->GetBoxCollider().center;
 
-void BoxCollider2D::Update()
-{
-	for (const auto& collider : allBoxCollider)
+	if ((pos - otherPos).length() < mRadius + other->GetRadius())
 	{
-		if (collider != this)
-		{
-			Vector2 overlap = mBoxCollider.toObjectSpace(mOwner->GetTransform()).CheckAABB(collider->GetBoxCollider().toObjectSpace(collider->GetOwner()->GetTransform()));
+		Rectangle rect = mBoxCollider.toObjectSpace(mOwner->GetTransform());
+		Rectangle otherRect = other->GetBoxCollider().toObjectSpace(other->GetOwner()->GetTransform());
 
-			if (overlap != Vector2::zero)
-			{
-			}
-		}
+		return rect.CheckAABB(otherRect);
 	}
-}
 
-void BoxCollider2D::OnEnd()
-{
-}
-
-Rectangle BoxCollider2D::GetBoxCollider() const
-{
-	return mBoxCollider.toObjectSpace(mOwner->GetTransform());
+	return Vector2::zero;
 }

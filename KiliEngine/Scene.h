@@ -32,7 +32,7 @@ public :
 	void UpdateAllActors();
 	void RemoveActor(GameActor* actor);
 	void AddActor(GameActor* actor);
-	void Killa();
+	void KillAllDead();
 
 	void Update();
 	void Render();
@@ -41,12 +41,18 @@ public :
 
 	void SetRenderer(IRenderer* pRenderer);
 
+	bool IsUpdatingActors() const { return mIsUpdatingActors; };
+
 	virtual void AssetLoad() = 0;
 	virtual void Unload();
 	
 	virtual void OnStart() = 0;
 	virtual void OnUpdate() = 0;
 	virtual void OnClose() = 0;
+
+	virtual void DebugDraw() = 0;
+
+	std::string GetTitle() const { return mTitle; };
 
 	GameActor* GetActorByTag(ActorTags tag) const;
 	std::vector<GameActor*> GetActorsByTag(ActorTags tag) const;

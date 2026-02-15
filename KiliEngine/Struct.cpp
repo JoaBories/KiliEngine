@@ -116,6 +116,17 @@ void Vector2::clamp(float min, float max)
 	}
 }
 
+Vector2 Struct::Vector2::rotated(float angle)
+{
+	float c = cos(angle);
+	float s = sin(angle);
+
+	return {
+		x * c - y * s,
+		x * s + y * c
+	};
+}
+
 #pragma endregion
 
 #pragma region Rectangle
@@ -138,6 +149,11 @@ std::vector<Vector2> Rectangle::getCorners() const
 	corners[2] = center + right * -halfSize.x + up * -halfSize.y;
 
 	return corners;
+}
+
+float Struct::Rectangle::GetRadius() const
+{
+	return halfSize.length();
 }
 
 Vector2 Rectangle::CheckAABB(const Rectangle& other) const

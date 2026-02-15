@@ -4,11 +4,10 @@
 #include "Time.h"
 #include "Inputs.h"
 
-GameEngine::GameEngine(std::string pTitle, std::vector<Scene*> pScenes) :
+GameEngine::GameEngine(std::string pTitle) :
 	mIsRunning(true), mTitle(pTitle), 
 	mWindow(nullptr), 
-	mRenderer(nullptr),
-	mScenes(pScenes), mCurrentScene(0)
+	mRenderer(nullptr)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -29,14 +28,9 @@ void GameEngine::Init()
 	{
 		if (mRenderer->Initialize(*mWindow))
 		{
-			if (!mScenes.empty())
-			{
-				mScenes[0]->SetRenderer(mRenderer);
-				mScenes[0]->Start();
-				mScenes[0]->AssetLoad();
+			SceneManager::LoadScene(mRenderer);
 
-				Loop();
-			}			
+			Loop();
 		}
 	}
 }
@@ -69,7 +63,7 @@ void GameEngine::Render()
 
 void GameEngine::Update()
 {
-	mScenes[mCurrentScene]->Update();
+	SceneManager::UpdateScene();
 }
 
 void GameEngine::CheckForInputs()
@@ -84,6 +78,7 @@ void GameEngine::CheckForInputs()
 			case SDL_QUIT:
 				mIsRunning = false;
 				break;
+
 			default:
 				Inputs::InputUpdate(event);
 				break;
@@ -96,7 +91,7 @@ void GameEngine::Close()
 {
 	Log::Info("Close Game");
 
-	mScenes[mCurrentScene]->Close();
+	SceneManager::UnloadScene();
 
 	mWindow->Close();
 	delete mWindow;
@@ -105,4 +100,6 @@ void GameEngine::Close()
 	mRenderer->Close();
 	delete mRenderer;
 	mWindow = nullptr;
+
+	//_CrtDumpMemoryLeaks();
 }

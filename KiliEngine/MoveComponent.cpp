@@ -4,26 +4,20 @@
 #include "Time.h"
 #include "Log.h"
 
-MoveComponent::MoveComponent(GameActor* pOwner, float pMaxVelocity, float pVelocityDecay, int pUpdateOrder) :
+MoveComponent::MoveComponent(GameActor* pOwner, int pUpdateOrder) :
 	ActorComponent(pOwner, pUpdateOrder),
-	mVelocity(Vector2::zero),
-	mVelocityDecay(pVelocityDecay), mMaxVelocity(pMaxVelocity),
-	mUpdated(false)
+	mVelocity(Vector2::zero)
 {
 }
 
 void MoveComponent::SetVelocity(Vector2 pVelocity)
 {
 	mVelocity = pVelocity;
-	mVelocity.clamp(0.0f, mMaxVelocity);
-	mUpdated = true;
 }
 
 void MoveComponent::AddVelocity(Vector2 pVelocity)
 {
 	mVelocity += pVelocity;
-	mVelocity.clamp(0.0f, mMaxVelocity);
-	mUpdated = true;
 }
 
 void MoveComponent::Update()
@@ -35,8 +29,5 @@ void MoveComponent::Update()
 		newPos += ownTransform.Up() * mVelocity.y * Time::deltaTime;
 		newPos += ownTransform.Right() * mVelocity.x * Time::deltaTime;
 		mOwner->SetPosition(newPos);
-
-		if (!mUpdated) mVelocity *= mVelocityDecay; // don't slow if updated this frame
-		mUpdated = false;
 	}
 }

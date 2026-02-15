@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Scene.h"
+#include "SceneManager.h"
 #include "Window.h"
 #include "SdlRenderer.h"
 #include "OpenGlRenderer.h"
@@ -12,10 +12,9 @@ private:
 	std::string mTitle;
 	Window* mWindow;
 	IRenderer* mRenderer;
-	std::vector<Scene*> mScenes;
-	int mCurrentScene;
 
 public:
+	GameEngine(std::string pTitle);
 	GameEngine(std::string pTitle, std::vector<Scene*> pScenes);
 
 	void Init();

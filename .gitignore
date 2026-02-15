@@ -424,3 +424,10 @@ FodyWeavers.xsd
 !Release/
 !Release/glew32.dll
 !Release/SDL2.dll
+
+!KiliEngine/
+!KiliEngine/Dependencies/
+!KiliEngine/Dependencies/GL/
+!KiliEngine/Dependencies/GL/SDL/
+!KiliEngine/Dependencies/GL/SDL/lib/
+!KiliEngine/Dependencies/GL/SDL/lib/x86/
