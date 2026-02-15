@@ -3,7 +3,7 @@
 #include "Window.h"
 #include "GameActor.h"
 
-#include "Struct.h"
+#include "Utils/Struct.h"
 using Struct::Rectangle;
 using Struct::Transform2D;
 

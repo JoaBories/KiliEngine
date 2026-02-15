@@ -93,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir)Utils</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,14 +138,19 @@
     <ClCompile Include="SdlRenderer.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="MoveComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
-    <ClCompile Include="Struct.cpp" />
+    <ClCompile Include="Utils\MathUtils.cpp" />
+    <ClCompile Include="Utils\Matrix4.cpp" />
+    <ClCompile Include="Utils\Matrix4Row.cpp" />
+    <ClCompile Include="Utils\Quaternion.cpp" />
+    <ClCompile Include="Utils\Struct.cpp" />
+    <ClCompile Include="Utils\Vector3.cpp" />
+    <ClCompile Include="Utils\Vector4.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,13 +167,19 @@
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="MathUtils.h" />
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
-    <ClInclude Include="Struct.h" />
+    <ClInclude Include="Utils\Maths.h" />
+    <ClInclude Include="Utils\MathUtils.h" />
+    <ClInclude Include="Utils\Matrix4.h" />
+    <ClInclude Include="Utils\Matrix4Row.h" />
+    <ClInclude Include="Utils\Quaternion.h" />
+    <ClInclude Include="Utils\Struct.h" />
+    <ClInclude Include="Utils\Vector3.h" />
+    <ClInclude Include="Utils\Vector4.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

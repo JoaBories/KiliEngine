@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ActorComponent.h"
-#include "Struct.h"
+#include "Utils/Struct.h"
 
 using Struct::Vector2;
 

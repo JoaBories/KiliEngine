@@ -14,18 +14,17 @@ namespace MathUtils {
 	const float INFINITY_POS = std::numeric_limits<float>::infinity();
 	const float INFINITY_NEG = -INFINITY_POS;
 
-
 	template <typename T> inline  T Min(const T& a, const T& b)							{ return (a <= b) ? a : b; }
 	template <typename T> inline  T Max(const T& a, const T& b)							{ return (a >= b) ? a : b; }
 	template <typename T> inline  T Clamp(const T& value, const T& min, const T& max)	{ return Min(max, Max(value, min)); }
 
+	inline float Abs(float value)														{ return std::fabs(value); }
 	inline float Cos(float angle)														{ return cosf(angle); }
 	inline float Sin(float angle)														{ return sinf(angle); }
 	inline float Tan(float angle)														{ return tanf(angle); }
 	inline float ACos(float angle)														{ return acosf(angle); }
 	inline float ATan2(float opposite, float adjacent)									{ return atan2f(opposite, adjacent); }
 	inline float Cot(float angle)														{ return 1.0f / Tan(angle); }
-	inline float Abs(float value)														{ return std::fabs(value); }
 	inline float Sign(float value)														{ return (value > 0) ? 1.0f : (value < 0 ? -1.0f : 0.0f); }
 	inline float Lerp(float a, float b, float t)										{ return a + (b - a) * Clamp(t, 0.0f, 1.0f); }
 	inline float Sqrt(float val)														{ return sqrtf(val); }

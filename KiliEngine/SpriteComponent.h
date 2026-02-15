@@ -2,7 +2,7 @@
 
 #include "ActorComponent.h"
 #include "Texture.h"
-#include "Struct.h"
+#include "Utils/Struct.h"
 
 using Struct::Transform2D;
 using Struct::Vector2;

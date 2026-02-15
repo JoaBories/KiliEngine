@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ColliderComponent.h"
-#include "Struct.h"
+#include "Utils/Struct.h"
 using Struct::Rectangle;
 using Struct::Vector2;
 

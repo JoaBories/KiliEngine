@@ -1,8 +1,8 @@
 #include "SdlRenderer.h"
 #include "Log.h"
-#include "Struct.h"
+#include "Utils/Struct.h"
+#include "Utils/MathUtils.h"
 #include "SpriteComponent.h"
-#include "MathUtils.h"
 
 using namespace MathUtils;
 
