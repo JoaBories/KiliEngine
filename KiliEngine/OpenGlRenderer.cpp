@@ -66,7 +66,10 @@ void GlRenderer::Draw()
 
 void GlRenderer::DrawSprites()
 {
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    for (SpriteComponent* sc : mSprites)
+    {
+        sc->Draw(this);
+    }
 }
 
 void GlRenderer::EndDraw()
@@ -78,6 +81,12 @@ void GlRenderer::Close()
 {
     SDL_GL_DeleteContext(mContext);
     delete mVao;
+}
+
+void GlRenderer::DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
+{
+    pTex.SetActive();
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 void GlRenderer::AddSprite(SpriteComponent* pSprite)

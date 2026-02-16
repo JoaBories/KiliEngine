@@ -2,15 +2,15 @@
 #include "Log.h"
 #include <sstream>
 
-std::map<std::string, Texture> AssetManager::mTextures = {};
+std::map<std::string, Texture*> AssetManager::mTextures = {};
 
-Texture AssetManager::LoadTexture(IRenderer* pRenderer, const std::string& pFileName, const std::string& pName)
+Texture* AssetManager::LoadTexture(IRenderer* pRenderer, const std::string& pFileName, const std::string& pName)
 {
     mTextures[pName] = LoadTextureFromFile(pRenderer, pFileName);
     return mTextures.at(pName);
 }
 
-Texture& AssetManager::GetTexture(const std::string& pName)
+Texture* AssetManager::GetTexture(const std::string& pName)
 {
     if (mTextures.find(pName) == mTextures.end())
     {
@@ -25,14 +25,14 @@ void AssetManager::Clear()
 {
     for (auto iter : mTextures)
     {
-        iter.second.Unload();
+        iter.second->Unload();
     }
     mTextures.clear();
 }
 
-Texture AssetManager::LoadTextureFromFile(IRenderer* pRenderer, const std::string& pFileName)
+Texture* AssetManager::LoadTextureFromFile(IRenderer* pRenderer, const std::string& pFileName)
 {
-    Texture texture;
-    texture.Load(pRenderer, pFileName);
+    Texture* texture = new Texture();
+    texture->Load(pRenderer, pFileName);
     return texture;
 }

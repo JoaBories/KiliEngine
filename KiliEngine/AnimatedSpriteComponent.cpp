@@ -4,7 +4,7 @@
 #include "Log.h"
 
 AnimatedSpriteComponent::AnimatedSpriteComponent(GameActor* pOwner, Transform2D pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder) :
-	SpriteComponent(pOwner, pTransform, *pTexture[0], pDrawOrder), mCurrentFrame(0.0f), mAnimFps(pFps)
+	SpriteComponent(pOwner, pTransform, pTexture[0], pDrawOrder), mCurrentFrame(0.0f), mAnimFps(pFps)
 {
 	SetAnimationTextures(pTexture);
 }
@@ -17,7 +17,7 @@ void AnimatedSpriteComponent::SetAnimationTextures(const std::vector<Texture*>& 
 {
 	mAnimationTextures = pTextures;
 	if (mAnimationTextures.size() > 0) {
-		SetTexture(*mAnimationTextures[0]);
+		SetTexture(mAnimationTextures[0]);
 	}
 }
 
@@ -38,5 +38,5 @@ void AnimatedSpriteComponent::Update()
 		mCurrentFrame -= mAnimationTextures.size();
 	}
 
-	SetTexture(*mAnimationTextures[static_cast<int>(mCurrentFrame)]); // change texture from sprite component
+	SetTexture(mAnimationTextures[static_cast<int>(mCurrentFrame)]); // change texture from sprite component
 }

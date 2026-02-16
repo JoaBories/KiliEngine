@@ -11,21 +11,21 @@ class SpriteComponent : public ActorComponent
 {
 protected:
 	Transform2D mTransform;
-	Texture mTexture;
+	Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;
 	int mTexHeight;
 	bool mFlipX;
 
 public:
-	SpriteComponent(GameActor* pOwner, Transform2D pTransform, Texture& pTexture, int pDrawOrder = 100);
+	SpriteComponent(GameActor* pOwner, Transform2D pTransform, Texture* pTexture, int pDrawOrder = 100);
 	virtual ~SpriteComponent();
 
 	SpriteComponent() = delete;
 	SpriteComponent(const SpriteComponent&) = delete;
 	SpriteComponent& operator= (const SpriteComponent&) = delete;
 
-	virtual void SetTexture(const Texture& pTexture);
+	virtual void SetTexture(Texture* pTexture);
 	virtual void Draw(IRenderer* pRenderer);
 
 	void SetFlipX(bool pFlipx) { mFlipX = pFlipx; };

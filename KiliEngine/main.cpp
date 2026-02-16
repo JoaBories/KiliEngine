@@ -14,12 +14,13 @@
 #include <glew.h>
 #include "GameEngine.h"
 #include "DefaultScene.h"
+#include "TestGl.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new DefaultScene() });
+	SceneManager::SetScenes({ new TestGl() });
 
 	GameEngine* Kili = new GameEngine("KiliEngine");
 	Kili->Init();

@@ -9,13 +9,13 @@ class AssetManager
 {
 public:
 	//Storage for future References
-	static std::map<std::string, Texture> mTextures;
+	static std::map<std::string, Texture*> mTextures;
 
-	static Texture LoadTexture(IRenderer* pRenderer, const std::string& pFileName, const std::string& pName);
-	static Texture& GetTexture(const std::string& pName);
+	static Texture* LoadTexture(IRenderer* pRenderer, const std::string& pFileName, const std::string& pName);
+	static Texture* GetTexture(const std::string& pName);
 	static void Clear();
 
 private:
 	AssetManager() = default;
-	static Texture LoadTextureFromFile(IRenderer* pRenderer, const std::string& pFileName);
+	static Texture* LoadTextureFromFile(IRenderer* pRenderer, const std::string& pFileName);
 };

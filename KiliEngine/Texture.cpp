@@ -18,13 +18,32 @@ bool Texture::LoadSdl(SdlRenderer* renderer, SDL_Surface* surface)
 
 bool Texture::LoadGl(GlRenderer* renderer, SDL_Surface* surface)
 {
-	return false;
+	int format = 0;
+	if (surface->format->format == SDL_PIXELFORMAT_RGB24)
+	{
+		format = GL_RGB;
+	}
+	else if (surface->format->format == SDL_PIXELFORMAT_RGBA32)
+	{
+		format = GL_RGBA;
+	}
+	glGenTextures(1, &mTextureId);
+	glBindTexture(GL_TEXTURE_2D, mTextureId);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
+	SDL_FreeSurface(surface);
+	Log::Info("Loaded Gl Texture : " + mFileName);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	return true;
 }
 
 Texture::Texture() :
 	mFileName(),
 	mSdlTexture(nullptr),
-	mWidth(0), mHeight(0)
+	mWidth(0), mHeight(0),
+	mTextureId(0)
 {
 }
 
@@ -56,12 +75,23 @@ bool Texture::Load(IRenderer* renderer, const std::string& filename)
 	return true;
 }
 
+void Texture::SetActive() const
+{
+	glBindTexture(GL_TEXTURE_2D, mTextureId);
+}
+
 bool Texture::Unload()
 {
 	if (mSdlTexture)
 	{
 		SDL_DestroyTexture(mSdlTexture);
 		mSdlTexture = nullptr;
+		return true;
+	}
+	else
+	{
+		glDeleteTextures(1, &mTextureId);
+		mTextureId = 0;
 		return true;
 	}
 	return false;
