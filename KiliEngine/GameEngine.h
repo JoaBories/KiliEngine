@@ -15,7 +15,6 @@ private:
 
 public:
 	GameEngine(std::string pTitle);
-	GameEngine(std::string pTitle, std::vector<Scene*> pScenes);
 
 	void Init();
 	void Loop();

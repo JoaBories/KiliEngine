@@ -2,13 +2,14 @@
 #include "SpriteComponent.h"
 #include "Log.h"
 
-GlRenderer::GlRenderer() : mWindow(nullptr), mVao(nullptr), mContext(nullptr)
+GlRenderer::GlRenderer() : 
+    mWindow(nullptr), mVao(nullptr), 
+    mContext(nullptr), mShaderProgram(nullptr)
 {
 }
 
 GlRenderer::~GlRenderer()
 {
-    delete mVao;
 }
 
 bool GlRenderer::Initialize(Window& rWindow)
@@ -41,7 +42,10 @@ bool GlRenderer::Initialize(Window& rWindow)
     {
         Log::Error(LogType::Video, "Failed to initialize SDL_Image");
     }
+
     mVao = new VertexArray(vertices, 4, indices, 6);
+    mShaderProgram = new ShaderProgram("Simple.vert", "Simple.frag");
+    
     return true;
 }
 
@@ -51,6 +55,9 @@ void GlRenderer::BeginDraw()
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    if (mShaderProgram != nullptr) mShaderProgram->Use();
+    mVao->SetActive();
 }
 
 void GlRenderer::Draw()
@@ -59,6 +66,7 @@ void GlRenderer::Draw()
 
 void GlRenderer::DrawSprites()
 {
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 void GlRenderer::EndDraw()

@@ -22,7 +22,7 @@ GameEngine::GameEngine(std::string pTitle) :
 void GameEngine::Init()
 {
 	mWindow = new Window(800, 800);
-	mRenderer = new SdlRenderer();
+	mRenderer = new GlRenderer();
 
 	if (mWindow->Open()) 
 	{
