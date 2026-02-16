@@ -16,7 +16,7 @@ bool Texture::LoadSdl(SdlRenderer* renderer, SDL_Surface* surface)
 	return true;
 }
 
-bool Texture::LoadGl(OpenGlRenderer* renderer, SDL_Surface* surface)
+bool Texture::LoadGl(GlRenderer* renderer, SDL_Surface* surface)
 {
 	return false;
 }
@@ -50,7 +50,7 @@ bool Texture::Load(IRenderer* renderer, const std::string& filename)
 	}
 	else
 	{
-		return LoadGl(static_cast<OpenGlRenderer*>(renderer), surface);
+		return LoadGl(static_cast<GlRenderer*>(renderer), surface);
 	}
 	
 	return true;

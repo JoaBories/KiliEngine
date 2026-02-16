@@ -5,7 +5,7 @@
 
 class IRenderer;
 class SdlRenderer;
-class OpenGlRenderer;
+class GlRenderer;
 
 class Texture
 {
@@ -15,7 +15,7 @@ private:
 	SDL_Texture* mSdlTexture;
 	int	  mWidth, mHeight;
 	bool LoadSdl(SdlRenderer* renderer, SDL_Surface* surface);
-	bool LoadGl(OpenGlRenderer* renderer, SDL_Surface* surface);
+	bool LoadGl(GlRenderer* renderer, SDL_Surface* surface);
 
 public:
 

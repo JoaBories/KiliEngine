@@ -3,6 +3,7 @@
 #include "Utils/Struct.h"
 #include "Utils/MathUtils.h"
 #include "SpriteComponent.h"
+#include "OpenGlRenderer.h"
 
 using namespace MathUtils;
 

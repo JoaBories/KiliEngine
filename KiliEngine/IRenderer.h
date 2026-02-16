@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "GameActor.h"
+#include "SDL_image.h"
 
 #include "Utils/Struct.h"
 using Struct::Rectangle;

@@ -1,17 +1,33 @@
 #pragma once
-
 #include "IRenderer.h"
+#include "VertexArray.h"
+#include "glew.h"
 
-class OpenGlRenderer : public IRenderer
+class SpriteComponent;
+
+class GlRenderer : public IRenderer
 {
-	// Inherited via IRenderer
-	bool Initialize(Window& pWindow) override;
-	void Close() override;
+private:
+	Window* mWindow;
+	VertexArray* mVao;
+	SDL_GLContext mContext;
+	std::vector<SpriteComponent*> mSprites;
+public:
+	GlRenderer();
+
+	virtual ~GlRenderer();
+	GlRenderer(const GlRenderer&) = delete;
+	GlRenderer& operator=(const GlRenderer&) = delete;
+
+	bool Initialize(Window& rWindow) override;
 	void BeginDraw() override;
-	void EndDraw() override;
 	void Draw() override;
 	void DrawSprites() override;
-	RendererType GetType() override;
-	void DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override;
-};
+	void EndDraw() override;
+	void Close() override;
 
+	void DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override{};
+	void AddSprite(SpriteComponent* pSprite);
+	void RemoveSprite(SpriteComponent* pSprite);
+	RendererType GetType() override;
+};
