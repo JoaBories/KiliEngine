@@ -5,6 +5,7 @@
 #include "Utils/Struct.h"
 using Struct::Transform2D;
 using Struct::Vector2;
+#include "Transform.h"
 
 class Scene;
 
@@ -28,26 +29,30 @@ class GameActor
 protected:
 	Scene* mScene;
 	ActorState mActiveState;
-	Transform2D mTransform;
+	//Transform2D mTransform;
+	Transform mTransform;
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
 
 public:
 
-	GameActor(Transform2D pTransform, ActorTags pTag = ActorDefault);
+	GameActor(Transform pTransform, ActorTags pTag = ActorDefault);
 	~GameActor();
 
 	GameActor(const GameActor&) = delete;
 	GameActor& operator=(const GameActor&) = delete;
 
-	virtual void Start() = 0;
-	virtual void Update() = 0;
+	void Start();
+	void Update();
+
+	virtual void OnStart() = 0;
+	virtual void OnUpdate() = 0;
 	
-	Transform2D GetTransform() const			{ return mTransform; };
-	void SetTransform(Transform2D pTransform)	{ mTransform = pTransform; };
-	void SetPosition(Vector2 pPosition)			{ mTransform.position = pPosition; };
-	void SetScale(Vector2 pScale)				{ mTransform.scale = pScale; };
-	void SetRotation(float pRotation)			{ mTransform.rotation = pRotation; };
+	Transform* GetTransform()					{ return &mTransform; };
+	void SetTransform(Transform pTransform)		{ mTransform = pTransform; };
+	void SetPosition(Vector3 pPosition)			{ mTransform.SetPosition(pPosition); };
+	void SetScale(Vector3 pScale)				{ mTransform.SetScale(pScale); };
+	void SetRotation(Vector3 pRotation)			{ mTransform.SetRotation(pRotation); };
 
 	void Destroy()								{ mActiveState = ActorState::Dead; };
 	void SetActive(bool pNewActive)				{ mActiveState = pNewActive ? Active : Paused; };

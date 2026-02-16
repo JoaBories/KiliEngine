@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	void Start() override;
-	void Update() override;
+	void OnStart() override;
+	void OnUpdate() override;
 };
 

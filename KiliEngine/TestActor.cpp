@@ -1,10 +1,10 @@
 #include "TestActor.h"
 
-void TestActor::Start()
+void TestActor::OnStart()
 {
 }
 
-void TestActor::Update()
+void TestActor::OnUpdate()
 {
 	for (ActorComponent* comp : mComponents)
 	{

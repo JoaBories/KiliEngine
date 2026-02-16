@@ -146,6 +146,7 @@
     <ClCompile Include="TestActor.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\Matrix4.cpp" />
     <ClCompile Include="Utils\Matrix4Row.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="TestGl.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Utils\Maths.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4.h" />
