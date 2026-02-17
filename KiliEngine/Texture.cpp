@@ -6,7 +6,6 @@
 bool Texture::LoadSdl(SdlRenderer* renderer, SDL_Surface* surface)
 {
 	mSdlTexture = SDL_CreateTextureFromSurface(renderer->GetSdlRenderer(), surface);
-	SDL_FreeSurface(surface);
 	if (!mSdlTexture)
 	{
 		Log::Error(LogType::Render, "Failed to convert surface to texture :" + mFileName);
@@ -55,6 +54,7 @@ bool Texture::Load(IRenderer* renderer, const std::string& filename)
 {
 	mFileName = filename;
 	SDL_Surface* surface = IMG_Load(mFileName.c_str());
+	SDL_Surface* goodFormatSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
 	if (!surface)
 	{
 		Log::Error(LogType::Application, "Failed to load texture file :" + mFileName);
@@ -71,6 +71,9 @@ bool Texture::Load(IRenderer* renderer, const std::string& filename)
 	{
 		return LoadGl(static_cast<GlRenderer*>(renderer), surface);
 	}
+
+	SDL_FreeSurface(surface);
+	SDL_FreeSurface(goodFormatSurface);
 	
 	return true;
 }

@@ -4,9 +4,13 @@
 
 class TestActor : public GameActor
 {
+protected:
+	void OnEarlyUpdate() override;
+
 public:
 	TestActor(Transform transform) :
 		GameActor(transform)
 	{
 	}
+
 };

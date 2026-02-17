@@ -15,6 +15,7 @@ void ActorComponent::Update()
 WorldTransform ActorComponent::GetWorldTransform()
 {
 	UpdateWorldTransform();
+	mWorldTransform.RecomputeWorldTransformMatrix();
 	return mWorldTransform;
 }
 
@@ -23,7 +24,9 @@ void ActorComponent::UpdateWorldTransform()
 	if (mWorldNeedUpdate)
 	{
 		mWorldNeedUpdate = false;
-		mWorldTransform.SetPosition(mOwner->GetTransform().GetPosition() + mLocalTransform.GetPosition());
+		Vector3 positionRotate = mLocalTransform.GetPosition().x * mLocalTransform.GetForwardVector() + mLocalTransform.GetPosition().y * mLocalTransform.GetUpVector() + mLocalTransform.GetPosition().z * mLocalTransform.GetRightVector();
+		Vector3 positionScale = positionRotate * mOwner->GetTransform().GetScale();
+		mWorldTransform.SetPosition(mOwner->GetTransform().GetPosition() + positionScale);
 		mWorldTransform.SetRotation(mOwner->GetTransform().GetRotation() + mLocalTransform.GetRotation());
 		mWorldTransform.SetScale(mOwner->GetTransform().GetScale() * mLocalTransform.GetScale());
 	}

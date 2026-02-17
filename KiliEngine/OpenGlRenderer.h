@@ -3,6 +3,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "glew.h"
+#include "Matrix4Row.h"
 
 class SpriteComponent;
 
@@ -12,6 +13,7 @@ private:
 	Window* mWindow;
 	VertexArray* mVao;
 	ShaderProgram* mShaderProgram;
+	Matrix4Row mViewProj;
 
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;

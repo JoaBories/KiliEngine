@@ -55,7 +55,7 @@ void GameActor::Update()
 	OnLateUpdate();
 }
 
-void GameActor::SetTransform(WorldTransform pTransform)
+void GameActor::SetTransform(Transform pTransform)
 {
 	mTransform = pTransform;
 	UpdateComponentsTransform();

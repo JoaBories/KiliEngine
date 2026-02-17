@@ -4,7 +4,8 @@
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr), mVao(nullptr), 
-    mContext(nullptr), mShaderProgram(nullptr)
+    mContext(nullptr), mShaderProgram(nullptr),
+    mViewProj(Matrix4Row::Identity)
 {
 }
 
@@ -15,6 +16,7 @@ GlRenderer::~GlRenderer()
 bool GlRenderer::Initialize(Window& rWindow)
 {
     mWindow = &rWindow;
+    mViewProj = Matrix4Row::CreateSimpleViewProj(mWindow->GetDimensions().x, mWindow->GetDimensions().y);
 
     //Setting OpenGL attributes
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -55,8 +57,8 @@ void GlRenderer::BeginDraw()
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     if (mShaderProgram != nullptr) mShaderProgram->Use();
+    mShaderProgram->setMatrix4Row("uViewProj", mViewProj);
     mVao->SetActive();
 }
 
@@ -85,6 +87,14 @@ void GlRenderer::Close()
 
 void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
 {
+    Matrix4Row scaleMat = Matrix4Row::CreateScale(
+        pTex.GetWidth(),
+        pTex.GetHeight(),
+        0.0f);
+    Matrix4Row world = scaleMat * pTransform.GetWorldTransformMatrix();
+    
+    mShaderProgram->Use();
+    mShaderProgram->setMatrix4Row("uWorldTransform", world);
     pTex.SetActive();
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

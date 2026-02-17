@@ -1,15 +1,31 @@
 #include "Transform.h"
+#include "MathUtils.h"
 
-#include "GameActor.h"
+using MathUtils::DEG2RAD;
 
 Transform::Transform() :
-	mPosition(Vector3::zero), mRotation(Vector3::zero), mScale(Vector3::unit)
+	mPosition(Vector3::zero), mRotation(Quaternion(Vector3::unitZ, 0)), mScale(Vector3::unit)
 {
 }
 
-Transform::Transform(Vector3 position, Vector3 rotation, Vector3 scale) :
+Transform::Transform(Vector3 position, Quaternion rotation, Vector3 scale) :
 	mPosition(position), mRotation(rotation), mScale(scale)
 {
+}
+
+Vector3 Transform::GetForwardVector() const
+{
+	return Vector3::unitX;
+}
+
+Vector3 Transform::GetUpVector() const
+{
+	return Vector3::unitY;
+}
+
+Vector3 Transform::GetRightVector() const
+{
+	return Vector3::unitZ;
 }
 
 WorldTransform::WorldTransform() :
@@ -22,7 +38,7 @@ WorldTransform::WorldTransform(Transform transform):
 {
 }
 
-WorldTransform::WorldTransform(Vector3 position, Vector3 rotation, Vector3 scale) :
+WorldTransform::WorldTransform(Vector3 position, Quaternion rotation, Vector3 scale) :
 	Transform(position, rotation, scale), mNeedUpdate(true)
 {
 }
@@ -32,9 +48,7 @@ void WorldTransform::RecomputeWorldTransformMatrix()
 	if (!mNeedUpdate) return;
 	mNeedUpdate = false;
 	mWorldTransformMatrix = Matrix4Row::CreateScale(mScale);
-	mWorldTransformMatrix *= Matrix4Row::CreateRotationX(mRotation.x);
-	mWorldTransformMatrix *= Matrix4Row::CreateRotationY(mRotation.y);
-	mWorldTransformMatrix *= Matrix4Row::CreateRotationZ(mRotation.z);
+	mWorldTransformMatrix *= Matrix4Row::CreateFromQuaternion(mRotation);
 	mWorldTransformMatrix *= Matrix4Row::CreateTranslation(mPosition);
 }
 

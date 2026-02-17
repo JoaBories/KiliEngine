@@ -8,22 +8,26 @@ class Transform
 {
 protected:
 	Vector3 mPosition;
-	Vector3 mRotation; //Quaternion mRotation
+	Quaternion mRotation; //Quaternion mRotation
 	Vector3 mScale;
 
 public:
 	Transform();
-	Transform(Vector3 position, Vector3 rotation, Vector3 scale);
+	Transform(Vector3 position, Quaternion rotation, Vector3 scale);
 
 	inline Vector3 GetPosition() const { return mPosition; };
-	inline Vector3 GetRotation() const { return mRotation; };
+	inline Quaternion GetRotation() const { return mRotation; };
 	inline Vector3 GetScale() const { return mScale; };
+
+	Vector3 GetForwardVector() const;
+	Vector3 GetUpVector() const;
+	Vector3 GetRightVector() const;
 
 	inline virtual void SetPosition(const Vector3& newPos) { mPosition = newPos; };
 	inline virtual void AddPosition(const Vector3& movement) { mPosition += movement; };
 
-	inline virtual void SetRotation(const Vector3& newRot) { mRotation = newRot; };
-	inline virtual void AddRotation(const Vector3& rotation) { mRotation += rotation; };
+	inline virtual void SetRotation(const Quaternion& newRot) { mRotation = newRot; };
+	inline virtual void AddRotation(const Quaternion& rotation) { mRotation = Quaternion::Concatenate(mRotation, rotation); };
 
 	inline virtual void SetScale(const Vector3& newScale) { mScale = newScale; };
 };
@@ -37,7 +41,7 @@ private :
 public :
 	WorldTransform();
 	WorldTransform(Transform transform);
-	WorldTransform(Vector3 position, Vector3 rotation, Vector3 scale);
+	WorldTransform(Vector3 position, Quaternion rotation, Vector3 scale);
 
 	inline void SetPosition(const Vector3& newPos) override {
 		mPosition = newPos;
@@ -49,13 +53,13 @@ public :
 		mNeedUpdate = true;
 	};
 
-	inline void SetRotation(const Vector3& newRot) override {
+	inline void SetRotation(const Quaternion& newRot) override {
 		mRotation = newRot;
 		mNeedUpdate = true;
 	};
 
-	inline void AddRotation(const Vector3& rotation) override {
-		mRotation += rotation;
+	inline void AddRotation(const Quaternion& rotation) override {
+		mRotation = Quaternion::Concatenate(mRotation, rotation);
 		mNeedUpdate = true;
 	};
 
