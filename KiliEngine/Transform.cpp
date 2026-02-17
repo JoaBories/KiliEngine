@@ -2,6 +2,18 @@
 
 #include "GameActor.h"
 
+Transform::Transform() :
+	mPosition(Vector3::zero), mRotation(Vector3::zero), mScale(Vector3::unitX),
+	mNeedUpdate(true)
+{
+}
+
+Transform::Transform(Vector3 position, Vector3 rotation, Vector3 scale) :
+	mPosition(position), mRotation(rotation), mScale(scale),
+	mNeedUpdate(true)
+{
+}
+
 void Transform::RecomputeWorldTransform()
 {
 	if (!mNeedUpdate) return;

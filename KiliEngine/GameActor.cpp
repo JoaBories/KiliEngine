@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-GameActor::GameActor(Transform2D transform, ActorTags tag) :
+GameActor::GameActor(Transform transform, ActorTags tag) :
 	mScene(SceneManager::ActiveScene()), mActiveState(Active),
 	mTransform(transform), mTag(tag),
 	mComponents()
@@ -23,6 +23,28 @@ GameActor::~GameActor()
 	}
 
 	mComponents.clear();
+}
+
+void GameActor::Start()
+{
+	for (ActorComponent* component : mComponents)
+	{
+		component->Start();
+	}
+
+	OnStart();
+}
+
+void GameActor::Update()
+{
+	OnEarlyUpdate();
+
+	for (ActorComponent* component : mComponents)
+	{
+		component->Update();
+	}
+
+	OnLateUpdate();
 }
 
 void GameActor::RemoveComponent(ActorComponent* comp)

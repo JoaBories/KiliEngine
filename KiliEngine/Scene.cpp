@@ -23,7 +23,7 @@ void Scene::UpdateAllActors()
 
     for (const auto& actor : mActors)
     {
-        actor->OnUpdate();
+        actor->Update();
     }
 
     mIsUpdatingActors = false;
@@ -31,8 +31,7 @@ void Scene::UpdateAllActors()
 
 void Scene::AddActor(GameActor* actor)
 {
-    actor->SetScene(this);
-    actor->OnStart();
+    actor->Start();
 
     if (mIsUpdatingActors)
     {

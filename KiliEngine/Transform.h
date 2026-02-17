@@ -13,11 +13,13 @@ private :
 	Vector3 mRotation; // Quaternion mRotation;
 	Vector3 mScale;
 
+	Matrix4Row mWorldTransform;
 	bool mNeedUpdate;
 
-	Matrix4Row mWorldTransform;
-
 public :
+
+	Transform();
+	Transform(Vector3 position, Vector3 rotation, Vector3 scale);
 
 	inline Vector3 GetPosition() const	{ return mPosition; };
 	inline Vector3 GetRotation() const	{ return mRotation; };

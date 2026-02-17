@@ -27,12 +27,15 @@ enum ActorTags
 class GameActor
 {
 protected:
-	Scene* mScene;
 	ActorState mActiveState;
-	//Transform2D mTransform;
 	Transform mTransform;
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
+
+	// only called by the base class in Start() and Update()
+	virtual void OnStart() {};
+	virtual void OnEarlyUpdate() {}; // Before components
+	virtual void OnLateUpdate() {};  // After components
 
 public:
 
@@ -44,11 +47,8 @@ public:
 
 	void Start();
 	void Update();
-
-	virtual void OnStart() = 0;
-	virtual void OnUpdate() = 0;
 	
-	Transform* GetTransform()					{ return &mTransform; };
+	Transform GetTransform()					{ return mTransform; };
 	void SetTransform(Transform pTransform)		{ mTransform = pTransform; };
 	void SetPosition(Vector3 pPosition)			{ mTransform.SetPosition(pPosition); };
 	void SetScale(Vector3 pScale)				{ mTransform.SetScale(pScale); };
@@ -60,9 +60,6 @@ public:
 	ActorState GetState() const					{ return mActiveState; };
 
 	ActorTags GetTag() const					{ return mTag; };
-	Scene* GetScene() const						{ return mScene; };
-
-	void SetScene(Scene* pScene)				{ mScene = pScene; };
 
 	void RemoveComponent(ActorComponent* comp) ;
 
