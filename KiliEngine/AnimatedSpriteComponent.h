@@ -4,14 +4,12 @@
 class AnimatedSpriteComponent : public SpriteComponent
 {
 private:
-
 	std::vector<Texture*> mAnimationTextures;
 	float mCurrentFrame;
 	float mAnimFps;
 
 public:
-
-	AnimatedSpriteComponent(GameActor* pOwner, Transform2D pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder = 100);
+	AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder = 100);
 	virtual ~AnimatedSpriteComponent();
 
 	AnimatedSpriteComponent() = delete;
@@ -22,5 +20,5 @@ public:
 	void SetAnimationTextures(const std::vector<Texture*>& pTextures);
 	void SetAnimationFps(float pFps);
 
-	void Update() override;
+	void OnUpdate() override;
 };

@@ -125,6 +125,7 @@ public:
 	static Vector3 Transform(const Vector3& v, const class Quaternion& q);
 
 	static const Vector3 zero;
+	static const Vector3 unit;
 	static const Vector3 unitX;
 	static const Vector3 unitY;
 	static const Vector3 unitZ;

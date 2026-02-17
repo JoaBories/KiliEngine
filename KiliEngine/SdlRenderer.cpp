@@ -80,14 +80,13 @@ void SdlRenderer::RemoveSprite(SpriteComponent* pSprite)
 	mSpriteComponents.erase(sc);
 }
 
-void SdlRenderer::DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
+void SdlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const
 {
 	SDL_Rect destinationRect;
-	Transform2D transform = pActor->GetTransform();
-	destinationRect.w = static_cast<int>(pTex.GetWidth() * transform.scale.x);
-	destinationRect.h = static_cast<int>(pTex.GetHeight() * transform.scale.y);
-	destinationRect.x = static_cast<int>(transform.position.x - pOrigin.x);
-	destinationRect.y = static_cast<int>(transform.position.y - pOrigin.y);
+	destinationRect.w = static_cast<int>(pTex.GetWidth() * pTransform.GetScale().x);
+	destinationRect.h = static_cast<int>(pTex.GetHeight() * pTransform.GetScale().y);
+	destinationRect.x = static_cast<int>(pTransform.GetPosition().x - pOrigin.x);
+	destinationRect.y = static_cast<int>(pTransform.GetPosition().y - pOrigin.y);
 
 	SDL_Rect* sourceSDL = nullptr;
 	if (pSourceRect != Rectangle::Null)
@@ -99,7 +98,7 @@ void SdlRenderer::DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle p
 		pTex.GetTexture(),
 		sourceSDL,
 		&destinationRect,
-		-transform.rotation,
+		-pTransform.GetRotation().z,
 		nullptr,
 		flip);
 

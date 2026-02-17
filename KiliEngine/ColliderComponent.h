@@ -3,13 +3,13 @@
 class ColliderComponent : public ActorComponent
 {
 public:
-    ColliderComponent(GameActor* owner, short updateOrder = 50)
-        : ActorComponent(owner, updateOrder)
+    ColliderComponent(GameActor* owner, Transform transform, short updateOrder = 50)
+        : ActorComponent(owner, transform, updateOrder)
     {
     }
 
     virtual ~ColliderComponent() = default;
 
-    void Update() override {};
+    void OnUpdate() override {};
 };
 

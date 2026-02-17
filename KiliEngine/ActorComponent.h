@@ -1,23 +1,32 @@
 #pragma once
 
+#include "Transform.h"
+
 class GameActor;
 
 class ActorComponent
 {
-protected:
+private:
 	bool mIsActive;
+	bool mWorldNeedUpdate;
 	short mUpdateOrder;
 	GameActor* mOwner;
-	Transform mTransform; // relative transform from owner
+	Transform mLocalTransform;
+	WorldTransform mWorldTransform;
+
+protected:
+	virtual void OnStart() {};
+	virtual void OnUpdate() = 0;
+	virtual void OnEnd() {};
 
 public:
-
 	ActorComponent() = delete;
 	virtual ~ActorComponent() { OnEnd(); };
 
-	ActorComponent(GameActor* owner, short updateOrder = 100) :
+	ActorComponent(GameActor* owner, Transform transform, short updateOrder = 100) :
 		mIsActive(true), mUpdateOrder(updateOrder),
-		mOwner(owner)
+		mOwner(owner),
+		mLocalTransform(transform), mWorldNeedUpdate(true)
 	{
 	}
 
@@ -27,15 +36,14 @@ public:
 	void Start();
 	void Update();
 
-	virtual void OnStart() {};
-	virtual void Update() = 0;
-	virtual void OnEnd() {};
-
-	Transform GetTransform() { return mTransform; };
-	void SetTransform(Transform pTransform) { mTransform = pTransform; };
-	void SetPosition(Vector3 pPosition) { mTransform.SetPosition(pPosition); };
-	void SetScale(Vector3 pScale) { mTransform.SetScale(pScale); };
-	void SetRotation(Vector3 pRotation) { mTransform.SetRotation(pRotation); };
+	Transform GetLocalTransform() const { return mLocalTransform; };
+	WorldTransform GetWorldTransform();
+	void UpdateWorldTransform();
+	void UpdatedOwnerTransform() { mWorldNeedUpdate = true; };
+	void SetLocalTransform(Transform pTransform);
+	void SetLocalPosition(Vector3 pPosition);
+	void SetLocalScale(Vector3 pScale);
+	void SetLocalRotation(Vector3 pRotation);
 
 	bool IsActive() const			{ return mIsActive; };
 	void SetActive(bool newActive)	{ mIsActive = newActive; };

@@ -9,13 +9,13 @@ class BoxCollider2D : public ColliderComponent
 {
 
 private:
-	Rectangle mBoxCollider; // center is local offset
+	Rectangle mBoxCollider;
 	float mRadius;
 
 public:
 
-	BoxCollider2D(GameActor* owner, short updatePriority, Rectangle box) :
-		ColliderComponent(owner, updatePriority),
+	BoxCollider2D(GameActor* owner, Transform transform, Rectangle box, short updatePriority = 50) :
+		ColliderComponent(owner, transform, updatePriority),
 		mBoxCollider(box)
 	{
 		mRadius = mBoxCollider.GetRadius();
@@ -30,6 +30,6 @@ public:
 
 	float GetRadius() const { return mRadius; };
 
-	Vector2 Collide(BoxCollider2D* other) const;
+	Vector2 Collide(BoxCollider2D* other);
 };
 

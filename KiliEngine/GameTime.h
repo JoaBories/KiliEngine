@@ -3,13 +3,13 @@
 #include <algorithm>
 #include <SDL_timer.h>
 
-class Time
+class GameTime
 {
 
 public:
-	Time() = default;
-	Time(const Time&) = delete;
-	Time& operator=(const Time&) = delete;
+	GameTime() = default;
+	GameTime(const GameTime&) = delete;
+	GameTime& operator=(const GameTime&) = delete;
 
 	inline static unsigned int ComputeDeltaTime() {
 		mFrameStart = SDL_GetTicks();

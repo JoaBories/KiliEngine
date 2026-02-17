@@ -1,8 +1,12 @@
 #include "Vector3.h"
 #include "Matrix4.h"
 #include "Quaternion.h"
+#include "Struct.h"
 
-const Vector3 Vector3::zero(0.0f, 0.0f, 0.f);
+using Struct::Vector2;
+
+const Vector3 Vector3::zero(0.0f, 0.0f, 0.0f);
+const Vector3 Vector3::unit(1.0f, 1.0f, 1.0f);
 const Vector3 Vector3::unitX(1.0f, 0.0f, 0.0f);
 const Vector3 Vector3::unitY(0.0f, 1.0f, 0.0f);
 const Vector3 Vector3::unitZ(0.0f, 0.0f, 1.0f);
@@ -36,8 +40,6 @@ void Vector3::Normalize()
 	y /= len;
 	z /= len;
 }
-
-
 
 Vector3 Vector3::Transform(Vector3& vec, Matrix4& mat, float w)
 {

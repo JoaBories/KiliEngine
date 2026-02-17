@@ -10,7 +10,6 @@ using Struct::Vector2;
 class SpriteComponent : public ActorComponent
 {
 protected:
-	Transform2D mTransform;
 	Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;
@@ -18,7 +17,7 @@ protected:
 	bool mFlipX;
 
 public:
-	SpriteComponent(GameActor* pOwner, Transform2D pTransform, Texture* pTexture, int pDrawOrder = 100);
+	SpriteComponent(GameActor* pOwner, Transform pTransform, Texture* pTexture, int pDrawOrder = 100);
 	virtual ~SpriteComponent();
 
 	SpriteComponent() = delete;
@@ -36,6 +35,6 @@ public:
 	int GetTexHeight() const { return mTexHeight; }
 
 	// Inherited via ActorComponent
-	void Update() override;
+	void OnUpdate() override;
 };
 

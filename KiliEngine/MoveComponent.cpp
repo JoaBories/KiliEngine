@@ -1,33 +1,31 @@
 #include "MoveComponent.h"
 #include "Utils/MathUtils.h"
 #include "GameActor.h"
-#include "Time.h"
+#include "GameTime.h"
 #include "Log.h"
 
-MoveComponent::MoveComponent(GameActor* pOwner, int pUpdateOrder) :
-	ActorComponent(pOwner, pUpdateOrder),
-	mVelocity(Vector2::zero)
+MoveComponent::MoveComponent(GameActor* pOwner, Transform pTransform, int pUpdateOrder) :
+	ActorComponent(pOwner, pTransform, pUpdateOrder),
+	mVelocity(Vector3::zero)
 {
 }
 
-void MoveComponent::SetVelocity(Vector2 pVelocity)
+void MoveComponent::SetVelocity(Vector3 pVelocity)
 {
 	mVelocity = pVelocity;
 }
 
-void MoveComponent::AddVelocity(Vector2 pVelocity)
+void MoveComponent::AddVelocity(Vector3 pVelocity)
 {
 	mVelocity += pVelocity;
 }
 
-void MoveComponent::Update()
+void MoveComponent::OnUpdate()
 {
-	if (!MathUtils::NearZero(mVelocity.sqrLength()))
+	if (!MathUtils::NearZero(mVelocity.LengthSq()))
 	{
-		Transform2D ownTransform = mOwner->GetTransform();
-		Vector2 newPos = ownTransform.position;
-		newPos += ownTransform.Up() * mVelocity.y * Time::deltaTime;
-		newPos += ownTransform.Right() * mVelocity.x * Time::deltaTime;
-		mOwner->SetPosition(newPos);
+		Vector3 displacement;
+		displacement += mVelocity * GameTime::deltaTime;
+		GetOwner()->AddPosition(displacement);
 	}
 }

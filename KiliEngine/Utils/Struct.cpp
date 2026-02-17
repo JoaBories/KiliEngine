@@ -4,6 +4,8 @@
 using namespace MathUtils;
 using namespace Struct;
 
+#include "Transform.h"
+
 float Struct::OverlapOnAxis(const std::vector<Vector2>& a, const std::vector<Vector2>& b, Vector2 axis)
 {
 	float aMin = FLT_MAX, aMax = -FLT_MAX;
@@ -190,6 +192,17 @@ bool Rectangle::ContainPoint(const Vector2& point) const
 
 	//Same as AABB but there is just onepoint so the max and the min are the same
 	return point.x >= aMin.x && point.x <= aMax.x && point.y >= aMin.y && point.y <= aMax.y;
+}
+
+Rectangle Rectangle::toObjectSpace(const Transform& transform) const
+{
+	Rectangle result = *this;
+	result.center.x += transform.GetPosition().x;
+	result.center.y += transform.GetPosition().y;
+	result.halfSize.x *= transform.GetScale().x;
+	result.halfSize.y *= transform.GetScale().y;
+	result.rotation += transform.GetRotation().z;
+	return result;
 }
 
 Vector2 Rectangle::CheckOBB(const Rectangle& other) const

@@ -1,7 +1,7 @@
 #include "GameEngine.h"
 #include <iostream>
 #include "Log.h"
-#include "Time.h"
+#include "GameTime.h"
 #include "Inputs.h"
 
 GameEngine::GameEngine(std::string pTitle) :
@@ -39,14 +39,14 @@ void GameEngine::Loop()
 {
 	while (mIsRunning)
 	{
-		Time::ComputeDeltaTime();
+		GameTime::ComputeDeltaTime();
 
 		CheckForInputs();
 		Update();
 
 		Render();
 
-		Time::DelayTime();
+		GameTime::DelayTime();
 	}
 
 	Close();

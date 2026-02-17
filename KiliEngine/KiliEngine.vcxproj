@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir)Utils;$(ProjectDir)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
@@ -145,7 +146,7 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="TestActor.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="Time.cpp" />
+    <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\Matrix4.cpp" />
@@ -178,7 +179,7 @@
     <ClInclude Include="TestActor.h" />
     <ClInclude Include="TestGl.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Time.h" />
+    <ClInclude Include="GameTime.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Utils\Maths.h" />
     <ClInclude Include="Utils\MathUtils.h" />

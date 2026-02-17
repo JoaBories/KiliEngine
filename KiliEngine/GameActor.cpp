@@ -5,10 +5,16 @@
 #include <algorithm>
 #include <vector>
 
-GameActor::GameActor(Transform transform, ActorTags tag) :
-	mScene(SceneManager::ActiveScene()), mActiveState(Active),
-	mTransform(transform), mTag(tag),
-	mComponents()
+void GameActor::UpdateComponentsTransform()
+{
+	for (ActorComponent* component : mComponents)
+	{
+		component->UpdatedOwnerTransform();
+	}
+}
+
+GameActor::GameActor(WorldTransform transform, ActorTags tag) :
+	mActiveState(WaitingStart), mTransform(transform), mTag(tag)
 {
 };
 
@@ -27,6 +33,8 @@ GameActor::~GameActor()
 
 void GameActor::Start()
 {
+	mActiveState = Active;
+
 	for (ActorComponent* component : mComponents)
 	{
 		component->Start();
@@ -45,6 +53,36 @@ void GameActor::Update()
 	}
 
 	OnLateUpdate();
+}
+
+void GameActor::SetTransform(WorldTransform pTransform)
+{
+	mTransform = pTransform;
+	UpdateComponentsTransform();
+}
+
+void GameActor::AddPosition(Vector3 pPosition)
+{
+	mTransform.AddPosition(pPosition);
+	UpdateComponentsTransform();
+}
+
+void GameActor::SetPosition(Vector3 pPosition)
+{
+	mTransform.SetPosition(pPosition);
+	UpdateComponentsTransform();
+}
+
+void GameActor::SetScale(Vector3 pScale)
+{
+	mTransform.SetScale(pScale);
+	UpdateComponentsTransform();
+}
+
+void GameActor::SetRotation(Vector3 pRotation)
+{
+	mTransform.SetRotation(pRotation);
+	UpdateComponentsTransform();
 }
 
 void GameActor::RemoveComponent(ActorComponent* comp)

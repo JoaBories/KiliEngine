@@ -11,6 +11,7 @@ class Scene;
 
 enum ActorState
 {
+	WaitingStart,
 	Active,
 	Paused,
 	Dead
@@ -26,20 +27,23 @@ enum ActorTags
 
 class GameActor
 {
-protected:
+private:
 	ActorState mActiveState;
-	Transform mTransform;
+	WorldTransform mTransform;
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
 
+protected:
 	// only called by the base class in Start() and Update()
 	virtual void OnStart() {};
 	virtual void OnEarlyUpdate() {}; // Before components
 	virtual void OnLateUpdate() {};  // After components
 
+	void UpdateComponentsTransform();
+
 public:
 
-	GameActor(Transform pTransform, ActorTags pTag = ActorDefault);
+	GameActor(WorldTransform pTransform, ActorTags pTag = ActorDefault);
 	~GameActor();
 
 	GameActor(const GameActor&) = delete;
@@ -48,11 +52,12 @@ public:
 	void Start();
 	void Update();
 	
-	Transform GetTransform()					{ return mTransform; };
-	void SetTransform(Transform pTransform)		{ mTransform = pTransform; };
-	void SetPosition(Vector3 pPosition)			{ mTransform.SetPosition(pPosition); };
-	void SetScale(Vector3 pScale)				{ mTransform.SetScale(pScale); };
-	void SetRotation(Vector3 pRotation)			{ mTransform.SetRotation(pRotation); };
+	WorldTransform GetTransform() const				{ return mTransform; };
+	void SetTransform(WorldTransform pTransform);
+	void AddPosition(Vector3 pPosition);
+	void SetPosition(Vector3 pPosition);
+	void SetScale(Vector3 pScale);
+	void SetRotation(Vector3 pRotation);
 
 	void Destroy()								{ mActiveState = ActorState::Dead; };
 	void SetActive(bool pNewActive)				{ mActiveState = pNewActive ? Active : Paused; };
@@ -64,8 +69,8 @@ public:
 	void RemoveComponent(ActorComponent* comp) ;
 
 	void AddComponent(ActorComponent* comp) {
+		if (mActiveState != WaitingStart) comp->Start();
 		mComponents.push_back(comp);
-		comp->OnStart();
 	};
 
 	template<typename T> T* GetComponent() const

@@ -9,7 +9,10 @@
 // -rm for right member
 // -i use rotation in degrees
 
+class Transform;
+
 namespace Struct {
+
 
 	//Vector2 with lot of function and operators for easy use | Int version if needed for integral coordinates
 	struct Vector2
@@ -126,7 +129,7 @@ namespace Struct {
 
 		bool ContainPoint(const Vector2& point) const;	// ignore rot
 
-		inline Rectangle toObjectSpace(const Transform2D& transform) const { return { transform.position + center * transform.scale, transform.scale * halfSize, transform.rotation + rotation }; };
+		Rectangle toObjectSpace(const Transform& transform) const;
 
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};

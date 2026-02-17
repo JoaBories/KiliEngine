@@ -1,23 +1,21 @@
 #include "SpriteComponent.h"
 #include "GameActor.h"
-#include "Scene.h"
+#include "SceneManager.h"
 #include "Log.h"
 #include "SDL_image.h"
 
-using Struct::Transform2D;
-
-SpriteComponent::SpriteComponent(GameActor* pOwner, Transform2D pTransform, Texture* pTexture, int pDrawOrder) :
-	ActorComponent(pOwner),
+SpriteComponent::SpriteComponent(GameActor* pOwner, Transform pTransform, Texture* pTexture, int pDrawOrder) :
+	ActorComponent(pOwner, pTransform),
 	mTexture(pTexture), mDrawOrder(pDrawOrder),
-	mTransform(pTransform), mFlipX(false)
+	mFlipX(false)
 {
 	mTexture->UpdateInfo(mTexWidth, mTexHeight);
-	mOwner->GetScene()->GetRenderer()->AddSprite(this);
+	SceneManager::ActiveScene()->GetRenderer()->AddSprite(this);
 }
 
 SpriteComponent::~SpriteComponent()
 {
-	mOwner->GetScene()->GetRenderer()->RemoveSprite(this);
+	SceneManager::ActiveScene()->GetRenderer()->RemoveSprite(this);
 }
 
 void SpriteComponent::SetTexture(Texture* pTexture)
@@ -29,9 +27,9 @@ void SpriteComponent::SetTexture(Texture* pTexture)
 void SpriteComponent::Draw(IRenderer* pRenderer)
 {
 	Vector2 origin{ mTexWidth / 2.0f, mTexHeight / 2.0f };
-	pRenderer->DrawSprite(mOwner, *mTexture, Rectangle(), origin, (mFlipX) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+	pRenderer->DrawSprite(GetOwner(), GetWorldTransform(), *mTexture, Rectangle(), origin, (mFlipX) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
 
-void SpriteComponent::Update()
+void SpriteComponent::OnUpdate()
 {
 }

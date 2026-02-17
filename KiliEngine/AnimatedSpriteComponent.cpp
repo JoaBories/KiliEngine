@@ -1,9 +1,9 @@
 #include "AnimatedSpriteComponent.h"
 
-#include "Time.h"
+#include "GameTime.h"
 #include "Log.h"
 
-AnimatedSpriteComponent::AnimatedSpriteComponent(GameActor* pOwner, Transform2D pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder) :
+AnimatedSpriteComponent::AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder) :
 	SpriteComponent(pOwner, pTransform, pTexture[0], pDrawOrder), mCurrentFrame(0.0f), mAnimFps(pFps)
 {
 	SetAnimationTextures(pTexture);
@@ -26,13 +26,13 @@ void AnimatedSpriteComponent::SetAnimationFps(float pFps)
 	mAnimFps = pFps;
 }
 
-void AnimatedSpriteComponent::Update()
+void AnimatedSpriteComponent::OnUpdate()
 {
 	SpriteComponent::Update();
 
 	if (mAnimationTextures.size() == 0) return; // do nothing if there is no anim
 
-	mCurrentFrame += mAnimFps * Time::deltaTime;
+	mCurrentFrame += mAnimFps * GameTime::deltaTime;
 	while (mCurrentFrame >= mAnimationTextures.size()) // time modulo frame number
 	{
 		mCurrentFrame -= mAnimationTextures.size();

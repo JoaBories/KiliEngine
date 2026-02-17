@@ -18,9 +18,9 @@ public:
 	};
 
 	void OnStart() override {
-		TestActor* test = new TestActor(Transform2D::one);
+		TestActor* test = new TestActor(Transform(Vector3(400, 400, 0), Vector3(0,0,0), Vector3(1,1,1)));
 
-		test->AddComponent(new SpriteComponent(test, Transform2D::one, AssetManager::GetTexture("pokeball")));
+		test->AddComponent(new SpriteComponent(test, Transform(), AssetManager::GetTexture("pokeball")));
 		AddActor(test);
 	};
 

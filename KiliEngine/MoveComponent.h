@@ -1,26 +1,24 @@
 #pragma once
 
 #include "ActorComponent.h"
-#include "Utils/Struct.h"
-
-using Struct::Vector2;
+#include "Vector3.h"
 
 class MoveComponent : public ActorComponent
 {
 protected:
-	Vector2 mVelocity;
+	Vector3 mVelocity;
 
 public:
-	MoveComponent(GameActor* pOwner, int pUpdateOrder = 100);
+	MoveComponent(GameActor* pOwner, Transform pTransform, int pUpdateOrder = 100);
 
 	MoveComponent() = delete;
 	MoveComponent(const MoveComponent&) = delete;
 	MoveComponent& operator= (const MoveComponent&) = delete;
 
-	Vector2 GetVelocity() const { return mVelocity; }
-	void SetVelocity(Vector2 pVelocity);
-	void AddVelocity(Vector2 pVelocity);
+	Vector3 GetVelocity() const { return mVelocity; }
+	void SetVelocity(Vector3 pVelocity);
+	void AddVelocity(Vector3 pVelocity);
 
-	void Update() override;
+	void OnUpdate() override;
 };
 

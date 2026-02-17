@@ -3,10 +3,10 @@
 #include "Window.h"
 #include "GameActor.h"
 #include "SDL_image.h"
+#include "Transform.h"
 
 #include "Utils/Struct.h"
 using Struct::Rectangle;
-using Struct::Transform2D;
 
 class Texture;
 class SpriteComponent;
@@ -31,7 +31,7 @@ public:
 	virtual void Draw() = 0;
 	virtual void DrawSprites() = 0;
 	virtual RendererType GetType() = 0;
-	virtual void DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const = 0;
+	virtual void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const = 0;
 	virtual void AddSprite(SpriteComponent* pSprite) = 0;
 	virtual void RemoveSprite(SpriteComponent* pSprite) = 0;
 };

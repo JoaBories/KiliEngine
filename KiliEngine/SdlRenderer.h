@@ -22,7 +22,7 @@ public:
 	void DrawSprites() override;
 	void Close() override;
 
-	void DrawSprite(GameActor* pActor, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override;
+	void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override;
 	void AddSprite(SpriteComponent* pSprite) override;
 	void RemoveSprite(SpriteComponent* pSprite) override;
 	RendererType GetType() override;
