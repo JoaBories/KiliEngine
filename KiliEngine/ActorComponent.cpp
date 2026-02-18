@@ -24,11 +24,10 @@ void ActorComponent::UpdateWorldTransform()
 	if (mWorldNeedUpdate)
 	{
 		mWorldNeedUpdate = false;
-		Vector3 positionRotate = mLocalTransform.GetPosition().x * mLocalTransform.GetForwardVector() + mLocalTransform.GetPosition().y * mLocalTransform.GetUpVector() + mLocalTransform.GetPosition().z * mLocalTransform.GetRightVector();
-		Vector3 positionScale = positionRotate * mOwner->GetTransform().GetScale();
-		mWorldTransform.SetPosition(mOwner->GetTransform().GetPosition() + positionScale);
-		mWorldTransform.SetRotation(mOwner->GetTransform().GetRotation() + mLocalTransform.GetRotation());
-		mWorldTransform.SetScale(mOwner->GetTransform().GetScale() * mLocalTransform.GetScale());
+		WorldTransform ownerTransform = mOwner->GetTransform();
+		mWorldTransform.SetPosition(ownerTransform.GetWorldTransformMatrix().TransformVector3(mLocalTransform.GetPosition()));
+		mWorldTransform.SetRotation(Quaternion::Concatenate(ownerTransform.GetRotation(), mLocalTransform.GetRotation()));
+		mWorldTransform.SetScale(ownerTransform.GetScale() * mLocalTransform.GetScale());
 	}
 }
 
@@ -50,7 +49,7 @@ void ActorComponent::SetLocalScale(Vector3 pScale)
 	mWorldNeedUpdate = true;
 }
 
-void ActorComponent::SetLocalRotation(Vector3 pRotation)
+void ActorComponent::SetLocalRotation(Quaternion pRotation)
 {
 	mLocalTransform.SetRotation(pRotation);
 	mWorldNeedUpdate = true;

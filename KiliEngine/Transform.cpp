@@ -1,7 +1,4 @@
 #include "Transform.h"
-#include "MathUtils.h"
-
-using MathUtils::DEG2RAD;
 
 Transform::Transform() :
 	mPosition(Vector3::zero), mRotation(Quaternion(Vector3::unitZ, 0)), mScale(Vector3::unit)

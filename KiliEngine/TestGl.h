@@ -20,7 +20,7 @@ public:
 	};
 
 	void OnStart() override {
-		TestActor* test = new TestActor(Transform(Vector3(0, 0, 0), Vector3(0,0,0), Vector3(1,1,1)));
+		TestActor* test = new TestActor(Transform(Vector3(0, 0, 0), Quaternion(Vector3::unitX, 0), Vector3(1, 1, 1)));
 
 		test->AddComponent(new SpriteComponent(test, Transform(), AssetManager::GetTexture("rock")));
 		AddActor(test);

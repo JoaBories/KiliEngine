@@ -43,7 +43,7 @@ public:
 	void SetLocalTransform(Transform pTransform);
 	void SetLocalPosition(Vector3 pPosition);
 	void SetLocalScale(Vector3 pScale);
-	void SetLocalRotation(Vector3 pRotation);
+	void SetLocalRotation(Quaternion pRotation);
 
 	bool IsActive() const			{ return mIsActive; };
 	void SetActive(bool newActive)	{ mIsActive = newActive; };

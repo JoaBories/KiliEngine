@@ -29,7 +29,7 @@ class GameActor
 {
 private:
 	ActorState mActiveState;
-	Transform mTransform;
+	WorldTransform mTransform;
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
 
@@ -52,12 +52,12 @@ public:
 	void Start();
 	void Update();
 	
-	Transform GetTransform() const				{ return mTransform; };
-	void SetTransform(Transform pTransform);
+	WorldTransform GetTransform();
+	void SetTransform(WorldTransform pTransform);
 	void AddPosition(Vector3 pPosition);
 	void SetPosition(Vector3 pPosition);
 	void SetScale(Vector3 pScale);
-	void SetRotation(Vector3 pRotation);
+	void SetRotation(Quaternion pRotation);
 
 	void Destroy()								{ mActiveState = ActorState::Dead; };
 	void SetActive(bool pNewActive)				{ mActiveState = pNewActive ? Active : Paused; };

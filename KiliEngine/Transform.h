@@ -23,6 +23,7 @@ public:
 	Vector3 GetUpVector() const;
 	Vector3 GetRightVector() const;
 
+
 	inline virtual void SetPosition(const Vector3& newPos) { mPosition = newPos; };
 	inline virtual void AddPosition(const Vector3& movement) { mPosition += movement; };
 

@@ -55,7 +55,13 @@ void GameActor::Update()
 	OnLateUpdate();
 }
 
-void GameActor::SetTransform(Transform pTransform)
+WorldTransform GameActor::GetTransform()
+{
+	mTransform.RecomputeWorldTransformMatrix();
+	return mTransform;
+}
+
+void GameActor::SetTransform(WorldTransform pTransform)
 {
 	mTransform = pTransform;
 	UpdateComponentsTransform();
@@ -79,7 +85,7 @@ void GameActor::SetScale(Vector3 pScale)
 	UpdateComponentsTransform();
 }
 
-void GameActor::SetRotation(Vector3 pRotation)
+void GameActor::SetRotation(Quaternion pRotation)
 {
 	mTransform.SetRotation(pRotation);
 	UpdateComponentsTransform();

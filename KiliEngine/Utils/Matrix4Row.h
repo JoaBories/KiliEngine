@@ -140,6 +140,17 @@ public:
 		return *this;
 	}
 
+	Vector3 TransformVector3(const Vector3& vector, bool IsAPoint = true) const
+	{
+		Vector3 result;
+
+		result.x = vector.x * mat[0][0] + vector.y * mat[1][0] + vector.z * mat[2][0] + IsAPoint * mat[3][0];
+		result.y = vector.x * mat[0][1] + vector.y * mat[1][1] + vector.z * mat[2][1] + IsAPoint * mat[3][1];
+		result.z = vector.x * mat[0][2] + vector.y * mat[1][2] + vector.z * mat[2][2] + IsAPoint * mat[3][2];
+
+		return result;
+	}
+
 	// Invert the matrix - super slow
 	void Invert();
 
