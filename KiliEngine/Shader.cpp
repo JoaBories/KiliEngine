@@ -94,6 +94,12 @@ void ShaderProgram::Use()
     glUseProgram(mId);
 }
 
+void ShaderProgram::Unload()
+{
+    glDeleteShader(mVertex.id);
+    glDeleteShader(mFragment.id);
+}
+
 #pragma region Uniforms
 
 void ShaderProgram::setBool(const std::string& name, bool value)

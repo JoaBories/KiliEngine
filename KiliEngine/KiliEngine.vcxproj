@@ -131,10 +131,12 @@
   <ItemGroup>
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
+    <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OpenGlRenderer.cpp" />
     <ClCompile Include="SdlRenderer.cpp" />
     <ClCompile Include="Inputs.cpp" />
@@ -161,12 +163,14 @@
   <ItemGroup>
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="AnimatedSpriteComponent.h" />
+    <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="OpenGlRenderer.h" />
     <ClInclude Include="SdlRenderer.h" />
     <ClInclude Include="Inputs.h" />

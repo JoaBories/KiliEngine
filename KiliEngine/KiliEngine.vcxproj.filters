@@ -126,9 +126,6 @@
     <ClCompile Include="VertexArray.cpp">
       <Filter>Source Files\Engine\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Engine\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="TestActor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -137,6 +134,15 @@
     </ClCompile>
     <ClCompile Include="ActorComponent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Engine\Assets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,9 +230,6 @@
     <ClInclude Include="VertexArray.h">
       <Filter>Header Files\Engine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files\Engine\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="TestGl.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -235,6 +238,15 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Engine\Assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

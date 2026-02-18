@@ -52,6 +52,8 @@ public:
     // use/activate the shader
     void Use();
 
+    void Unload();
+
     // utility uniform functions
     void setBool(const std::string& name, bool value);
     void setInt(const std::string& name, int value);

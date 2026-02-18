@@ -45,7 +45,7 @@ bool GlRenderer::Initialize(Window& rWindow)
         Log::Error(LogType::Video, "Failed to initialize SDL_Image");
     }
 
-    mVao = new VertexArray(vertices, 4, indices, 6);
+    mVao = new VertexArray(planeVertices, 4, planeIndices, 6);
     mShaderProgram = new ShaderProgram("Simple.vert", "Simple.frag");
     
     return true;
