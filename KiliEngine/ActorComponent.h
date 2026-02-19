@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Transform.h"
 
 class GameActor;
@@ -15,18 +17,18 @@ private:
 	WorldTransform mWorldTransform;
 
 protected:
-	virtual void OnStart() {};
+	virtual void OnStart() {}
 	virtual void OnUpdate() = 0;
-	virtual void OnEnd() {};
+	virtual void OnEnd() {}
 
 public:
 	ActorComponent() = delete;
-	virtual ~ActorComponent() { OnEnd(); };
+	virtual ~ActorComponent() { ActorComponent::OnEnd(); }
 
-	ActorComponent(GameActor* owner, Transform transform, short updateOrder = 100) :
-		mIsActive(true), mUpdateOrder(updateOrder),
-		mOwner(owner),
-		mLocalTransform(transform), mWorldNeedUpdate(true)
+	ActorComponent(GameActor* pOwner, Transform pTransform, const short pUpdateOrder = 100) :
+		mIsActive(true), mWorldNeedUpdate(true),
+		mUpdateOrder(pUpdateOrder),
+		mOwner(pOwner), mLocalTransform(std::move(pTransform))
 	{
 	}
 
@@ -36,19 +38,19 @@ public:
 	void Start();
 	void Update();
 
-	Transform GetLocalTransform() const { return mLocalTransform; };
+	Transform GetLocalTransform() const { return mLocalTransform; }
 	WorldTransform GetWorldTransform();
 	void UpdateWorldTransform();
-	void UpdatedOwnerTransform() { mWorldNeedUpdate = true; };
-	void SetLocalTransform(Transform pTransform);
-	void SetLocalPosition(Vector3 pPosition);
-	void SetLocalScale(Vector3 pScale);
-	void SetLocalRotation(Quaternion pRotation);
+	void UpdatedOwnerTransform() { mWorldNeedUpdate = true; }
+	void SetLocalTransform(const Transform& pTransform);
+	void SetLocalPosition(const Vector3& pPosition);
+	void SetLocalScale(const Vector3& pScale);
+	void SetLocalRotation(const Quaternion& pRotation);
 
-	bool IsActive() const			{ return mIsActive; };
-	void SetActive(bool newActive)	{ mIsActive = newActive; };
+	bool IsActive() const			{ return mIsActive; }
+	void SetActive(const bool pNewActive)	{ mIsActive = pNewActive; }
 
-	short GetUpdateOrder() const	{ return mUpdateOrder; };
-	GameActor* GetOwner() const		{ return mOwner; };
+	short GetUpdateOrder() const	{ return mUpdateOrder; }
+	GameActor* GetOwner() const		{ return mOwner; }
 };
 

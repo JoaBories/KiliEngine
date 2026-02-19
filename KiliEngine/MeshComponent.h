@@ -7,11 +7,17 @@ class MeshComponent : public ActorComponent
 protected:
 	Mesh* mMesh;
 	size_t mTextureIndex;
+	
+	void OnUpdate() override;
+	
 public:
-	MeshComponent(GameActor* pOwner, Transform pTransform);
-	virtual ~MeshComponent();
-	virtual void Draw(Matrix4Row viewProj);
+	MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh);
+	~MeshComponent() override;
+	
+	virtual void Draw(Matrix4Row pViewProj);
 	virtual void SetMesh(Mesh& pMesh);
+	Mesh* GetMesh() const { return mMesh; }
 	void SetTextureIndex(size_t pTextureIndex);
+
 };
 

@@ -107,6 +107,6 @@ void SdlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const
 
 RendererType SdlRenderer::GetType()
 {
-	return SDL;
+	return Sdl;
 }
 

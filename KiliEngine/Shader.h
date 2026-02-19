@@ -11,19 +11,17 @@ using Struct::Vector2;
 #include "Utils/Matrix4.h"
 #include "Utils/Matrix4Row.h"
 
-const std::string SHADER_PATH = "Resources/Shaders/";
-
-enum ShaderType
+enum ShaderType : Uint8
 {
-    VERTEX,
-    FRAGMENT
+    Vertex,
+    Fragment
 };
 
 struct Shader
 {
-    std::string code;
-    unsigned int id;
-    ShaderType type;
+    std::string Code;
+    unsigned int Id;
+    ShaderType Type;
 
     Shader() = default;
     Shader(std::string pCode, ShaderType pType);
@@ -33,7 +31,7 @@ class ShaderProgram
 {
 private:
 	std::string ReadFile(std::string fileName);
-    bool Compile(unsigned int shaderId);
+    bool Compile(unsigned int pShaderId);
 
     // the program ID
     unsigned int mId;
@@ -43,11 +41,11 @@ private:
 
 public:
     // constructor reads and builds the shader
-    ShaderProgram(const char* vertexName, const char* fragmentName);
+    ShaderProgram(const char* pVertexName, const char* pFragmentName);
 
-    unsigned int GetId() const { return mId; };
-    Shader GetVertex() const { return mVertex; };
-    Shader GetFragment() const { return mFragment; };
+    unsigned int GetId() const { return mId; }
+    Shader GetVertex() const { return mVertex; }
+    Shader GetFragment() const { return mFragment; }
 
     // use/activate the shader
     void Use();
@@ -55,16 +53,16 @@ public:
     void Unload();
 
     // utility uniform functions
-    void setBool(const std::string& name, bool value);
-    void setInt(const std::string& name, int value);
-    void setFloat(const std::string& name, float value);
-    void setVec2(const std::string name, GLfloat x, GLfloat y);
-    void setVec2(const std::string name, const Vector2& value);
-    void setVec3(const std::string name, GLfloat x, GLfloat y, GLfloat z);
-    void setVec3(const std::string name, const Vector3& value);
-    void setVec4(const std::string name, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
-    void setVec4(const std::string name, const Vector4& value);
-    void setMatrix4(const std::string name, const Matrix4& matrix);
-    void setMatrix4Row(const std::string name, const Matrix4Row& matrix);
+    void SetBool(const std::string& pName, bool pValue);
+    void SetInt(const std::string& pName, int pValue);
+    void SetFloat(const std::string& pName, float pValue);
+    void SetVec2(const std::string& pName, GLfloat pX, GLfloat pY);
+    void SetVec2(const std::string& pName, const Vector2& pValue);
+    void SetVec3(const std::string& pName, GLfloat pX, GLfloat pY, GLfloat pZ);
+    void SetVec3(const std::string& pName, const Vector3& pValue);
+    void SetVec4(const std::string& pName, GLfloat pX, GLfloat pY, GLfloat pZ, GLfloat pW);
+    void SetVec4(const std::string& pName, const Vector4& pValue);
+    void SetMatrix4(const std::string& pName, const Matrix4& pMatrix);
+    void SetMatrix4Row(const std::string& pName, const Matrix4Row& pMatrix);
 };
 

@@ -31,25 +31,25 @@ void ActorComponent::UpdateWorldTransform()
 	}
 }
 
-void ActorComponent::SetLocalTransform(Transform pTransform)
+void ActorComponent::SetLocalTransform(const Transform& pTransform)
 {
 	mLocalTransform = pTransform;
 	mWorldNeedUpdate = true;
 }
 
-void ActorComponent::SetLocalPosition(Vector3 pPosition)
+void ActorComponent::SetLocalPosition(const Vector3& pPosition)
 {
 	mLocalTransform.SetPosition(pPosition);
 	mWorldNeedUpdate = true;
 }
 
-void ActorComponent::SetLocalScale(Vector3 pScale)
+void ActorComponent::SetLocalScale(const Vector3& pScale)
 {
 	mLocalTransform.SetScale(pScale);
 	mWorldNeedUpdate = true;
 }
 
-void ActorComponent::SetLocalRotation(Quaternion pRotation)
+void ActorComponent::SetLocalRotation(const Quaternion& pRotation)
 {
 	mLocalTransform.SetRotation(pRotation);
 	mWorldNeedUpdate = true;

@@ -4,6 +4,7 @@
 #include "GameActor.h"
 #include "SDL_image.h"
 #include "Transform.h"
+#include "MeshComponent.h"
 
 #include "Utils/Struct.h"
 using Struct::Rectangle;
@@ -11,17 +12,15 @@ using Struct::Rectangle;
 class Texture;
 class SpriteComponent;
 
-enum RendererType
+enum RendererType : Uint8
 {
-	SDL,
-	OpenGL,
+	Sdl,
+	OpenGl,
 };
 
 class IRenderer
 {
-
 public:
-
 	virtual ~IRenderer() = default;
 
 	virtual bool Initialize(Window& pWindow) = 0;
@@ -29,10 +28,12 @@ public:
 	virtual void BeginDraw() = 0;
 	virtual void EndDraw() = 0;
 	virtual void Draw() = 0;
-	virtual void DrawSprites() = 0;
 	virtual RendererType GetType() = 0;
-	virtual void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const = 0;
-	virtual void AddSprite(SpriteComponent* pSprite) = 0;
-	virtual void RemoveSprite(SpriteComponent* pSprite) = 0;
-};
+	
+	virtual void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const {}
+	virtual void AddSprite(SpriteComponent* pSprite) {}
+	virtual void RemoveSprite(SpriteComponent* pSprite) {}
 
+	virtual void AddMesh(MeshComponent* pMesh) {}
+	virtual void RemoveMesh(const MeshComponent* pMesh) {}
+};

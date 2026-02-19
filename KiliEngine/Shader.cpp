@@ -1,24 +1,23 @@
 #include "Shader.h"
 #include "Log.h"
 
-#include <iostream>
 #include <fstream>
 
 using std::ifstream;
 
-Shader::Shader(std::string pCode, ShaderType pType) :
-    code(pCode), type(pType), id(0)
+Shader::Shader(std::string pCode, const ShaderType pType) :
+    Code(pCode), Type(pType), Id(0)
 {
 }
 
 std::string ShaderProgram::ReadFile(std::string fileName)
 {
-    std::string Shader;
+    std::string shader;
     std::string line;
 
     //Open file of this name
     ifstream myFile;
-    myFile.open(SHADER_PATH + fileName);
+    myFile.open(fileName);
 
     //Check for errors
     if (myFile.fail()) {
@@ -26,23 +25,23 @@ std::string ShaderProgram::ReadFile(std::string fileName)
     }
 
     while (std::getline(myFile, line)) {
-        Shader += line + "\n";
+        shader += line + "\n";
     }
 
     myFile.close();
 
-    return Shader;
+    return shader;
 }
 
-bool ShaderProgram::Compile(unsigned int shaderId)
+bool ShaderProgram::Compile(const unsigned int pShaderId)
 {
     int retValue;
-    glCompileShader(mId);
-    glGetShaderiv(mId, GL_COMPILE_STATUS, &retValue);
+    glCompileShader(pShaderId);
+    glGetShaderiv(pShaderId, GL_COMPILE_STATUS, &retValue);
     if (!retValue)
     {
         GLint len = 0;
-        glGetShaderiv(mId, GL_INFO_LOG_LENGTH, &len);
+        glGetShaderiv(pShaderId, GL_INFO_LOG_LENGTH, &len);
         std::vector <GLchar>log(len);
 
         glGetShaderInfoLog(mId, len, nullptr, log.data());
@@ -54,29 +53,37 @@ bool ShaderProgram::Compile(unsigned int shaderId)
     return true;
 }
 
-ShaderProgram::ShaderProgram(const char* vertexName, const char* fragmentName)
+ShaderProgram::ShaderProgram(const char* pVertexName, const char* pFragmentName)
 {
-    mVertex = Shader(ReadFile(vertexName), VERTEX);
-    mVertex.id = glCreateShader(GL_VERTEX_SHADER);
-    const char* vertexCode = mVertex.code.c_str();
-    glShaderSource(mVertex.id, 1, &vertexCode, NULL);
-    if(Compile(mVertex.id))
+    mVertex = Shader(ReadFile(pVertexName), Vertex);
+    mVertex.Id = glCreateShader(GL_VERTEX_SHADER);
+    const char* vertexCode = mVertex.Code.c_str();
+    glShaderSource(mVertex.Id, 1, &vertexCode, nullptr);
+    if(!Compile(mVertex.Id))
     {
-        Log::Error(LogType::Render, "Failed to compile : " + (std::string)vertexName);
+        Log::Error(LogType::Render, "Failed to compile : " + static_cast<std::string>(pVertexName));
+    }
+    else
+    {
+        Log::Info("Shader compiled : " + static_cast<std::string>(pVertexName));
     }
 
-    mFragment = Shader(ReadFile(fragmentName), FRAGMENT);
-    mFragment.id = glCreateShader(GL_FRAGMENT_SHADER);
-    const char* fragmentCode = mFragment.code.c_str();
-    glShaderSource(mFragment.id, 1, &fragmentCode, NULL);
-    if (Compile(mFragment.id))
+    mFragment = Shader(ReadFile(pFragmentName), Fragment);
+    mFragment.Id = glCreateShader(GL_FRAGMENT_SHADER);
+    const char* fragmentCode = mFragment.Code.c_str();
+    glShaderSource(mFragment.Id, 1, &fragmentCode, nullptr);
+    if (!Compile(mFragment.Id))
     {
-        Log::Error(LogType::Render, "Failed to compile : " + (std::string)fragmentName);
+        Log::Error(LogType::Render, "Failed to compile : " + static_cast<std::string>(pFragmentName));
+    }
+    else
+    {
+        Log::Info("Shader compiled : " + static_cast<std::string>(pFragmentName));
     }
 
     mId = glCreateProgram();
-    glAttachShader(mId, mVertex.id);
-    glAttachShader(mId, mFragment.id);
+    glAttachShader(mId, mVertex.Id);
+    glAttachShader(mId, mFragment.Id);
     glLinkProgram(mId);
 
     int success;
@@ -84,8 +91,8 @@ ShaderProgram::ShaderProgram(const char* vertexName, const char* fragmentName)
     glGetProgramiv(mId, GL_LINK_STATUS, &success);
     if (!success)
     {
-        glGetProgramInfoLog(mId, 512, NULL, infoLog);
-        Log::Error(LogType::Render, "ERROR::SHADER::PROGRAM::LINKING_FAILED : " + (std::string)infoLog);
+        glGetProgramInfoLog(mId, 512, nullptr, infoLog);
+        Log::Error(LogType::Render, "ERROR::SHADER::PROGRAM::LINKING_FAILED : " + static_cast<std::string>(infoLog));
     }
 }
 
@@ -96,65 +103,65 @@ void ShaderProgram::Use()
 
 void ShaderProgram::Unload()
 {
-    glDeleteShader(mVertex.id);
-    glDeleteShader(mFragment.id);
+    glDeleteShader(mVertex.Id);
+    glDeleteShader(mFragment.Id);
 }
 
 #pragma region Uniforms
 
-void ShaderProgram::setBool(const std::string& name, bool value)
+void ShaderProgram::SetBool(const std::string& pName, const bool pValue)
 {
-    glUniform1i(glGetUniformLocation(mId, name.c_str()), (int)value);
+    glUniform1i(glGetUniformLocation(mId, pName.c_str()), static_cast<int>(pValue));
 }
 
-void ShaderProgram::setInt(const std::string& name, int value)
+void ShaderProgram::SetInt(const std::string& pName, const int pValue)
 {
-    glUniform1i(glGetUniformLocation(mId, name.c_str()), value);
+    glUniform1i(glGetUniformLocation(mId, pName.c_str()), pValue);
 }
 
-void ShaderProgram::setFloat(const std::string& name, float value)
+void ShaderProgram::SetFloat(const std::string& pName, const float pValue)
 {
-    glUniform1f(glGetUniformLocation(mId, name.c_str()), value);
+    glUniform1f(glGetUniformLocation(mId, pName.c_str()), pValue);
 }
 
-void ShaderProgram::setVec2(const std::string name, GLfloat x, GLfloat y)
+void ShaderProgram::SetVec2(const std::string& pName, const GLfloat pX, const GLfloat pY)
 {
-    glUniform2f(glGetUniformLocation(mId, name.c_str()), x, y);
+    glUniform2f(glGetUniformLocation(mId, pName.c_str()), pX, pY);
 }
 
-void ShaderProgram::setVec2(const std::string name, const Vector2& value)
+void ShaderProgram::SetVec2(const std::string& pName, const Vector2& pValue)
 {
-    glUniform2f(glGetUniformLocation(mId, name.c_str()), value.x, value.y);
+    glUniform2f(glGetUniformLocation(mId, pName.c_str()), pValue.x, pValue.y);
 }
 
-void ShaderProgram::setVec3(const std::string name, GLfloat x, GLfloat y, GLfloat z)
+void ShaderProgram::SetVec3(const std::string& pName, const GLfloat pX, const GLfloat pY, const GLfloat pZ)
 {
-    glUniform3f(glGetUniformLocation(mId, name.c_str()), x, y, z);
+    glUniform3f(glGetUniformLocation(mId, pName.c_str()), pX, pY, pZ);
 }
 
-void ShaderProgram::setVec3(const std::string name, const Vector3& value)
+void ShaderProgram::SetVec3(const std::string& pName, const Vector3& pValue)
 {
-    glUniform3f(glGetUniformLocation(mId, name.c_str()), value.x, value.y, value.z);
+    glUniform3f(glGetUniformLocation(mId, pName.c_str()), pValue.x, pValue.y, pValue.z);
 }
 
-void ShaderProgram::setVec4(const std::string name, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+void ShaderProgram::SetVec4(const std::string& pName, const GLfloat pX, const GLfloat pY, const GLfloat pZ, const GLfloat pW)
 {
-    glUniform4f(glGetUniformLocation(mId, name.c_str()), x, y, z, w);
+    glUniform4f(glGetUniformLocation(mId, pName.c_str()), pX, pY, pZ, pW);
 }
 
-void ShaderProgram::setVec4(const std::string name, const Vector4& value)
+void ShaderProgram::SetVec4(const std::string& pName, const Vector4& pValue)
 {
-    glUniform4f(glGetUniformLocation(mId, name.c_str()), value.x, value.y, value.z, value.w);
+    glUniform4f(glGetUniformLocation(mId, pName.c_str()), pValue.x, pValue.y, pValue.z, pValue.w);
 }
 
-void ShaderProgram::setMatrix4(const std::string name, const Matrix4& matrix)
+void ShaderProgram::SetMatrix4(const std::string& pName, const Matrix4& pMatrix)
 {
-    glUniformMatrix4fv(glGetUniformLocation(mId, name.c_str()), 1, GL_TRUE, matrix.GetAsFloatPtr());
+    glUniformMatrix4fv(glGetUniformLocation(mId, pName.c_str()), 1, GL_TRUE, pMatrix.GetAsFloatPtr());
 }
 
-void ShaderProgram::setMatrix4Row(const std::string name, const Matrix4Row& matrix)
+void ShaderProgram::SetMatrix4Row(const std::string& pName, const Matrix4Row& pMatrix)
 {
-    glUniformMatrix4fv(glGetUniformLocation(mId, name.c_str()), 1, GL_TRUE, matrix.GetAsFloatPtr());
+    glUniformMatrix4fv(glGetUniformLocation(mId, pName.c_str()), 1, GL_TRUE, pMatrix.GetAsFloatPtr());
 }
 
 #pragma endregion

@@ -1,23 +1,45 @@
 #include "MeshComponent.h"
 
-MeshComponent::MeshComponent(GameActor* pOwner, Transform pTransform) :
-	ActorComponent(pOwner, pTransform),
-	mMesh(nullptr), mTextureIndex(0)
+#include "SceneManager.h"
+
+void MeshComponent::OnUpdate()
 {
+}
+
+MeshComponent::MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh) :
+	ActorComponent(pOwner, pTransform),
+	mMesh(pMesh), mTextureIndex(0)
+{
+	SceneManager::ActiveScene()->GetRenderer()->AddMesh(this);
 }
 
 MeshComponent::~MeshComponent()
 {
+	SceneManager::ActiveScene()->GetRenderer()->RemoveMesh(this);
 }
 
-void MeshComponent::Draw(Matrix4Row viewProj)
+void MeshComponent::Draw(Matrix4Row pViewProj)
 {
+	const Matrix4Row worldTransform = GetWorldTransform().GetWorldTransformMatrix();
+	
+	mMesh->GetShaderProgram()->Use();
+	mMesh->GetShaderProgram()->SetMatrix4Row("uViewProj", pViewProj);
+	mMesh->GetShaderProgram()->SetMatrix4Row("uWorldTransform", worldTransform);
+	
+	const Texture* texture = mMesh->GetTexture(mTextureIndex);
+	if(texture) texture->SetActive();
+	
+	mMesh->GetVertexArray()->SetActive();
+	
+	glDrawElements(GL_TRIANGLES, mMesh->GetVertexArray()->GetVerticeCount(), GL_UNSIGNED_INT, nullptr);
 }
 
 void MeshComponent::SetMesh(Mesh& pMesh)
 {
+	mMesh = &pMesh;
 }
 
-void MeshComponent::SetTextureIndex(size_t pTextureIndex)
+void MeshComponent::SetTextureIndex(const size_t pTextureIndex)
 {
+	mTextureIndex = pTextureIndex;
 }

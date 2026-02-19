@@ -63,7 +63,7 @@ bool Texture::Load(IRenderer* renderer, const std::string& filename)
 	mWidth = surface->w;
 	mHeight = surface->h;
 
-	if (renderer->GetType() == SDL)
+	if (renderer->GetType() == Sdl)
 	{
 		return LoadSdl(static_cast<SdlRenderer*>(renderer), surface);
 	}

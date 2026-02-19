@@ -1,17 +1,18 @@
 #pragma once
 
-constexpr float planeVertices[] = {
--0.5f,  0.5f, 0.0f,		0.0f, 0.0f,     //top left
- 0.5f,  0.5f, 0.0f,     1.0f, 0.0f,     //top right
- 0.5f, -0.5f, 0.0f,     1.0f, 1.0f,     //bottom right
--0.5f, -0.5f, 0.0f,     0.0f, 1.0f };   //bottom left
+constexpr float PlaneVertices[] = {
+    -0.5,  0.5, 0.0,		   0, 0,     //top left
+     0.5,  0.5, 0.0,     1, 0,     //top right
+     0.5, -0.5, 0.0,     1, 1,     //bottom right
+    -0.5, -0.5, 0.0,     0, 1      //bottom left
+};   
 
-constexpr unsigned int planeIndices[] = {
+constexpr unsigned int PlaneIndices[] = {
 0, 1, 2,
 2, 3, 0
 };
 
-constexpr float cubeVertices[] = {
+constexpr float CubeVertices[] = {
    -0.5, -0.5, -0.5,    0,  0 ,
     0.5, -0.5, -0.5,    1,  0 ,
    -0.5,  0.5, -0.5,    0, -1 ,
@@ -42,7 +43,7 @@ constexpr float cubeVertices[] = {
    -0.5,  0.5, -0.5,    0, -1
 };
 
-constexpr unsigned int cubeIndices[] = {
+constexpr unsigned int CubeIndices[] = {
     2,  1,  0 ,
     3,  9,  8 ,
     4,  11, 10 ,

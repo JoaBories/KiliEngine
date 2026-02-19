@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include "AssetManager.h"
+
 Mesh::Mesh() :
 	mFilename(""), mTextures(), mVao(nullptr), mShader(nullptr)
 {
@@ -12,7 +14,10 @@ Mesh::Mesh(std::vector<Texture*> pTextures, VertexArray* pVao, ShaderProgram* pS
 
 bool Mesh::LoadMesh(std::string pFileName)
 {
-	mVao = new VertexArray(cubeVertices, 28, cubeIndices, 12); // will be using mesh name to load it from file later
+	mVao = new VertexArray(CubeVertices, 28, CubeIndices, 12); // will be using mesh name to load it from file later
+	mShader = new ShaderProgram("Resources/Shaders/Basic.vert", "Resources/Shaders/Basic.frag");
+	mTextures.push_back(AssetManager::GetTexture("rock"));
+	return true;
 }
 
 void Mesh::Unload()
@@ -21,11 +26,11 @@ void Mesh::Unload()
 	mVao = nullptr;
 }
 
-Texture* Mesh::GetTexture(int index) const
+Texture* Mesh::GetTexture(const size_t pIndex) const
 {
-	if (mTextures.size() > index)
+	if (mTextures.size() > pIndex)
 	{
-		return mTextures.at(index);
+		return mTextures.at(pIndex);
 	}
 	else if (!mTextures.empty())
 	{

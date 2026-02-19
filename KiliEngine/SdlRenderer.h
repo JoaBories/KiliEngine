@@ -10,7 +10,7 @@ private:
 	std::vector<SpriteComponent*> mSpriteComponents;
 
 public:
-	SdlRenderer() : mSdlRenderer(nullptr) {};
+	SdlRenderer() : mSdlRenderer(nullptr) {}
 
 	SdlRenderer(const SdlRenderer&) = delete;
 	SdlRenderer& operator= (const SdlRenderer&) = delete;
@@ -19,7 +19,7 @@ public:
 	void BeginDraw() override;
 	void Draw() override;
 	void EndDraw() override;
-	void DrawSprites() override;
+	void DrawSprites();
 	void Close() override;
 
 	void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override;
@@ -27,5 +27,5 @@ public:
 	void RemoveSprite(SpriteComponent* pSprite) override;
 	RendererType GetType() override;
 
-	SDL_Renderer* GetSdlRenderer() const { return mSdlRenderer; };
+	SDL_Renderer* GetSdlRenderer() const { return mSdlRenderer; }
 };

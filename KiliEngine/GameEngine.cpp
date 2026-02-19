@@ -29,7 +29,6 @@ void GameEngine::Init()
 		if (mRenderer->Initialize(*mWindow))
 		{
 			SceneManager::LoadScene(mRenderer);
-
 			Loop();
 		}
 	}
@@ -56,7 +55,7 @@ void GameEngine::Render()
 {
 	mRenderer->BeginDraw();
 
-	mRenderer->DrawSprites();
+	mRenderer->Draw();
 
 	mRenderer->EndDraw();
 }

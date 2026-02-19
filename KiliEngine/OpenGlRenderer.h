@@ -2,8 +2,8 @@
 #include "IRenderer.h"
 #include "VertexArray.h"
 #include "Shader.h"
-#include "glew.h"
 #include "Matrix4Row.h"
+#include "MeshComponent.h"
 
 class SpriteComponent;
 
@@ -11,28 +11,39 @@ class GlRenderer : public IRenderer
 {
 private:
 	Window* mWindow;
-	VertexArray* mVao;
-	ShaderProgram* mShaderProgram;
-	Matrix4Row mViewProj;
-
+	VertexArray* mSpriteVao;
+	ShaderProgram* mSpriteShader;
+	
+	Matrix4Row mSpriteViewProj;
+	Matrix4Row mCamView;
+	Matrix4Row mCamProj;
+	
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
+	std::vector<MeshComponent*> mMeshes;
 public:
 	GlRenderer();
 
-	virtual ~GlRenderer();
+	~GlRenderer() override = default;
 	GlRenderer(const GlRenderer&) = delete;
 	GlRenderer& operator=(const GlRenderer&) = delete;
 
-	bool Initialize(Window& rWindow) override;
+	bool Initialize(Window& pWindow) override;
 	void BeginDraw() override;
 	void Draw() override;
-	void DrawSprites() override;
+	void DrawMeshes() const;
+	void DrawSprites();
 	void EndDraw() override;
 	void Close() override;
 
-	void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip flip) const override;
+	void SetCamViewProj(const Matrix4Row& pCamViewProj) { mCamView = pCamViewProj; }
+
+	void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const override;
 	void AddSprite(SpriteComponent* pSprite) override;
 	void RemoveSprite(SpriteComponent* pSprite) override;
+
+	void AddMesh(MeshComponent* pMesh) override;
+	void RemoveMesh(const MeshComponent* pMesh) override;
+	
 	RendererType GetType() override;
 };
