@@ -22,7 +22,7 @@ public:
 
 	void OnStart() override {
 		TestActor* testMesh = new TestActor(Transform(Vector3(5, 0, 0), Quaternion(Vector3::unitY, 10), Vector3(1, 1, 1)));
-		Mesh* mesh = new Mesh({AssetManager::GetTexture("rock")}, new VertexArray(CubeVertices, 28, CubeIndices, 36), AssetManager::GetShader("Basic"));
+		Mesh* mesh = new Mesh({AssetManager::GetTexture("rock")}, new VertexArray(CubeVertices, 24, CubeIndices, 36), AssetManager::GetShader("Basic"));
 		MeshComponent* meshComp = new MeshComponent(testMesh, Transform(Vector3(0, 0, 0), Quaternion(Vector3::unitX, 0), Vector3(1, 1, 1)), mesh);
 		testMesh->AddComponent(meshComp);
 		AddActor(testMesh);
