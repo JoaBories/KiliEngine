@@ -194,14 +194,14 @@ bool Rectangle::ContainPoint(const Vector2& point) const
 	return point.x >= aMin.x && point.x <= aMax.x && point.y >= aMin.y && point.y <= aMax.y;
 }
 
-Rectangle Rectangle::toObjectSpace(const Transform& transform) const
+Rectangle Rectangle::toObjectSpace(const Transform& pTransform) const
 {
 	Rectangle result = *this;
-	result.center.x += transform.GetPosition().x;
-	result.center.y += transform.GetPosition().y;
-	result.halfSize.x *= transform.GetScale().x;
-	result.halfSize.y *= transform.GetScale().y;
-	result.rotation += transform.GetRotation().z;
+	result.center.x += pTransform.GetPosition().x;
+	result.center.y += pTransform.GetPosition().y;
+	result.halfSize.x *= pTransform.GetScale().x;
+	result.halfSize.y *= pTransform.GetScale().y;
+	result.rotation += pTransform.GetRotation().z;
 	return result;
 }
 

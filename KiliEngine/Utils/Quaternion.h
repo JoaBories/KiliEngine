@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Maths.h"
+#include "MathUtils.h"
 #include "Vector3.h"
 class Quaternion
 {
@@ -35,7 +35,7 @@ public:
 
 	float Length() const
 	{
-		return Maths::Sqrt(LengthSqr());
+		return MathUtils::Sqrt(LengthSqr());
 	}
 
 	// Normalize the provided quaternion
@@ -50,10 +50,10 @@ public:
 	static Quaternion Lerp(const Quaternion& a, const Quaternion& b, float f)
 	{
 		Quaternion retVal;
-		retVal.x = Maths::Lerp(a.x, b.x, f);
-		retVal.y = Maths::Lerp(a.y, b.y, f);
-		retVal.z = Maths::Lerp(a.z, b.z, f);
-		retVal.w = Maths::Lerp(a.w, b.w, f);
+		retVal.x = MathUtils::Lerp(a.x, b.x, f);
+		retVal.y = MathUtils::Lerp(a.y, b.y, f);
+		retVal.z = MathUtils::Lerp(a.z, b.z, f);
+		retVal.w = MathUtils::Lerp(a.w, b.w, f);
 		retVal.Normalize();
 		return retVal;
 	}
@@ -78,10 +78,10 @@ public:
 
 		if (cosom < 0.9999f)
 		{
-			const float omega = Maths::ACos(cosom);
-			const float invSin = 1.f / Maths::Sin(omega);
-			scale0 = Maths::Sin((1.f - f) * omega) * invSin;
-			scale1 = Maths::Sin(f * omega) * invSin;
+			const float omega = MathUtils::ACos(cosom);
+			const float invSin = 1.f / MathUtils::Sin(omega);
+			scale0 = MathUtils::Sin((1.f - f) * omega) * invSin;
+			scale1 = MathUtils::Sin(f * omega) * invSin;
 		}
 		else
 		{
@@ -126,8 +126,6 @@ public:
 
 		return retVal;
 	}
-
-	class Matrix4 AsMatrix() const;
 
 	class Matrix4Row AsMatrixRow() const;
 

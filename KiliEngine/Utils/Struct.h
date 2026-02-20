@@ -129,7 +129,7 @@ namespace Struct {
 
 		bool ContainPoint(const Vector2& point) const;	// ignore rot
 
-		Rectangle toObjectSpace(const Transform& transform) const;
+		Rectangle toObjectSpace(const Transform& pTransform) const;
 
 		inline SDL_Rect toSdlRect() const { return { (int)(center.x - halfSize.x), (int)(center.y - halfSize.y), (int)halfSize.x * 2, (int)halfSize.y * 2 }; } // ignore rotation
 	};

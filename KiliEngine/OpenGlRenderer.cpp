@@ -5,8 +5,6 @@
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
     mSpriteVao(nullptr), mSpriteShader(nullptr), mSpriteViewProj(Matrix4Row::Identity),
-    mCamView(Matrix4Row::CreateLookAt(Vector3(0, 0, 0), Vector3::unitX, Vector3::unitZ)),
-    mCamProj(Matrix4Row::Identity),
     mContext(nullptr)
 {
 }
@@ -15,7 +13,6 @@ bool GlRenderer::Initialize(Window& pWindow)
 {
     mWindow = &pWindow;
     mSpriteViewProj = Matrix4Row::CreateSimpleViewProj(mWindow->GetDimensions().x, mWindow->GetDimensions().y);
-    mCamProj = Matrix4Row::CreatePerspectiveFOV(70.0f, mWindow->GetDimensions().x, mWindow->GetDimensions().y, 0.01f, 10000.0f);
 
     //Setting OpenGL attributes
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -69,7 +66,7 @@ void GlRenderer::DrawMeshes() const
     
     for (MeshComponent* mesh : mMeshes)
     {
-        mesh->Draw(mCamView * mCamProj);
+        mesh->Draw(mCamera->GetViewProjMatrix());
     }
 }
 

@@ -1,5 +1,5 @@
 #include "Vector4.h"
-#include "Maths.h"
+#include "MathUtils.h"
 
 float Vector4::LengthSqr() const
 {
@@ -8,7 +8,7 @@ float Vector4::LengthSqr() const
 
 float Vector4::Length() const
 {
-    return (Maths::Sqrt(LengthSqr()));
+    return (MathUtils::Sqrt(LengthSqr()));
 }
 
 void Vector4::Normalize()

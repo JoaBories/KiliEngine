@@ -4,13 +4,13 @@
 
 Vector2 BoxCollider2D::Collide(BoxCollider2D* other)
 {
-	Vector3 pos = GetWorldTransform().GetPosition();
-	Vector3 otherPos = other->GetWorldTransform().GetPosition();
+	const Vector3 pos = GetWorldTransform().GetPosition();
+	const Vector3 otherPos = other->GetWorldTransform().GetPosition();
 
 	if ((pos - otherPos).Length() < mRadius + other->GetRadius())
 	{
-		Rectangle rect = mBoxCollider.toObjectSpace(GetWorldTransform());
-		Rectangle otherRect = other->GetBoxCollider().toObjectSpace(other->GetWorldTransform());
+		const Rectangle rect = mBoxCollider.toObjectSpace(GetWorldTransform().GetTransform());
+		const Rectangle otherRect = other->GetBoxCollider().toObjectSpace(other->GetWorldTransform().GetTransform());
 
 		return rect.CheckOBB(otherRect);
 	}

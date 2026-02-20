@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Window.h"
-#include "GameActor.h"
 #include "SDL_image.h"
 #include "Transform.h"
 #include "MeshComponent.h"
+#include "Camera.h"
 
 #include "Utils/Struct.h"
 using Struct::Rectangle;
@@ -20,6 +20,9 @@ enum RendererType : Uint8
 
 class IRenderer
 {
+protected:
+	Camera* mCamera = nullptr;
+	
 public:
 	virtual ~IRenderer() = default;
 
@@ -29,6 +32,8 @@ public:
 	virtual void EndDraw() = 0;
 	virtual void Draw() = 0;
 	virtual RendererType GetType() = 0;
+
+	void SetCamera(Camera* pCamera) { mCamera = pCamera; }
 	
 	virtual void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const {}
 	virtual void AddSprite(SpriteComponent* pSprite) {}

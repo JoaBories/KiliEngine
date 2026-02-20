@@ -32,7 +32,7 @@ void AnimatedSpriteComponent::OnUpdate()
 
 	if (mAnimationTextures.size() == 0) return; // do nothing if there is no anim
 
-	mCurrentFrame += mAnimFps * GameTime::deltaTime;
+	mCurrentFrame += mAnimFps * GameTime::DeltaTime;
 	while (mCurrentFrame >= mAnimationTextures.size()) // time modulo frame number
 	{
 		mCurrentFrame -= mAnimationTextures.size();

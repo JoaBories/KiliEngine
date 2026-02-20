@@ -4,7 +4,7 @@
 #include "GameTime.h"
 #include "Inputs.h"
 
-GameEngine::GameEngine(std::string pTitle) :
+GameEngine::GameEngine(const std::string& pTitle) :
 	mIsRunning(true), mTitle(pTitle), 
 	mWindow(nullptr), 
 	mRenderer(nullptr)
@@ -21,13 +21,14 @@ GameEngine::GameEngine(std::string pTitle) :
 
 void GameEngine::Init()
 {
-	mWindow = new Window(800, 800);
+	mWindow = new Window(Width, Height);
 	mRenderer = new GlRenderer();
 
 	if (mWindow->Open()) 
 	{
 		if (mRenderer->Initialize(*mWindow))
 		{
+			Inputs::Init();
 			SceneManager::LoadScene(mRenderer);
 			Loop();
 		}
@@ -69,6 +70,8 @@ void GameEngine::CheckForInputs()
 {
 	if (mIsRunning)
 	{
+		Inputs::MouseUpdate();
+		
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
 		{
@@ -79,7 +82,10 @@ void GameEngine::CheckForInputs()
 				break;
 
 			default:
-				Inputs::InputUpdate(event);
+				if (Inputs::InputUpdate(event))
+				{
+					mIsRunning = false;
+				}
 				break;
 			}
 		}

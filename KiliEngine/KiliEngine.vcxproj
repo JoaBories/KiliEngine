@@ -135,6 +135,7 @@
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -153,7 +154,6 @@
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
-    <ClCompile Include="Utils\Matrix4.cpp" />
     <ClCompile Include="Utils\Matrix4Row.cpp" />
     <ClCompile Include="Utils\Quaternion.cpp" />
     <ClCompile Include="Utils\Struct.cpp" />
@@ -167,6 +167,7 @@
     <ClInclude Include="AnimatedSpriteComponent.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="BoxCollider2D.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="GameActor.h" />
@@ -188,9 +189,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="Utils\Maths.h" />
     <ClInclude Include="Utils\MathUtils.h" />
-    <ClInclude Include="Utils\Matrix4.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />
     <ClInclude Include="Utils\Quaternion.h" />
     <ClInclude Include="Utils\Struct.h" />

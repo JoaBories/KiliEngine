@@ -7,12 +7,17 @@ void ActorComponent::Start()
 	OnStart();
 }
 
+void ActorComponent::End()
+{
+	OnEnd();
+}
+
 void ActorComponent::Update() 
 {
 	OnUpdate();
 }
 
-WorldTransform ActorComponent::GetWorldTransform()
+const WorldTransform& ActorComponent::GetWorldTransform()
 {
 	UpdateWorldTransform();
 	mWorldTransform.RecomputeWorldTransformMatrix();
@@ -24,7 +29,7 @@ void ActorComponent::UpdateWorldTransform()
 	if (mWorldNeedUpdate)
 	{
 		mWorldNeedUpdate = false;
-		WorldTransform ownerTransform = mOwner->GetTransform();
+		const WorldTransform ownerTransform = mOwner->GetWorldTransform();
 		mWorldTransform.SetPosition(ownerTransform.GetWorldTransformMatrix().TransformVector3(mLocalTransform.GetPosition()));
 		mWorldTransform.SetRotation(Quaternion::Concatenate(ownerTransform.GetRotation(), mLocalTransform.GetRotation()));
 		mWorldTransform.SetScale(ownerTransform.GetScale() * mLocalTransform.GetScale());

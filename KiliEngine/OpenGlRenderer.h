@@ -15,8 +15,6 @@ private:
 	ShaderProgram* mSpriteShader;
 	
 	Matrix4Row mSpriteViewProj;
-	Matrix4Row mCamView;
-	Matrix4Row mCamProj;
 	
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
@@ -35,8 +33,6 @@ public:
 	void DrawSprites();
 	void EndDraw() override;
 	void Close() override;
-
-	void SetCamViewProj(const Matrix4Row& pCamViewProj) { mCamView = pCamViewProj; }
 
 	void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const override;
 	void AddSprite(SpriteComponent* pSprite) override;

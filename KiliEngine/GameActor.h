@@ -9,7 +9,7 @@ using Struct::Vector2;
 
 class Scene;
 
-enum ActorState
+enum ActorState : Uint8
 {
 	WaitingStart,
 	Active,
@@ -17,12 +17,11 @@ enum ActorState
 	Dead
 };
 
-enum ActorTags
+enum ActorTags : Uint8
 {
 	ActorDefault,
 	ActorBlock,
-	ActorPlayer,
-	ActorCoin
+	ActorPlayer
 };
 
 class GameActor
@@ -35,15 +34,14 @@ private:
 
 protected:
 	// only called by the base class in Start() and Update()
-	virtual void OnStart() {};
-	virtual void OnEarlyUpdate() {}; // Before components
-	virtual void OnLateUpdate() {};  // After components
+	virtual void OnStart() {}
+	virtual void OnEarlyUpdate() {} // Before components
+	virtual void OnLateUpdate() {}  // After components
 
 	void UpdateComponentsTransform();
 
 public:
-
-	GameActor(WorldTransform pTransform, ActorTags pTag = ActorDefault);
+	GameActor(const Transform& pTransform, ActorTags pTag = ActorDefault);
 	~GameActor();
 
 	GameActor(const GameActor&) = delete;
@@ -51,34 +49,35 @@ public:
 
 	void Start();
 	void Update();
-	
-	WorldTransform GetTransform();
+
+	const WorldTransform& GetWorldTransform() const;
 	void SetTransform(WorldTransform pTransform);
 	void AddPosition(Vector3 pPosition);
 	void SetPosition(Vector3 pPosition);
 	void SetScale(Vector3 pScale);
+	void AddRotation(Quaternion pRotation);
 	void SetRotation(Quaternion pRotation);
 
-	void Destroy()								{ mActiveState = ActorState::Dead; };
-	void SetActive(bool pNewActive)				{ mActiveState = pNewActive ? Active : Paused; };
-	bool GetActive() const						{ return mActiveState == Active; };
-	ActorState GetState() const					{ return mActiveState; };
+	void Destroy()							{ mActiveState = Dead; }
+	void SetActive(const bool pNewActive)	{ mActiveState = pNewActive ? Active : Paused; }
+	bool GetActive() const					{ return mActiveState == Active; }
+	ActorState GetState() const				{ return mActiveState; }
 
-	ActorTags GetTag() const					{ return mTag; };
+	ActorTags GetTag() const				{ return mTag; }
 
-	void RemoveComponent(ActorComponent* comp) ;
+	void RemoveComponent(ActorComponent* pComp) ;
 
-	void AddComponent(ActorComponent* comp) {
-		if (mActiveState != WaitingStart) comp->Start();
-		mComponents.push_back(comp);
-	};
+	void AddComponent(ActorComponent* pComp) {
+		if (mActiveState != WaitingStart) pComp->Start();
+		mComponents.push_back(pComp);
+	}
 
 	template<typename T> T* GetComponent() const
 	{
 		for (ActorComponent* c : mComponents)
 			if (T* comp = dynamic_cast<T*>(c)) return comp;
 		return nullptr;
-	};
+	}
 
 	template<typename T> std::vector<T*> GetComponents() const
 	{
@@ -86,7 +85,6 @@ public:
 		for (ActorComponent* c : mComponents)
 			if (T* comp = dynamic_cast<T*>(c)) comps.push_back(comp);
 		return comps;
-	};
-
+	}
 };
 

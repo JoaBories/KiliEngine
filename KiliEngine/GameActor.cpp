@@ -1,6 +1,5 @@
 #include "GameActor.h"
 #include "ActorComponent.h"
-#include "SceneManager.h"
 #include "Scene.h"
 #include <algorithm>
 #include <vector>
@@ -13,8 +12,8 @@ void GameActor::UpdateComponentsTransform()
 	}
 }
 
-GameActor::GameActor(WorldTransform transform, ActorTags tag) :
-	mActiveState(WaitingStart), mTransform(transform), mTag(tag)
+GameActor::GameActor(const Transform& pTransform, const ActorTags pTag) :
+	mActiveState(WaitingStart), mTransform(pTransform), mTag(pTag)
 {
 };
 
@@ -22,10 +21,8 @@ GameActor::~GameActor()
 {
 	for (ActorComponent* component : mComponents)
 	{
-		if (component)
-		{
-			delete component;
-		}
+		if (component) component->End();
+		delete component;
 	}
 
 	mComponents.clear();
@@ -55,7 +52,7 @@ void GameActor::Update()
 	OnLateUpdate();
 }
 
-WorldTransform GameActor::GetTransform()
+const WorldTransform& GameActor::GetWorldTransform() const
 {
 	mTransform.RecomputeWorldTransformMatrix();
 	return mTransform;
@@ -85,19 +82,25 @@ void GameActor::SetScale(Vector3 pScale)
 	UpdateComponentsTransform();
 }
 
+void GameActor::AddRotation(Quaternion pRotation)
+{
+	mTransform.AddRotation(pRotation);
+	UpdateComponentsTransform();
+}
+
 void GameActor::SetRotation(Quaternion pRotation)
 {
 	mTransform.SetRotation(pRotation);
 	UpdateComponentsTransform();
 }
 
-void GameActor::RemoveComponent(ActorComponent* comp)
+void GameActor::RemoveComponent(ActorComponent* pComp)
 {
-	std::vector<ActorComponent*>::iterator it = std::find(mComponents.begin(), mComponents.end(), comp);
+	std::vector<ActorComponent*>::iterator it = std::find(mComponents.begin(), mComponents.end(), pComp);
 
 	while (it != mComponents.end()) 
 	{
 		mComponents.erase(it);
-		it = std::find(mComponents.begin(), mComponents.end(), comp);
+		it = std::find(mComponents.begin(), mComponents.end(), pComp);
 	}
 }

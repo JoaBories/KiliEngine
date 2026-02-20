@@ -25,7 +25,7 @@ void MoveComponent::OnUpdate()
 	if (!MathUtils::NearZero(mVelocity.LengthSq()))
 	{
 		Vector3 displacement;
-		displacement += mVelocity * GameTime::deltaTime;
+		displacement += mVelocity * GameTime::DeltaTime;
 		GetOwner()->AddPosition(displacement);
 	}
 }

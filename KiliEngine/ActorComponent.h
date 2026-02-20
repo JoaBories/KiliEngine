@@ -23,12 +23,12 @@ protected:
 
 public:
 	ActorComponent() = delete;
-	virtual ~ActorComponent() { ActorComponent::OnEnd(); }
+	virtual ~ActorComponent() = default;
 
-	ActorComponent(GameActor* pOwner, Transform pTransform, const short pUpdateOrder = 100) :
+	ActorComponent(GameActor* pOwner, const Transform& pTransform, const short pUpdateOrder = 100) :
 		mIsActive(true), mWorldNeedUpdate(true),
 		mUpdateOrder(pUpdateOrder),
-		mOwner(pOwner), mLocalTransform(std::move(pTransform))
+		mOwner(pOwner), mLocalTransform(pTransform)
 	{
 	}
 
@@ -36,10 +36,11 @@ public:
 	ActorComponent& operator=(const ActorComponent&) = delete;
 
 	void Start();
+	void End();
 	void Update();
 
-	Transform GetLocalTransform() const { return mLocalTransform; }
-	WorldTransform GetWorldTransform();
+	const Transform& GetLocalTransform() const { return mLocalTransform; }
+	const WorldTransform& GetWorldTransform();
 	void UpdateWorldTransform();
 	void UpdatedOwnerTransform() { mWorldNeedUpdate = true; }
 	void SetLocalTransform(const Transform& pTransform);
@@ -47,7 +48,7 @@ public:
 	void SetLocalScale(const Vector3& pScale);
 	void SetLocalRotation(const Quaternion& pRotation);
 
-	bool IsActive() const			{ return mIsActive; }
+	[[nodiscard]] bool IsActive() const			{ return mIsActive; }
 	void SetActive(const bool pNewActive)	{ mIsActive = pNewActive; }
 
 	short GetUpdateOrder() const	{ return mUpdateOrder; }

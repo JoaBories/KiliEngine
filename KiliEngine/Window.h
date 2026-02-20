@@ -4,6 +4,9 @@
 #include "Utils/Struct.h"
 using Struct::Vector2;
 
+constexpr int Width = 800;
+constexpr int Height = 600;
+
 class Window
 {
 private:
@@ -16,9 +19,9 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 
-	inline Vector2 GetDimensions() const { return mDimensions; };
+	inline Vector2 GetDimensions() const { return mDimensions; }
 
-	inline SDL_Window* GetSdlWindow() const { return mSdlWindow; };
+	inline SDL_Window* GetSdlWindow() const { return mSdlWindow; }
 
 	bool Open();
 	void Close();

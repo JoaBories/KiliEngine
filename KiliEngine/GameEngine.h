@@ -14,7 +14,7 @@ private:
 	IRenderer* mRenderer;
 
 public:
-	GameEngine(std::string pTitle);
+	GameEngine(const std::string& pTitle);
 
 	void Init();
 	void Loop();

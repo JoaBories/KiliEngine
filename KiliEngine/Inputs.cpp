@@ -1,34 +1,58 @@
 #include "Inputs.h"
 
 std::vector<SDL_Keycode> Inputs::mCurrentPressedInputs = {};
+int Inputs::mLastMouseDeltaX = 0;
+int Inputs::mLastMouseDeltaY = 0;
 
-void Inputs::InputUpdate(SDL_Event event)
+void Inputs::Init()
 {
-	if (event.type == SDL_KEYUP)
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+}
+
+void Inputs::MouseUpdate()
+{
+	SDL_GetRelativeMouseState(&mLastMouseDeltaX, &mLastMouseDeltaY);
+}
+
+bool Inputs::InputUpdate(SDL_Event pEvent)
+{
+	if (pEvent.type == SDL_KEYUP)
 	{
-		std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), event.key.keysym.sym);
+		const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
 		if (it != mCurrentPressedInputs.end())
 		{
 			mCurrentPressedInputs.erase(it);
 		}
 	}
-	else if (event.type == SDL_KEYDOWN)
+	else if (pEvent.type == SDL_KEYDOWN)
 	{
-		std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), event.key.keysym.sym);
+		if (pEvent.key.keysym.sym == ExitKey)
+		{
+			return true;
+		}
+		
+		const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
 		if (it == mCurrentPressedInputs.end())
 		{
-			mCurrentPressedInputs.emplace_back(event.key.keysym.sym);
+			mCurrentPressedInputs.emplace_back(pEvent.key.keysym.sym);
 		}
-	}    
+	}
+
+	return false;
 }
 
-bool Inputs::IsKeyPressed(SDL_Keycode key)
+bool Inputs::IsKeyPressed(const SDL_Keycode pKey)
 {
-	std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), key);
+	const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pKey);
 	if (it != mCurrentPressedInputs.end())
 	{
 		return true;
 	}
 
 	return false;
+}
+
+Vector2 Inputs::GetMouseDelta()
+{
+	return Vector2(mLastMouseDeltaX, mLastMouseDeltaY);
 }

@@ -13,63 +13,72 @@ protected:
 
 public:
 	Transform();
-	Transform(Vector3 position, Quaternion rotation, Vector3 scale);
+	Transform(const Vector3& pPosition, const Quaternion& pRotation, const Vector3& pScale);
 
-	inline Vector3 GetPosition() const { return mPosition; };
-	inline Quaternion GetRotation() const { return mRotation; };
-	inline Vector3 GetScale() const { return mScale; };
+	static const Transform Origin;
 
-	Vector3 GetForwardVector() const;
-	Vector3 GetUpVector() const;
-	Vector3 GetRightVector() const;
+	[[nodiscard]] Vector3 GetPosition() const { return mPosition; }
+	[[nodiscard]] Quaternion GetRotation() const { return mRotation; }
+	[[nodiscard]] Vector3 GetScale() const { return mScale; }
 
+	[[nodiscard]] Vector3 GetForwardVector() const { return Vector3::Transform(Vector3::unitX, mRotation);}
+	[[nodiscard]] Vector3 GetUpVector() const {return Vector3::Transform(Vector3::unitZ, mRotation);}
+	[[nodiscard]] Vector3 GetRightVector() const {return Vector3::Transform(Vector3::unitY, mRotation);}
 
-	inline virtual void SetPosition(const Vector3& newPos) { mPosition = newPos; };
-	inline virtual void AddPosition(const Vector3& movement) { mPosition += movement; };
+	void SetPosition(const Vector3& pNewPos) { mPosition = pNewPos; }
+	void AddPosition(const Vector3& pMovement) { mPosition += pMovement; }
 
-	inline virtual void SetRotation(const Quaternion& newRot) { mRotation = newRot; };
-	inline virtual void AddRotation(const Quaternion& rotation) { mRotation = Quaternion::Concatenate(mRotation, rotation); };
+	void SetRotation(const Quaternion& pNewRot) { mRotation = pNewRot; }
+	void AddRotation(const Quaternion& pRotation) { mRotation = Quaternion::Concatenate(mRotation, pRotation); }
 
-	inline virtual void SetScale(const Vector3& newScale) { mScale = newScale; };
+	void SetScale(const Vector3& pNewScale) { mScale = pNewScale; }
 };
 
-class WorldTransform : public Transform
+class WorldTransform //todo remove parenting
 {
 private :
-	Matrix4Row mWorldTransformMatrix;
-	bool mNeedUpdate;
+	Transform mTransform;
+	mutable Matrix4Row mWorldTransformMatrix;
+	mutable bool mNeedUpdate;
 
 public :
+	
 	WorldTransform();
-	WorldTransform(Transform transform);
-	WorldTransform(Vector3 position, Quaternion rotation, Vector3 scale);
+	explicit WorldTransform(const Transform& pTransform);
+	WorldTransform(const Vector3& pPosition, const Quaternion& pRotation, const Vector3& pScale);
 
-	inline void SetPosition(const Vector3& newPos) override {
-		mPosition = newPos;
+	[[nodiscard]] Vector3 GetPosition() const { return mTransform.GetPosition(); }
+	[[nodiscard]] Quaternion GetRotation() const { return mTransform.GetRotation(); }
+	[[nodiscard]] Vector3 GetScale() const { return mTransform.GetScale(); }
+
+	[[nodiscard]] const Transform& GetTransform() const { return mTransform; }
+	
+	void SetPosition(const Vector3& pNewPos) {
+		mTransform.SetPosition(pNewPos);
 		mNeedUpdate = true;
-	};
+	}
 
-	inline void AddPosition(const Vector3& movement) override {
-		mPosition += movement;
+	void AddPosition(const Vector3& pMovement) {
+		mTransform.AddPosition(pMovement);
 		mNeedUpdate = true;
-	};
+	}
 
-	inline void SetRotation(const Quaternion& newRot) override {
-		mRotation = newRot;
+	void SetRotation(const Quaternion& pNewRot) {
+		mTransform.SetRotation(pNewRot);
 		mNeedUpdate = true;
-	};
+	}
 
-	inline void AddRotation(const Quaternion& rotation) override {
-		mRotation = Quaternion::Concatenate(mRotation, rotation);
+	void AddRotation(const Quaternion& pRotation) {
+		mTransform.AddRotation(pRotation);
 		mNeedUpdate = true;
-	};
+	}
 
-	inline void SetScale(const Vector3& newScale) override {
-		mScale = newScale;
+	void SetScale(const Vector3& pNewScale) {
+		mTransform.SetScale(pNewScale);
 		mNeedUpdate = true;
-	};
+	}
 
-	void RecomputeWorldTransformMatrix();
-	Matrix4Row GetWorldTransformMatrix();
+	void RecomputeWorldTransformMatrix() const;
+	[[nodiscard]] Matrix4Row GetWorldTransformMatrix() const;
 };
 
