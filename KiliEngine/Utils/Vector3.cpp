@@ -1,7 +1,7 @@
 #include "Vector3.h"
-#include "Matrix4.h"
 #include "Quaternion.h"
 #include "Struct.h"
+#include "Matrix4Row.h"
 
 using Struct::Vector2;
 
@@ -13,8 +13,8 @@ const Vector3 Vector3::unitZ(0.0f, 0.0f, 1.0f);
 const Vector3 Vector3::negUnitX(-1.0f, 0.0f, 0.0f);
 const Vector3 Vector3::negUnitY(0.0f, -1.0f, 0.0f);
 const Vector3 Vector3::negUnitZ(0.0f, 0.0f, -1.0f);
-const Vector3 Vector3::infinity(Maths::INFINITY_POS, Maths::INFINITY_POS, Maths::INFINITY_POS);
-const Vector3 Vector3::negInfinity(Maths::INFINITY_NEG, Maths::INFINITY_NEG, Maths::INFINITY_NEG);
+const Vector3 Vector3::infinity(MathUtils::INFINITY_POS, MathUtils::INFINITY_POS, MathUtils::INFINITY_POS);
+const Vector3 Vector3::negInfinity(MathUtils::INFINITY_NEG, MathUtils::INFINITY_NEG, MathUtils::INFINITY_NEG);
 
 void Vector3::Set(float xP, float yP, float zP)
 {
@@ -30,7 +30,7 @@ float Vector3::LengthSq() const
 
 float Vector3::Length() const
 {
-	return (Maths::Sqrt(LengthSq()));
+	return (MathUtils::Sqrt(LengthSq()));
 }
 
 void Vector3::Normalize()
@@ -41,31 +41,31 @@ void Vector3::Normalize()
 	z /= len;
 }
 
-Vector3 Vector3::Transform(Vector3& vec, Matrix4& mat, float w)
+Vector3 Vector3::Transform(Vector3& vec, Matrix4Row& mat, float w)
 {
 	Vector3 retVal;
-	retVal.x = vec.x * mat(0,0) + vec.y * mat(1,0) +
-		vec.z * mat(2,0) + w * mat(3,0);
-	retVal.y = vec.x * mat(0,1) + vec.y * mat(1,1) +
-		vec.z * mat(2,1) + w * mat(3,1);
-	retVal.z = vec.x * mat(0,2) + vec.y * mat(1,2) +
-		vec.z * mat(2,2) + w * mat(3,2);
+	retVal.x = vec.x * mat.mat[0][0] + vec.y * mat.mat[1][0] +
+		vec.z * mat.mat[2][0] + w * mat.mat[3][0];
+	retVal.y = vec.x * mat.mat[0][1] + vec.y * mat.mat[1][1] +
+		vec.z * mat.mat[2][1] + w * mat.mat[3][1];
+	retVal.z = vec.x * mat.mat[0][2] + vec.y * mat.mat[1][2] +
+		vec.z * mat.mat[2][2] + w * mat.mat[3][2];
 	//ignore w since we aren't returning a new value for it...
 	return retVal;
 }
 
-Vector3 Vector3::TransformWithPerspDiv(Vector3& vec, Matrix4& mat, float w)
+Vector3 Vector3::TransformWithPerspDiv(Vector3& vec, Matrix4Row& mat, float w)
 {
 	Vector3 retVal;
-	retVal.x = vec.x * mat(0,0) + vec.y * mat(1,0) +
-		vec.z * mat(2,0) + w * mat(3,0);
-	retVal.y = vec.x * mat(0,1) + vec.y * mat(1,1) +
-		vec.z * mat(2,1) + w * mat(3,1);
-	retVal.z = vec.x * mat(0,2) + vec.y * mat(1,2) +
-		vec.z * mat(2,2) + w * mat(3,2);
-	float transformedW = vec.x * mat(0,3) + vec.y * mat(1,3) +
-		vec.z * mat(2,3) + w * mat(3,3);
-	if (!Maths::NearZero(Maths::Abs(transformedW)))
+	retVal.x = vec.x * mat.mat[0][0] + vec.y * mat.mat[1][0] +
+		vec.z * mat.mat[2][0] + w * mat.mat[3][0];
+	retVal.y = vec.x * mat.mat[0][1] + vec.y * mat.mat[1][1] +
+		vec.z * mat.mat[2][1] + w * mat.mat[3][1];
+	retVal.z = vec.x * mat.mat[0][2] + vec.y * mat.mat[1][2] +
+		vec.z * mat.mat[2][2] + w * mat.mat[3][2];
+	float transformedW = vec.x * mat.mat[0][3] + vec.y * mat.mat[1][3] +
+		vec.z * mat.mat[2][3] + w * mat.mat[3][3];
+	if (!MathUtils::NearZero(MathUtils::Abs(transformedW)))
 	{
 		transformedW = 1.0f / transformedW;
 		retVal *= transformedW;

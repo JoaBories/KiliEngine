@@ -2,7 +2,6 @@
 
 class Vector4
 {
-    friend class Matrix4;
 
 public:
 	float x;

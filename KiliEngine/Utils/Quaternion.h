@@ -2,6 +2,7 @@
 
 #include "MathUtils.h"
 #include "Vector3.h"
+
 class Quaternion
 {
 public:
