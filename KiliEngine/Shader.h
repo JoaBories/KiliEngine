@@ -23,13 +23,13 @@ struct Shader
     ShaderType Type;
 
     Shader() = default;
-    Shader(std::string pCode, ShaderType pType);
+    Shader(const std::string& pCode, ShaderType pType);
 };
 
 class ShaderProgram
 {
 private:
-	std::string ReadFile(std::string fileName);
+	std::string ReadFile(const std::string& pFilePath);
     bool Compile(unsigned int pShaderId);
 
     // the program ID
@@ -37,10 +37,11 @@ private:
     
     Shader mVertex;
     Shader mFragment;
+    const char* mVertexName;
 
 public:
     // constructor reads and builds the shader
-    ShaderProgram(const char* pVertexName, const char* pFragmentName);
+    ShaderProgram(const std::string& pVertexName, const std::string& pFragmentName);
 
     unsigned int GetId() const { return mId; }
     Shader GetVertex() const { return mVertex; }

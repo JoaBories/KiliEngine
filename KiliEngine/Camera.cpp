@@ -3,7 +3,7 @@
 #include "GameTime.h"
 #include "Inputs.h"
 #include "SceneManager.h"
-#include "Window.h"
+#include "Config.h"
 
 void Camera::OnStart()
 {
@@ -44,7 +44,7 @@ void Camera::OnEarlyUpdate()
 
     if (mProjNeedsUpdate)
     {
-        mProjMatrix = Matrix4Row::CreatePerspectiveFOV(mFov, Width, Height, mNearPane, mFarPane);
+        mProjMatrix = Matrix4Row::CreatePerspectiveFOV(mFov, WINDOW_WIDTH, WINDOW_HEIGHT, mNearPane, mFarPane);
     }
 }
 

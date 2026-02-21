@@ -29,17 +29,17 @@ void Scene::UpdateAllActors()
     mIsUpdatingActors = false;
 }
 
-void Scene::AddActor(GameActor* actor)
+void Scene::AddActor(GameActor* pActor)
 {
-    actor->Start();
+    pActor->Start();
 
     if (mIsUpdatingActors)
     {
-        mPendingActors.emplace_back(actor);
+        mPendingActors.emplace_back(pActor);
     }
     else
     {
-        mActors.emplace_back(actor);
+        mActors.emplace_back(pActor);
     }
 
 }
@@ -56,16 +56,16 @@ void Scene::KillAllDead()
     }
 }
 
-void Scene::RemoveActor(GameActor* actor)
+void Scene::RemoveActor(const GameActor* pActor)
 {
-    std::vector<GameActor*>::iterator it = find(mPendingActors.begin(), mPendingActors.end(), actor);
+    auto it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
     if (it != mPendingActors.end())
     {
         std::iter_swap(it, mPendingActors.end() - 1);
         mPendingActors.pop_back();
     }
 
-    it = find(mActors.begin(), mActors.end(), actor);
+    it = find(mActors.begin(), mActors.end(), pActor);
     if (it != mActors.end())
     {
         iter_swap(it, mActors.end() - 1);
@@ -80,13 +80,11 @@ void Scene::SetRenderer(IRenderer* pRenderer)
 
 void Scene::Unload()
 {
-    for (GameActor* i : mActors)
+    for (const GameActor* actor : mActors)
     {
-        delete i;
+        delete actor;
     }
     mActors.clear();
-
-    AssetManager::Clear();
 }
 
 void Scene::Start()
@@ -100,17 +98,17 @@ void Scene::Close()
     Unload();
 }
 
-GameActor* Scene::GetActorByTag(ActorTags tag) const
+GameActor* Scene::GetActorByTag(ActorTags pTag) const
 {
     for (GameActor* a : mActors)
-        if (a->GetTag() == tag) return a;
+        if (a->GetTag() == pTag) return a;
     return nullptr;
 }
 
-std::vector<GameActor*> Scene::GetActorsByTag(ActorTags tag) const
+std::vector<GameActor*> Scene::GetActorsByTag(ActorTags pTag) const
 {
     std::vector<GameActor*> actors = {};
     for (GameActor* a : mActors)
-        if (a->GetTag() == tag) actors.push_back(a);
+        if (a->GetTag() == pTag) actors.push_back(a);
     return actors;
 };

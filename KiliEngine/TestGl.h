@@ -13,21 +13,20 @@ class TestGl : public Scene
 public:
 
 	TestGl() : Scene("Test openGl") {}
-	virtual ~TestGl() = default;
+	~TestGl() override = default;
 
 	void AssetLoad() override {
-		AssetManager::LoadTexture(mRenderer, "pokeball.png", "pokeball");
-		AssetManager::LoadTexture(mRenderer, "rock.png", "rock");
-		AssetManager::LoadShader("Basic");
+		AssetManager::LoadTexture("pokeball");
+		AssetManager::LoadTexture("rock");
 	}
 
 	void OnStart() override {
-		Camera* camera = new Camera(Transform::Origin, 90.0f, 0.1f, 1000.0f);
+		auto camera = new Camera(Transform::Origin, 90.0f, 0.1f, 1000.0f);
 		AddActor(camera);
-		
-		TestActor* testMesh = new TestActor(Transform(Vector3(2, 0, 0), Quaternion(Vector3::unitY, 10), Vector3(1, 1, 1)));
-		Mesh* mesh = new Mesh({AssetManager::GetTexture("rock")}, new VertexArray(CubeVertices, 24, CubeIndices, 36), AssetManager::GetShader("Basic"));
-		MeshComponent* meshComp = new MeshComponent(testMesh, Transform(Vector3(0, 0, 0), Quaternion(Vector3::unitX, 0), Vector3(1, 1, 1)), mesh);
+
+		auto testMesh = new TestActor(Transform(Vector3(2, 0, 0), Quaternion(Vector3::unitY, 10), Vector3(1, 1, 1)));
+		auto mesh = new Mesh({AssetManager::GetTexture("rock")}, new VertexArray(CubeVertices, 24, CubeIndices, 36), "Basic");
+		auto meshComp = new MeshComponent(testMesh, Transform(Vector3(0, 0, 0), Quaternion(Vector3::unitX, 0), Vector3(1, 1, 1)), mesh);
 		testMesh->AddComponent(meshComp);
 		AddActor(testMesh);
 

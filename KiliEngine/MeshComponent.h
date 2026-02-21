@@ -15,9 +15,8 @@ public:
 	~MeshComponent() override;
 	
 	virtual void Draw(Matrix4Row pViewProj);
-	virtual void SetMesh(Mesh& pMesh);
+	virtual void SetMesh(Mesh& pMesh); // todo doesn't support shader change after loading
 	Mesh* GetMesh() const { return mMesh; }
 	void SetTextureIndex(size_t pTextureIndex);
 
 };
-

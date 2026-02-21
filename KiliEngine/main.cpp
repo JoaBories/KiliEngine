@@ -22,11 +22,11 @@ int main(int argc, char* argv[])
 {
 	SceneManager::SetScenes({ new TestGl() });
 
-	GameEngine* Kili = new GameEngine("KiliEngine");
-	Kili->Init();
+	GameEngine* kili = new GameEngine("KiliEngine");
+	kili->Init();
 
 	SceneManager::FreeScenes();
-	delete Kili;
+	delete kili;
 
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 	_CrtDumpMemoryLeaks();

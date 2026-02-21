@@ -22,7 +22,6 @@ void MeshComponent::Draw(Matrix4Row pViewProj)
 {
 	const Matrix4Row worldTransform = GetWorldTransform().GetWorldTransformMatrix();
 	
-	mMesh->GetShaderProgram()->Use();
 	mMesh->GetShaderProgram()->SetMatrix4Row("uViewProj", pViewProj);
 	mMesh->GetShaderProgram()->SetMatrix4Row("uWorldTransform", worldTransform);
 	

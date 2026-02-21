@@ -1,4 +1,6 @@
 #pragma once
+#include <map>
+
 #include "IRenderer.h"
 #include "VertexArray.h"
 #include "Shader.h"
@@ -12,13 +14,14 @@ class GlRenderer : public IRenderer
 private:
 	Window* mWindow;
 	VertexArray* mSpriteVao;
+	
 	ShaderProgram* mSpriteShader;
 	
 	Matrix4Row mSpriteViewProj;
 	
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
-	std::vector<MeshComponent*> mMeshes;
+	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by shader
 public:
 	GlRenderer();
 

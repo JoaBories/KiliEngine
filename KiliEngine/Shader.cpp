@@ -5,23 +5,23 @@
 
 using std::ifstream;
 
-Shader::Shader(std::string pCode, const ShaderType pType) :
-    Code(pCode), Type(pType), Id(0)
+Shader::Shader(const std::string& pCode, const ShaderType pType) :
+    Code(pCode), Id(0), Type(pType)
 {
 }
 
-std::string ShaderProgram::ReadFile(std::string fileName)
+std::string ShaderProgram::ReadFile(const std::string& pFilePath)
 {
     std::string shader;
     std::string line;
 
     //Open file of this name
     ifstream myFile;
-    myFile.open(fileName);
+    myFile.open(pFilePath);
 
     //Check for errors
     if (myFile.fail()) {
-        Log::Error(LogType::Render, "Failed to open shader : " + fileName);
+        Log::Error(LogType::Render, "Failed to open shader : " + pFilePath);
     }
 
     while (std::getline(myFile, line)) {
@@ -53,7 +53,7 @@ bool ShaderProgram::Compile(const unsigned int pShaderId)
     return true;
 }
 
-ShaderProgram::ShaderProgram(const char* pVertexName, const char* pFragmentName)
+ShaderProgram::ShaderProgram(const std::string& pVertexName, const std::string& pFragmentName)
 {
     mVertex = Shader(ReadFile(pVertexName), Vertex);
     mVertex.Id = glCreateShader(GL_VERTEX_SHADER);
@@ -61,11 +61,11 @@ ShaderProgram::ShaderProgram(const char* pVertexName, const char* pFragmentName)
     glShaderSource(mVertex.Id, 1, &vertexCode, nullptr);
     if(!Compile(mVertex.Id))
     {
-        Log::Error(LogType::Render, "Failed to compile : " + static_cast<std::string>(pVertexName));
+        Log::Error(LogType::Render, "Failed to compile : " + pVertexName);
     }
     else
     {
-        Log::Info("Shader compiled : " + static_cast<std::string>(pVertexName));
+        Log::Info("Shader compiled : " + pVertexName);
     }
 
     mFragment = Shader(ReadFile(pFragmentName), Fragment);
@@ -74,11 +74,11 @@ ShaderProgram::ShaderProgram(const char* pVertexName, const char* pFragmentName)
     glShaderSource(mFragment.Id, 1, &fragmentCode, nullptr);
     if (!Compile(mFragment.Id))
     {
-        Log::Error(LogType::Render, "Failed to compile : " + static_cast<std::string>(pFragmentName));
+        Log::Error(LogType::Render, "Failed to compile : " + pFragmentName);
     }
     else
     {
-        Log::Info("Shader compiled : " + static_cast<std::string>(pFragmentName));
+        Log::Info("Shader compiled : " + pFragmentName);
     }
 
     mId = glCreateProgram();

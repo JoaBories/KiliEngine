@@ -1,4 +1,5 @@
 #include "Inputs.h"
+#include "Config.h"
 
 std::vector<SDL_Keycode> Inputs::mCurrentPressedInputs = {};
 int Inputs::mLastMouseDeltaX = 0;
@@ -26,7 +27,7 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 	}
 	else if (pEvent.type == SDL_KEYDOWN)
 	{
-		if (pEvent.key.keysym.sym == ExitKey)
+		if (pEvent.key.keysym.sym == EXIT_KEY)
 		{
 			return true;
 		}

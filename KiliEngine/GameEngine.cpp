@@ -1,8 +1,11 @@
 #include "GameEngine.h"
 #include <iostream>
+
+#include "AssetManager.h"
 #include "Log.h"
 #include "GameTime.h"
 #include "Inputs.h"
+#include "Config.h"
 
 GameEngine::GameEngine(const std::string& pTitle) :
 	mIsRunning(true), mTitle(pTitle), 
@@ -21,13 +24,14 @@ GameEngine::GameEngine(const std::string& pTitle) :
 
 void GameEngine::Init()
 {
-	mWindow = new Window(Width, Height);
+	mWindow = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
 	mRenderer = new GlRenderer();
 
 	if (mWindow->Open()) 
 	{
 		if (mRenderer->Initialize(*mWindow))
 		{
+			AssetManager::Init(mRenderer);
 			Inputs::Init();
 			SceneManager::LoadScene(mRenderer);
 			Loop();

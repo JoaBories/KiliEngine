@@ -6,8 +6,6 @@
 #include "Struct.h"
 using Struct::Vector2;
 
-constexpr SDL_Keycode ExitKey = SDLK_ESCAPE; //todo move it to a config file
-
 class Inputs
 {
 	static std::vector<SDL_Keycode> mCurrentPressedInputs;

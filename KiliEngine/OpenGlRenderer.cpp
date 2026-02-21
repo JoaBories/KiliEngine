@@ -1,10 +1,13 @@
 #include "OpenGlRenderer.h"
+
+#include "AssetManager.h"
 #include "SpriteComponent.h"
 #include "Log.h"
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
-    mSpriteVao(nullptr), mSpriteShader(nullptr), mSpriteViewProj(Matrix4Row::Identity),
+    mSpriteVao(nullptr), mSpriteShader(nullptr),
+    mSpriteViewProj(Matrix4Row::Identity),
     mContext(nullptr)
 {
 }
@@ -42,7 +45,6 @@ bool GlRenderer::Initialize(Window& pWindow)
     }
 
     mSpriteVao = new VertexArray(PlaneVertices, 4, PlaneIndices, 6);
-    mSpriteShader = new ShaderProgram("Resources/Shaders/Sprite.vert", "Resources/Shaders/Sprite.frag");
     
     return true;
 }
@@ -64,9 +66,13 @@ void GlRenderer::DrawMeshes() const
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
     
-    for (MeshComponent* mesh : mMeshes)
+    for (const auto& [shaderName, meshVector] : mMeshes)
     {
-        mesh->Draw(mCamera->GetViewProjMatrix());
+        AssetManager::GetShader(shaderName)->Use();
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera->GetViewProjMatrix());
+        }
     }
 }
 
@@ -77,7 +83,9 @@ void GlRenderer::DrawSprites()
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    if (mSpriteShader != nullptr) mSpriteShader->Use();
+    if (!mSpriteShader) mSpriteShader = AssetManager::GetShader("Sprite");
+    mSpriteShader->Use();
+    
     mSpriteShader->SetMatrix4Row("uViewProj", mSpriteViewProj);
     mSpriteVao->SetActive();
     
@@ -131,13 +139,25 @@ void GlRenderer::RemoveSprite(SpriteComponent* pSprite)
 
 void GlRenderer::AddMesh(MeshComponent* pMesh)
 {
-    mMeshes.push_back(pMesh);
+    const std::string shaderName = pMesh->GetMesh()->GetShaderName();
+    if (mMeshes.find(shaderName) != mMeshes.end())
+    {
+        mMeshes.at(shaderName).push_back(pMesh);
+    }
+    else
+    {
+        mMeshes[shaderName] = {pMesh};
+    }
 }
 
 void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
 {
-    const auto iterator = std::find(mMeshes.begin(), mMeshes.end(), pMesh);
-    mMeshes.erase(iterator);
+    const std::string shaderName = pMesh->GetMesh()->GetShaderName();
+    if (mMeshes.find(shaderName) == mMeshes.end()) return;
+
+    const auto it = std::find(mMeshes.at(shaderName).begin(), mMeshes.at(shaderName).end(), pMesh);
+    if (it != mMeshes.at(shaderName).end()) mMeshes.at(shaderName).erase(it);
+    if (mMeshes.at(shaderName).empty()) mMeshes.erase(shaderName);
 }
 
 RendererType GlRenderer::GetType()

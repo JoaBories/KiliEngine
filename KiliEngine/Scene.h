@@ -13,35 +13,34 @@ protected:
 	std::vector<GameActor*> mActors;
 	std::vector<GameActor*> mPendingActors;
 	bool mIsUpdatingActors;
-
-	Scene(std::string pTitle = "Scene") :
+	
+	explicit Scene(const std::string& pTitle = "Scene") :
 		mTitle{pTitle},
 		mRenderer{nullptr},
-		mActors{},
-		mPendingActors{},
 		mIsUpdatingActors{false}
 	{
 	}
-
+	
 public :
+
+	virtual ~Scene() = default;
 
 	static Scene* ActiveScene;
 
-	IRenderer* GetRenderer() const { return mRenderer; };
+	[[nodiscard]] IRenderer* GetRenderer() const { return mRenderer; }
 
 	void UpdateAllActors();
-	void RemoveActor(GameActor* actor);
-	void AddActor(GameActor* actor);
+	void RemoveActor(const GameActor* pActor);
+	void AddActor(GameActor* pActor);
 	void KillAllDead();
 
 	void Update();
-	void Render();
 	void Close();
 	void Start();
 
 	void SetRenderer(IRenderer* pRenderer);
 
-	bool IsUpdatingActors() const { return mIsUpdatingActors; };
+	[[nodiscard]] bool IsUpdatingActors() const { return mIsUpdatingActors; }
 
 	virtual void AssetLoad() = 0;
 	virtual void Unload();
@@ -52,17 +51,17 @@ public :
 
 	virtual void DebugDraw() = 0;
 
-	std::string GetTitle() const { return mTitle; };
+	[[nodiscard]] std::string GetTitle() const { return mTitle; }
 
-	GameActor* GetActorByTag(ActorTags tag) const;
-	std::vector<GameActor*> GetActorsByTag(ActorTags tag) const;
+	[[nodiscard]] GameActor* GetActorByTag(ActorTags pTag) const;
+	[[nodiscard]] std::vector<GameActor*> GetActorsByTag(ActorTags pTag) const;
 
 	template<typename T> T* GetActorOfClass() const
 	{
 		for (GameActor* a : mActors)
 			if (T* actor = dynamic_cast<T*>(a)) return actor;
 		return nullptr;
-	};
+	}
 
 	template<typename T> std::vector<T*> GetActorsOfClass() const
 	{
@@ -70,6 +69,6 @@ public :
 		for (GameActor* a : mActors)
 			if (T* actor = dynamic_cast<T*>(a)) actors.push_back(actor);
 		return actors;
-	};
+	}
 };
 

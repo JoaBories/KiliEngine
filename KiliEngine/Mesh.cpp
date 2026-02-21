@@ -3,19 +3,19 @@
 #include "AssetManager.h"
 
 Mesh::Mesh() :
-	mFilename(""), mTextures(), mVao(nullptr), mShader(nullptr)
+	mVao(nullptr)
 {
 }
 
-Mesh::Mesh(std::vector<Texture*> pTextures, VertexArray* pVao, ShaderProgram* pShader) :
-	mFilename(""), mTextures(pTextures), mVao(pVao), mShader(pShader)
+Mesh::Mesh(const std::vector<Texture*>& pTextures, VertexArray* pVao, const std::string& pShader) :
+	mTextures(pTextures), mVao(pVao), mShaderName(pShader)
 {
 }
 
 bool Mesh::LoadMesh(std::string pFileName)
 {
 	mVao = new VertexArray(CubeVertices, 28, CubeIndices, 12); // will be using mesh name to load it from file later
-	mShader = new ShaderProgram("Resources/Shaders/Basic.vert", "Resources/Shaders/Basic.frag");
+	mShaderName = "Basic";
 	mTextures.push_back(AssetManager::GetTexture("rock"));
 	return true;
 }
@@ -32,12 +32,16 @@ Texture* Mesh::GetTexture(const size_t pIndex) const
 	{
 		return mTextures.at(pIndex);
 	}
-	else if (!mTextures.empty())
+	
+	if (!mTextures.empty())
 	{
 		return mTextures.at(0);
 	}
-	else
-	{
-		return nullptr;
-	}
+	
+	return nullptr;
+}
+
+ShaderProgram* Mesh::GetShaderProgram() const
+{
+	return AssetManager::GetShader(mShaderName);
 }

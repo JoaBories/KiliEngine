@@ -169,6 +169,7 @@
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
@@ -199,12 +200,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Shaders\Sprite.frag" />
-    <None Include="Resources\Shaders\Sprite.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Shaders\Basic.frag" />
-    <Content Include="Resources\Shaders\Basic.vert" />
+    <Folder Include="Resources\Shaders\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

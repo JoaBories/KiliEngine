@@ -4,9 +4,6 @@
 #include "Utils/Struct.h"
 using Struct::Vector2;
 
-constexpr int Width = 800;
-constexpr int Height = 600;
-
 class Window
 {
 private:
