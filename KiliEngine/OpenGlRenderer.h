@@ -7,6 +7,15 @@
 #include "Matrix4Row.h"
 #include "MeshComponent.h"
 
+enum RenderMode : Uint8
+{
+	DefaultRender,
+	Uvs,
+	Normals,
+	Wireframe,
+};
+
+
 class SpriteComponent;
 
 class GlRenderer : public IRenderer
@@ -23,6 +32,9 @@ private:
 	std::vector<SpriteComponent*> mSprites;
 	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by shader
 public:
+
+	static RenderMode RenderMode;
+	
 	GlRenderer();
 
 	~GlRenderer() override = default;

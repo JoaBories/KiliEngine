@@ -1,5 +1,6 @@
 #include "Inputs.h"
 #include "Config.h"
+#include "OpenGlRenderer.h"
 
 std::vector<SDL_Keycode> Inputs::mCurrentPressedInputs = {};
 int Inputs::mLastMouseDeltaX = 0;
@@ -31,6 +32,11 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 		{
 			return true;
 		}
+		
+		if (pEvent.key.keysym.sym == RENDER_MODE_DEFAULT) GlRenderer::RenderMode = DefaultRender;
+		else if (pEvent.key.keysym.sym == RENDER_MODE_UV) GlRenderer::RenderMode = Uvs;
+		else if (pEvent.key.keysym.sym == RENDER_MODE_NORMAL) GlRenderer::RenderMode = Normals;
+		else if (pEvent.key.keysym.sym == RENDER_MODE_WIREFRAME) GlRenderer::RenderMode = Wireframe;
 		
 		const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
 		if (it == mCurrentPressedInputs.end())

@@ -207,10 +207,12 @@
   <ItemGroup>
     <Content Include="Resources\Shaders\Basic.frag" />
     <Content Include="Resources\Shaders\Basic.vert" />
+    <Content Include="Resources\Shaders\Normal.frag" />
+    <Content Include="Resources\Shaders\Normal.vert" />
     <Content Include="Resources\Shaders\Sprite.frag" />
     <Content Include="Resources\Shaders\Sprite.vert" />
-    <Content Include="Resources\Shaders\TextCoord.frag" />
-    <Content Include="Resources\Shaders\TextCoord.vert" />
+    <Content Include="Resources\Shaders\Uv.frag" />
+    <Content Include="Resources\Shaders\Uv.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,6 +4,8 @@
 #include "SpriteComponent.h"
 #include "Log.h"
 
+RenderMode GlRenderer::RenderMode = DefaultRender;
+
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
     mSpriteVao(nullptr), mSpriteShader(nullptr),
@@ -66,14 +68,41 @@ void GlRenderer::DrawMeshes() const
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
     
+    ShaderProgram* shader = nullptr;
+
+    switch (RenderMode)
+    {
+    case Uvs:
+        shader = AssetManager::GetShader("Uv");
+        shader->Use();
+        break;
+    case Normals:
+        shader = AssetManager::GetShader("Normal");
+        shader->Use();
+        break;
+    case Wireframe:
+        shader = AssetManager::GetShader("Basic");
+        shader->Use();
+        
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        break;
+    }
+    
     for (const auto& [shaderName, meshVector] : mMeshes)
     {
-        AssetManager::GetShader(shaderName)->Use();
+        if (RenderMode == DefaultRender)
+        {
+            shader = AssetManager::GetShader(shaderName);
+            shader->Use();
+        }
+        
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera->GetViewProjMatrix());
+            mesh->Draw(mCamera->GetViewProjMatrix(), shader);
         }
     }
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void GlRenderer::DrawSprites()
@@ -139,7 +168,7 @@ void GlRenderer::RemoveSprite(SpriteComponent* pSprite)
 
 void GlRenderer::AddMesh(MeshComponent* pMesh)
 {
-    const std::string shaderName = pMesh->GetMesh()->GetShaderName();
+    const std::string shaderName = pMesh->GetShader();
     if (mMeshes.find(shaderName) != mMeshes.end())
     {
         mMeshes.at(shaderName).push_back(pMesh);
@@ -152,7 +181,7 @@ void GlRenderer::AddMesh(MeshComponent* pMesh)
 
 void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
 {
-    const std::string shaderName = pMesh->GetMesh()->GetShaderName();
+    const std::string shaderName = pMesh->GetShader();
     if (mMeshes.find(shaderName) == mMeshes.end()) return;
 
     const auto it = std::find(mMeshes.at(shaderName).begin(), mMeshes.at(shaderName).end(), pMesh);

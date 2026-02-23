@@ -23,8 +23,8 @@ public:
 		auto camera = new Camera(Transform::Origin, 90.0f, 0.1f, 1000.0f);
 		AddActor(camera);
 		
-		TestActor* testMesh = new TestActor(Transform(Vector3(0,2,0), Quaternion(Vector3::unitZ, 180), Vector3::unit));
-		MeshComponent* meshComponent = new MeshComponent(testMesh, Transform::Origin, AssetManager::GetMesh("monkey"));
+		TestActor* testMesh = new TestActor(Transform(Vector3(0,2,0), Quaternion(), Vector3::unit));
+		MeshComponent* meshComponent = new MeshComponent(testMesh, Transform::Origin, AssetManager::GetMesh("sphere"));
 		testMesh->AddComponent(meshComponent);
 		AddActor(testMesh);
 
