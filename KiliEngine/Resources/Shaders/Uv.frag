@@ -5,6 +5,6 @@ out vec4 outColor;
 
 void main()
 {
-    outColor = vec4(fragTexCoord.x, fragTexCoord.y, 0, 1);
+    outColor = vec4(fragTexCoord.y, 0, fragTexCoord.x, 1);
 }
 

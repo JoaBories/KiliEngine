@@ -2,6 +2,7 @@
 #include "Log.h"
 
 #include <fstream>
+#include <iostream>
 
 using std::ifstream;
 
@@ -35,17 +36,17 @@ std::string ShaderProgram::ReadFile(const std::string& pFilePath)
 
 bool ShaderProgram::Compile(const unsigned int pShaderId)
 {
-    int retValue;
+    int compileStatus;
     glCompileShader(pShaderId);
-    glGetShaderiv(pShaderId, GL_COMPILE_STATUS, &retValue);
-    if (!retValue)
+    glGetShaderiv(pShaderId, GL_COMPILE_STATUS, &compileStatus);
+    if (!compileStatus)
     {
         GLint len = 0;
         glGetShaderiv(pShaderId, GL_INFO_LOG_LENGTH, &len);
         std::vector <GLchar>log(len);
 
-        glGetShaderInfoLog(mId, len, nullptr, log.data());
-        Log::Error(LogType::Render, log.data());
+        glGetShaderInfoLog(pShaderId, len, nullptr, log.data());
+        Log::Info(log.data());
 
         return false;
     }
@@ -61,7 +62,7 @@ ShaderProgram::ShaderProgram(const std::string& pVertexName, const std::string& 
     glShaderSource(mVertex.Id, 1, &vertexCode, nullptr);
     if(!Compile(mVertex.Id))
     {
-        Log::Error(LogType::Render, "Failed to compile : " + pVertexName);
+        Log::Info("Failed to compile : " + pVertexName);
     }
     else
     {
@@ -74,7 +75,7 @@ ShaderProgram::ShaderProgram(const std::string& pVertexName, const std::string& 
     glShaderSource(mFragment.Id, 1, &fragmentCode, nullptr);
     if (!Compile(mFragment.Id))
     {
-        Log::Error(LogType::Render, "Failed to compile : " + pFragmentName);
+        Log::Info("Failed to compile : " + pFragmentName);
     }
     else
     {

@@ -150,10 +150,10 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
-    <ClCompile Include="TestActor.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Utils\EnviroActor.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\Matrix4Row.cpp" />
     <ClCompile Include="Utils\Quaternion.cpp" />
@@ -188,12 +188,12 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteComponent.h" />
-    <ClInclude Include="TestActor.h" />
-    <ClInclude Include="TestGl.h" />
+    <ClInclude Include="Bowling.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Utils\EnviroActor.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />
     <ClInclude Include="Utils\Quaternion.h" />

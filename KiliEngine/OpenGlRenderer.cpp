@@ -47,6 +47,10 @@ bool GlRenderer::Initialize(Window& pWindow)
     }
 
     mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
+
+    glEnable(GL_BLEND);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     return true;
 }
@@ -66,7 +70,6 @@ void GlRenderer::Draw()
 void GlRenderer::DrawMeshes() const
 {
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
     
     ShaderProgram* shader = nullptr;
 
@@ -108,9 +111,6 @@ void GlRenderer::DrawMeshes() const
 void GlRenderer::DrawSprites()
 {
     glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     if (!mSpriteShader) mSpriteShader = AssetManager::GetShader("Sprite");
     mSpriteShader->Use();

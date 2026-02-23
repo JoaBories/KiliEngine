@@ -5,8 +5,11 @@ out vec4 outColor;
 
 uniform sampler2D uTexture;
 
+vec4 color;
+
 void main()
 {
-    outColor = texture(uTexture, fragTexCoord);
+    color = texture(uTexture, fragTexCoord);
+    outColor = vec4(color.r, color.g, color.b, color.a);
 }
 
