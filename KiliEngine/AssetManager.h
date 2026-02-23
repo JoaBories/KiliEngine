@@ -4,9 +4,12 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include <map>
-#include <filesystem>
 
+#include <filesystem>
 using std::filesystem::path;
+
+#define TINYOBJLOADER_IMPLEMENTATION
+
 
 enum AssetType : Uint8
 {
@@ -32,7 +35,7 @@ private:
 	static std::map<std::string, path> mUnloadedShaders;
 	static std::map<std::string, path> mUnloadedMeshes;
 	
-	static Mesh* LoadMeshFromFile(const std::string& pName);
+	static Mesh* LoadMeshFromFile(const std::string& pFilePath);
 	
 public:
 	

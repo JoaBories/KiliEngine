@@ -1,6 +1,7 @@
 #include "AssetManager.h"
 #include "Log.h"
 #include "Config.h"
+#include "tiny_obj_loader.h"
 
 #include <chrono>
 using Clk = std::chrono::high_resolution_clock;
@@ -43,8 +44,50 @@ std::map<std::string, path> AssetManager::mUnloadedTextures = {};
 std::map<std::string, path> AssetManager::mUnloadedShaders = {};
 std::map<std::string, path> AssetManager::mUnloadedMeshes = {};
 
-Mesh* AssetManager::LoadMeshFromFile(const std::string& pName)
+Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
 {
+    tinyobj::attrib_t attributes;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    std::string warning, errors;
+    bool success = LoadObj(&attributes, &shapes, &materials, &warning, &errors, pFilePath.c_str());
+    if(!success)
+    {
+        Log::Error(LogType::Application, "Mesh "+ pFilePath + " does not exist or is not .obj");
+        return nullptr;
+    }else
+    {
+        Log::Info("Mesh "+ pFilePath +" successfully loaded");
+    }
+    std::vector<Vertex> vertices;
+
+    for (auto& shape : shapes)
+    {
+        tinyobj::mesh_t &mesh = shape.mesh;
+        for (auto [vertex_index, normal_index, texcoord_index] : mesh.indices)
+        {
+            Vector3 position = Vector3{
+                attributes.vertices[vertex_index * 3],
+                attributes.vertices[vertex_index * 3 + 1],
+                attributes.vertices[vertex_index * 3 + 2]
+            };
+            Vector3 normal = Vector3{
+                attributes.normals[normal_index * 3],
+                attributes.normals[normal_index * 3 + 1],
+                attributes.normals[normal_index * 3 + 2]
+            };
+            Vector2 texCoord = {
+                attributes.texcoords[texcoord_index * 2],
+                attributes.texcoords[texcoord_index * 2 + 1],
+            };
+            Vertex vertex = Vertex{position, normal, texCoord};
+            vertices.push_back(vertex);
+        }
+    }
+
+    Mesh* loadedMesh = new Mesh(vertices);
+    loadedMesh->AddTexture(GetTexture("DefaultTexture"));
+    return loadedMesh;
 }
 
 void AssetManager::Init(IRenderer* pRenderer)
@@ -115,21 +158,24 @@ void AssetManager::LoadAll()
 
 void AssetManager::UnloadAll()
 {
-    for (const auto& iter : mLoadedTextures)
+    for (const auto& [name, texture] : mLoadedTextures)
     {
-        iter.second->Unload();
+        texture->Unload();
+        delete texture;
     }
     mLoadedTextures.clear();
 
-    for (const auto& iter : mLoadedShaders)
+    for (const auto& [name, Shader] : mLoadedShaders)
     {
-        iter.second->Unload();
+        Shader->Unload();
+        delete Shader;
     }
     mLoadedShaders.clear();
     
-    for (const auto& iter : mLoadedMeshes)
+    for (const auto& [name, mesh] : mLoadedMeshes)
     {
-        iter.second->Unload();
+        mesh->Unload();
+        delete mesh;
     }
     mLoadedMeshes.clear();
 }

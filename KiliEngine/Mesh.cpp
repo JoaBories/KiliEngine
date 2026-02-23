@@ -1,5 +1,4 @@
 #include "Mesh.h"
-#include "tiny_obj_loader.h"
 #include "AssetManager.h"
 
 float* Mesh::ToVerticeArray()
@@ -21,8 +20,13 @@ float* Mesh::ToVerticeArray()
 	return array;
 }
 
+Mesh::Mesh() :
+	mVao(nullptr), mShaderName("Basic")
+{
+}
+
 Mesh::Mesh(std::vector<Vertex> pVertices) :
-	mVertices(std::move(pVertices)), mVao(nullptr), mShaderName("Basic")
+	mVertices(std::move(pVertices)), mShaderName("Basic")
 {
 	float* verticeInfo = ToVerticeArray();
 	mVao = new VertexArray(verticeInfo, mVertices.size());

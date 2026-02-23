@@ -37,7 +37,6 @@ private:
     
     Shader mVertex;
     Shader mFragment;
-    const char* mVertexName;
 
 public:
     // constructor reads and builds the shader

@@ -19,6 +19,7 @@ private:
 	float* ToVerticeArray();
 
 public:
+	Mesh();
 	explicit Mesh(std::vector<Vertex> pVertices);
 	
 	void Unload();

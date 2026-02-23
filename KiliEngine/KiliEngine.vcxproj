@@ -192,6 +192,7 @@
     <ClInclude Include="TestGl.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />

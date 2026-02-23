@@ -1,7 +1,6 @@
 #pragma once
 #include "Scene.h"
 #include "AssetManager.h"
-#include "Log.h"
 #include "TestActor.h"
 #include "SpriteComponent.h"
 #include "Camera.h"
@@ -22,11 +21,16 @@ public:
 
 	void OnStart() override {
 		auto camera = new Camera(Transform::Origin, 90.0f, 0.1f, 1000.0f);
-		AddActor(camera);		
+		AddActor(camera);
+		
+		TestActor* testMesh = new TestActor(Transform(Vector3(0,2,0), Quaternion(Vector3::unitZ, 180), Vector3::unit));
+		MeshComponent* meshComponent = new MeshComponent(testMesh, Transform::Origin, AssetManager::GetMesh("monkey"));
+		testMesh->AddComponent(meshComponent);
+		AddActor(testMesh);
 
-		TestActor* testSprite = new TestActor(Transform(Vector3(0, 0, 0), Quaternion(Vector3::unitX, 0), Vector3(1, 1, 1)));
-		testSprite->AddComponent(new SpriteComponent(testSprite, Transform(), AssetManager::GetTexture("rock")));
-		AddActor(testSprite);
+		//TestActor* testSprite = new TestActor(Transform::Origin);
+		//testSprite->AddComponent(new SpriteComponent(testSprite, Transform(), AssetManager::GetTexture("rock")));
+		//AddActor(testSprite);
 	}
 
 	void OnUpdate() override {

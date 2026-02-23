@@ -1,6 +1,6 @@
 #include "Transform.h"
 
-const Transform Transform::Origin = Transform(Vector3::zero, Quaternion(Vector3::unitX, 0), Vector3::unit);
+const Transform Transform::Origin = Transform(Vector3(), Quaternion(Vector3(1.0f,0.0f,0.0f), 0), Vector3(1.0f,1.0f,1.0f));
 
 Transform::Transform() :
 	mPosition(Vector3::zero), mRotation(Quaternion(Vector3::unitZ, 0)), mScale(Vector3::unit)

@@ -437,3 +437,5 @@ FodyWeavers.xsd
 !KiliEngine/Dependencies/glew-2.2.0-win32/glew-2.2.0/lib/
 !KiliEngine/Dependencies/glew-2.2.0-win32/glew-2.2.0/lib/Release/
 !KiliEngine/Dependencies/glew-2.2.0-win32/glew-2.2.0/lib/Release/Win32/
+
+!*/Resources/**/*.obj

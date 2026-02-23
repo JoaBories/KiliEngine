@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+
+#include "Vertex.h"
 
 constexpr float PLANE_VERTICES[] = {
     -0.5,  0.5, 0.0,    0.0,0.0,0.0,    0.0, 0.0,     //top left
