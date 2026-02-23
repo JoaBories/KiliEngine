@@ -43,6 +43,10 @@ std::map<std::string, path> AssetManager::mUnloadedTextures = {};
 std::map<std::string, path> AssetManager::mUnloadedShaders = {};
 std::map<std::string, path> AssetManager::mUnloadedMeshes = {};
 
+Mesh* AssetManager::LoadMeshFromFile(const std::string& pName)
+{
+}
+
 void AssetManager::Init(IRenderer* pRenderer)
 {
     mRenderer = pRenderer;
@@ -132,7 +136,7 @@ void AssetManager::UnloadAll()
 
 void AssetManager::FetchTexture(const path& pTexturePath)
 {
-    if (pTexturePath.extension() == ".png")
+    if (pTexturePath.extension() == ".png" || pTexturePath.extension() == ".jpg")
     {
         const std::string name = pTexturePath.filename().replace_extension("").string();
         if (mLoadedTextures.find(name) == mLoadedTextures.end())
@@ -145,9 +149,9 @@ void AssetManager::FetchTexture(const path& pTexturePath)
 Texture* AssetManager::LoadTexture(const std::string& pName)
 {
     if (mUnloadedTextures.find(pName) == mUnloadedTextures.end()) return nullptr;
-    
-    Texture* texture = new Texture();
     const path texturePath = mUnloadedTextures.at(pName); 
+    
+    Texture* texture = new Texture(); // todo move this in the constructor
     texture->Load(mRenderer, texturePath.string());
     mLoadedTextures[pName] = texture;
     return mLoadedTextures.at(pName);
@@ -183,7 +187,7 @@ void AssetManager::FetchShader(const path& pShaderPath)
 ShaderProgram* AssetManager::LoadShader(const std::string& pName)
 {
     const std::string shaderPath = mUnloadedShaders.at(pName).replace_extension("").string();
-    mLoadedShaders[pName] = new ShaderProgram((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
+    mLoadedShaders[pName] = new ShaderProgram(shaderPath + ".vert", shaderPath + ".frag");
     return mLoadedShaders.at(pName);
 }
 
@@ -204,14 +208,34 @@ ShaderProgram* AssetManager::GetShader(const std::string& pName)
 
 void AssetManager::FetchMesh(const path& pMeshPath)
 {
+    if (pMeshPath.extension() == ".obj")
+    {
+        const std::string name = pMeshPath.filename().replace_extension("").string();
+        if (mLoadedMeshes.find(name) == mLoadedMeshes.end())
+        {
+            mUnloadedMeshes[name] = pMeshPath;
+        }
+    }
 }
 
 Mesh* AssetManager::LoadMesh(const std::string& pName)
 {
-    return nullptr;
+    const std::string meshPath = mUnloadedMeshes.at(pName).string();
+    mLoadedMeshes[pName] = LoadMeshFromFile(meshPath);
+    return mLoadedMeshes.at(pName);
 }
 
 Mesh* AssetManager::GetMesh(const std::string& pName)
 {
-    return nullptr;
+    if (mLoadedMeshes.find(pName) == mLoadedMeshes.end())
+    {
+        if (mUnloadedMeshes.find(pName) == mUnloadedMeshes.end())
+        {
+            Log::Error(LogType::Application,"Mesh " + pName + " does not exist in assets manager");
+            return nullptr;
+        }
+        
+        return LoadMesh(pName);
+    }
+    return mLoadedMeshes.at(pName);
 }

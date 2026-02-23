@@ -44,7 +44,7 @@ bool GlRenderer::Initialize(Window& pWindow)
         Log::Error(LogType::Video, "Failed to initialize SDL_Image");
     }
 
-    mSpriteVao = new VertexArray(PlaneVertices, 4, PlaneIndices, 6);
+    mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
     
     return true;
 }
@@ -117,7 +117,7 @@ void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const 
     mSpriteShader->Use();
     mSpriteShader->SetMatrix4Row("uWorldTransform", world);
     pTex.SetActive();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 void GlRenderer::AddSprite(SpriteComponent* pSprite)

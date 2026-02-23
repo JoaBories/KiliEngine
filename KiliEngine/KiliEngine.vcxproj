@@ -134,6 +134,7 @@
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="GameActor.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Utils\Struct.cpp" />
     <ClCompile Include="Utils\Vector3.cpp" />
     <ClCompile Include="Utils\Vector4.cpp" />
+    <ClCompile Include="Utils\Vertex.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -166,6 +168,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="AnimatedSpriteComponent.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />
@@ -196,11 +199,17 @@
     <ClInclude Include="Utils\Struct.h" />
     <ClInclude Include="Utils\Vector3.h" />
     <ClInclude Include="Utils\Vector4.h" />
+    <ClInclude Include="Utils\Vertex.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Shaders\" />
+    <Content Include="Resources\Shaders\Basic.frag" />
+    <Content Include="Resources\Shaders\Basic.vert" />
+    <Content Include="Resources\Shaders\Sprite.frag" />
+    <Content Include="Resources\Shaders\Sprite.vert" />
+    <Content Include="Resources\Shaders\TextCoord.frag" />
+    <Content Include="Resources\Shaders\TextCoord.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

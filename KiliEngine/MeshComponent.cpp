@@ -30,7 +30,7 @@ void MeshComponent::Draw(Matrix4Row pViewProj)
 	
 	mMesh->GetVertexArray()->SetActive();
 	
-	glDrawElements(GL_TRIANGLES, mMesh->GetVertexArray()->GetIndicesCount(), GL_UNSIGNED_INT, nullptr);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, mMesh->GetVertexArray()->GetVerticeCount());
 }
 
 void MeshComponent::SetMesh(Mesh& pMesh)

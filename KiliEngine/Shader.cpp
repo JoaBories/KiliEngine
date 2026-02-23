@@ -55,7 +55,7 @@ bool ShaderProgram::Compile(const unsigned int pShaderId)
 
 ShaderProgram::ShaderProgram(const std::string& pVertexName, const std::string& pFragmentName)
 {
-    mVertex = Shader(ReadFile(pVertexName), Vertex);
+    mVertex = Shader(ReadFile(pVertexName), VertexShader);
     mVertex.Id = glCreateShader(GL_VERTEX_SHADER);
     const char* vertexCode = mVertex.Code.c_str();
     glShaderSource(mVertex.Id, 1, &vertexCode, nullptr);
@@ -68,7 +68,7 @@ ShaderProgram::ShaderProgram(const std::string& pVertexName, const std::string& 
         Log::Info("Shader compiled : " + pVertexName);
     }
 
-    mFragment = Shader(ReadFile(pFragmentName), Fragment);
+    mFragment = Shader(ReadFile(pFragmentName), FragmentShader);
     mFragment.Id = glCreateShader(GL_FRAGMENT_SHADER);
     const char* fragmentCode = mFragment.Code.c_str();
     glShaderSource(mFragment.Id, 1, &fragmentCode, nullptr);

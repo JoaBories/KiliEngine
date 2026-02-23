@@ -12,8 +12,8 @@ using Struct::Vector2;
 
 enum ShaderType : Uint8
 {
-    Vertex,
-    Fragment
+    VertexShader,
+    FragmentShader
 };
 
 struct Shader

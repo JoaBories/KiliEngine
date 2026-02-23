@@ -1,23 +1,32 @@
 #include "Mesh.h"
-
+#include "tiny_obj_loader.h"
 #include "AssetManager.h"
 
-Mesh::Mesh() :
-	mVao(nullptr)
+float* Mesh::ToVerticeArray()
 {
+	const auto array = new float[mVertices.size() * 8];
+	int counter = 0;
+	for (auto& [Position, Normal, Uv] : mVertices)
+	{
+		array[counter+0] = Position.x;
+		array[counter+1] = Position.y;
+		array[counter+2] = Position.z;
+		array[counter+3] = Normal.x;
+		array[counter+4] = Normal.y;
+		array[counter+5] = Normal.z;
+		array[counter+6] = Uv.x;
+		array[counter+7] = Uv.y;
+		counter += 8;
+	}
+	return array;
 }
 
-Mesh::Mesh(const std::vector<Texture*>& pTextures, VertexArray* pVao, const std::string& pShader) :
-	mTextures(pTextures), mVao(pVao), mShaderName(pShader)
+Mesh::Mesh(std::vector<Vertex> pVertices) :
+	mVertices(std::move(pVertices)), mVao(nullptr), mShaderName("Basic")
 {
-}
-
-bool Mesh::LoadMesh(std::string pFileName)
-{
-	mVao = new VertexArray(CubeVertices, 28, CubeIndices, 12); // will be using mesh name to load it from file later
-	mShaderName = "Basic";
-	mTextures.push_back(AssetManager::GetTexture("rock"));
-	return true;
+	float* verticeInfo = ToVerticeArray();
+	mVao = new VertexArray(verticeInfo, mVertices.size());
+	delete[] verticeInfo;
 }
 
 void Mesh::Unload()

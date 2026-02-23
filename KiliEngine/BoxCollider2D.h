@@ -14,22 +14,22 @@ private:
 
 public:
 
-	BoxCollider2D(GameActor* owner, Transform transform, Rectangle box, short updatePriority = 50) :
-		ColliderComponent(owner, transform, updatePriority),
-		mBoxCollider(box)
+	BoxCollider2D(GameActor* pOwner, const Transform& pTransform, const Rectangle& pBox, const short pUpdatePriority = 50) :
+		ColliderComponent(pOwner, pTransform, pUpdatePriority),
+		mBoxCollider(pBox)
 	{
 		mRadius = mBoxCollider.GetRadius();
-	};
+	}
 
 	~BoxCollider2D() = default;
 
-	Rectangle GetBoxCollider() const { return mBoxCollider; };
-	void SetBoxCollider(Rectangle rect) { 
-		mBoxCollider = rect; mRadius = mBoxCollider.GetRadius(); 
-	};
+	Rectangle GetBoxCollider() const { return mBoxCollider; }
+	void SetBoxCollider(const Rectangle& pRect) { 
+		mBoxCollider = pRect; mRadius = mBoxCollider.GetRadius(); 
+	}
+	
+	float GetRadius() const { return mRadius; }
 
-	float GetRadius() const { return mRadius; };
-
-	Vector2 Collide(BoxCollider2D* other);
+	Vector2 Collide(BoxCollider2D* pOther);
 };
 

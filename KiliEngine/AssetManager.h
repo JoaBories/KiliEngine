@@ -31,6 +31,9 @@ private:
 	static std::map<std::string, path> mUnloadedTextures;
 	static std::map<std::string, path> mUnloadedShaders;
 	static std::map<std::string, path> mUnloadedMeshes;
+	
+	static Mesh* LoadMeshFromFile(const std::string& pName);
+	
 public:
 	
 	static void Init(IRenderer* pRenderer);

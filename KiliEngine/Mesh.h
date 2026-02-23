@@ -5,21 +5,22 @@
 #include "Texture.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Vertex.h"
 
 class Mesh
 {
 private:
 	std::string mFilename;
-	std::vector<Texture*> mTextures;
+	std::vector<Vertex> mVertices;
 	VertexArray* mVao;
+	std::vector<Texture*> mTextures;
 	std::string mShaderName;
+	
+	float* ToVerticeArray();
 
 public:
-
-	Mesh();
-	Mesh(const std::vector<Texture*>& pTextures, VertexArray* pVao, const std::string& pShader);
-
-	bool LoadMesh(std::string pFileName);
+	explicit Mesh(std::vector<Vertex> pVertices);
+	
 	void Unload();
 
 	[[nodiscard]] std::vector<Texture*> GetTextures() const { return mTextures; }
@@ -31,7 +32,7 @@ public:
 	void SetVertexArray(VertexArray* pVao) { mVao = pVao; }
 
 	[[nodiscard]] std::string GetShaderName() const { return mShaderName; }
-	ShaderProgram* GetShaderProgram() const;
-	void SetShaderProgram(const std::string& pShader) { mShaderName = pShader; }
+	[[nodiscard]] ShaderProgram* GetShaderProgram() const;
+	void SetShader(const std::string& pShader) { mShaderName = pShader; }
 };
 
