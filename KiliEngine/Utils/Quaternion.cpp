@@ -35,6 +35,13 @@ void Quaternion::Conjugate()
 	z *= -1.0f;
 }
 
+Quaternion Quaternion::Conjugated() const
+{
+	Quaternion result = *this;
+	result.Conjugate();
+	return result;
+}
+
 void Quaternion::Normalize()
 {
 	float len = Length();

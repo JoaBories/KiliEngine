@@ -1,7 +1,6 @@
 #include "ActorComponent.h"
 #include "GameActor.h"
 
-
 void ActorComponent::Start() 
 {
 	OnStart();

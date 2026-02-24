@@ -53,6 +53,7 @@ void GameEngine::Loop()
 		GameTime::DelayTime();
 	}
 
+	Log::Info(" Avg : " + std::to_string(1000.0f/GameTime::GetAvgFrameTime()));
 	Close();
 }
 

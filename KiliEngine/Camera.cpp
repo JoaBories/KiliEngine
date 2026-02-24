@@ -14,28 +14,32 @@ void Camera::OnEarlyUpdate()
 {
     if (Inputs::IsKeyPressed(SDLK_z))
     {
-        AddPosition(GetWorldTransform().GetTransform().GetForwardVector() * 10 * GameTime::DeltaTime);
+        AddPosition(GetWorldTransform().GetTransform().GetForwardVector() * 20 * GameTime::DeltaTime);
     }
     else if (Inputs::IsKeyPressed(SDLK_s))
     {
-        AddPosition(GetWorldTransform().GetTransform().GetForwardVector() * -10 * GameTime::DeltaTime);
+        AddPosition(GetWorldTransform().GetTransform().GetForwardVector() * -20 * GameTime::DeltaTime);
     }
 
     if (Inputs::IsKeyPressed(SDLK_d))
     {
-        AddPosition(GetWorldTransform().GetTransform().GetRightVector() * 10 * GameTime::DeltaTime);
+        AddPosition(GetWorldTransform().GetTransform().GetRightVector() * 20 * GameTime::DeltaTime);
     }
     else if (Inputs::IsKeyPressed(SDLK_q))
     {
-        AddPosition(GetWorldTransform().GetTransform().GetRightVector() * -10 * GameTime::DeltaTime);
+        AddPosition(GetWorldTransform().GetTransform().GetRightVector() * -20 * GameTime::DeltaTime);
     }
 
-    Vector2 mouseDelta = Inputs::GetMouseDelta();
-
-    if (mouseDelta != Vector2::zero)
+    const Vector2 mouseDelta = Inputs::GetMouseDelta();
+    if ( mouseDelta != Vector2::zero)
     {
-        AddRotation(Quaternion(GetWorldTransform().GetTransform().GetUpVector(), mouseDelta.x * 0.1f * GameTime::DeltaTime));
-        AddRotation(Quaternion(GetWorldTransform().GetTransform().GetRightVector(), mouseDelta.y * 0.1f * GameTime::DeltaTime));
+        Vector3 currentEuler = mTransform.GetRotation().AsMatrixRow().GetEulerRotation();
+        
+        currentEuler.z += mouseDelta.x * 10 * GameTime::DeltaTime * MathUtils::DEG2RAD;
+        currentEuler.y += mouseDelta.y * 10 * GameTime::DeltaTime * MathUtils::DEG2RAD;
+
+        Quaternion newRotation = Quaternion(Vector3::unitZ, currentEuler.z) * Quaternion(Vector3::unitY, currentEuler.y) * Quaternion(Vector3::unitX, currentEuler.x); 
+        SetRotation(newRotation);
     }
     
     const Vector3 camPosition = GetWorldTransform().GetPosition();

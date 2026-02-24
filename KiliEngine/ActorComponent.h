@@ -1,7 +1,5 @@
 #pragma once
 
-#include <utility>
-
 #include "Transform.h"
 
 class GameActor;
@@ -10,13 +8,14 @@ class ActorComponent
 {
 private:
 	bool mIsActive;
-	bool mWorldNeedUpdate;
 	short mUpdateOrder;
-	GameActor* mOwner;
-	Transform mLocalTransform;
+	bool mWorldNeedUpdate;
 	WorldTransform mWorldTransform;
 
 protected:
+	Transform mLocalTransform;
+	GameActor* mOwner;
+	
 	virtual void OnStart() {}
 	virtual void OnUpdate() = 0;
 	virtual void OnEnd() {}

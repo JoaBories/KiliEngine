@@ -29,7 +29,8 @@ public:
 	void AddPosition(const Vector3& pMovement) { mPosition += pMovement; }
 
 	void SetRotation(const Quaternion& pNewRot) { mRotation = pNewRot; }
-	void AddRotation(const Quaternion& pRotation) { mRotation = Quaternion::Concatenate(mRotation, pRotation); }
+	void AddRotation(const Quaternion& pRotation);
+	void Rotate(const Vector3& pAxis, float pAngle);
 
 	void SetScale(const Vector3& pNewScale) { mScale = pNewScale; }
 };
@@ -70,6 +71,11 @@ public :
 
 	void AddRotation(const Quaternion& pRotation) {
 		mTransform.AddRotation(pRotation);
+		mNeedUpdate = true;
+	}
+
+	void Rotate(const Vector3& pAxis, const float pAngle) {
+		mTransform.Rotate(pAxis, pAngle);
 		mNeedUpdate = true;
 	}
 

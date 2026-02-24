@@ -183,6 +183,27 @@ public:
 		return retVal;
 	}
 
+	[[nodiscard]] Vector3 GetEulerRotation() const
+	{
+		const float sy = MathUtils::Sqrt(mat[0][0] * mat[0][0] + mat[1][0] * mat[1][0]);
+		
+		float x, y, z;
+
+		if (sy > 1e-6)
+		{
+			x = MathUtils::ATan2(mat[2][1], mat[2][2]);
+			y = MathUtils::ATan2(-mat[2][0], sy);
+			z = MathUtils::ATan2(mat[1][0], mat[0][0]);
+		}
+		else
+		{
+			x = MathUtils::ATan2(-mat[1][2], mat[1][1]);
+			y = MathUtils::ATan2(-mat[2][0], sy);
+			z = 0;
+		}
+		return Vector3(x, y, z);
+	}
+
 	static Matrix4Row CreateScale(float xScale, float yScale, float zScale)
 	{
 		float temp[4][4] =
