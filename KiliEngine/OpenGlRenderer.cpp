@@ -3,8 +3,9 @@
 #include "AssetManager.h"
 #include "SpriteComponent.h"
 #include "Log.h"
-
+#ifdef _DEBUG
 RenderMode GlRenderer::RenderMode = DefaultRender;
+#endif
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
@@ -74,8 +75,9 @@ void GlRenderer::DrawMeshes() const
 {
     glEnable(GL_DEPTH_TEST);
     
+#ifdef _DEBUG
     ShaderProgram* shader = nullptr;
-
+    
     switch (RenderMode)
     {
     case Uvs:
@@ -109,6 +111,18 @@ void GlRenderer::DrawMeshes() const
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#else
+    for (const auto& [shaderName, meshVector] : mMeshes)
+    {
+        ShaderProgram* shader = AssetManager::GetShader(shaderName);
+        shader->Use();
+        
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera->GetViewProjMatrix(), shader);
+        }
+    }
+#endif
 }
 
 void GlRenderer::DrawSprites()

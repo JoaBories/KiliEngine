@@ -7,6 +7,8 @@
 #include "Matrix4Row.h"
 #include "MeshComponent.h"
 
+
+#ifdef _DEBUG
 enum RenderMode : Uint8
 {
 	DefaultRender,
@@ -14,7 +16,7 @@ enum RenderMode : Uint8
 	Normals,
 	Wireframe,
 };
-
+#endif
 
 class SpriteComponent;
 
@@ -33,7 +35,9 @@ private:
 	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by shader
 public:
 
+#ifdef _DEBUG
 	static RenderMode RenderMode;
+#endif
 	
 	GlRenderer();
 

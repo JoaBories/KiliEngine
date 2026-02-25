@@ -10,8 +10,7 @@
 #define DBG_NEW new
 #endif
 
-#include <SDL.h>
-#include <glew.h>
+
 #include "GameEngine.h"
 #include "DefaultScene.h"
 #include "Bowling.h"
