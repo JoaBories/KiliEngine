@@ -3,9 +3,6 @@
 #include "AssetManager.h"
 #include "SpriteComponent.h"
 #include "Log.h"
-#ifdef _DEBUG
-RenderMode GlRenderer::RenderMode = DefaultRender;
-#endif
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
@@ -48,11 +45,7 @@ bool GlRenderer::Initialize(Window& pWindow)
     }
 
     mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
-
-    glEnable(GL_BLEND);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     
@@ -63,16 +56,22 @@ void GlRenderer::BeginDraw()
 {
     glClearColor(0.45f, 0.45f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
 }
 
 void GlRenderer::Draw()
 {
     DrawMeshes();
     DrawSprites();
+
+#ifdef _DEBUG
+    DrawColliders();
+#endif
 }
 
 void GlRenderer::DrawMeshes() const
 {
+    glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     
 #ifdef _DEBUG
@@ -93,6 +92,8 @@ void GlRenderer::DrawMeshes() const
         shader->Use();
         
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        break;
+    default:
         break;
     }
     
@@ -127,6 +128,9 @@ void GlRenderer::DrawMeshes() const
 
 void GlRenderer::DrawSprites()
 {
+    glEnable(GL_BLEND);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     
     if (!mSpriteShader) mSpriteShader = AssetManager::GetShader("Sprite");
@@ -210,3 +214,39 @@ RendererType GlRenderer::GetType()
 {
 	return OpenGl;
 }
+
+#ifdef _DEBUG
+
+RenderMode GlRenderer::RenderMode = DefaultRender;
+
+void GlRenderer::AddCollider(ColliderComponent* pCollider)
+{
+    mColliders.push_back(pCollider);
+}
+
+void GlRenderer::RemoveCollider(ColliderComponent* pCollider)
+{
+    const auto iterator = std::find(mColliders.begin(), mColliders.end(), pCollider);
+    mColliders.erase(iterator);
+}
+
+void GlRenderer::DrawColliders()
+{
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glLineWidth(2.0f);
+    
+    for (ColliderComponent* collider : mColliders)
+    {
+        collider->Draw(mCamera->GetViewProjMatrix());
+    }
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+}
+
+#endif

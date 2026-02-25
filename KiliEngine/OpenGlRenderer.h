@@ -33,11 +33,8 @@ private:
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
 	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by shader
-public:
 
-#ifdef _DEBUG
-	static RenderMode RenderMode;
-#endif
+public:
 	
 	GlRenderer();
 
@@ -61,4 +58,19 @@ public:
 	void RemoveMesh(const MeshComponent* pMesh) override;
 	
 	RendererType GetType() override;
+
+#ifdef _DEBUG
+
+private:
+	std::vector<ColliderComponent*> mColliders;
+	
+public:
+	static RenderMode RenderMode;
+	
+	void AddCollider(ColliderComponent* pCollider) override;
+	void RemoveCollider(ColliderComponent* pCollider) override;
+
+	void DrawColliders();
+	
+#endif
 };

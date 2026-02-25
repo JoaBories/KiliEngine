@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include "MeshComponent.h"
 #include "Camera.h"
+#include "ColliderComponent.h"
 
 #include "Utils/Struct.h"
 using Struct::Rectangle;
@@ -41,4 +42,9 @@ public:
 
 	virtual void AddMesh(MeshComponent* pMesh) {}
 	virtual void RemoveMesh(const MeshComponent* pMesh) {}
+	
+#ifdef _DEBUG
+	virtual void AddCollider(ColliderComponent* pCollider) {}
+	virtual void RemoveCollider(ColliderComponent* pCollider) {}
+#endif
 };

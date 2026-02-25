@@ -1,15 +1,16 @@
 #pragma once
 #include "ActorComponent.h"
+
 class ColliderComponent : public ActorComponent
 {
 public:
-    ColliderComponent(GameActor* owner, Transform transform, short updateOrder = 50)
-        : ActorComponent(owner, transform, updateOrder)
-    {
-    }
+    ColliderComponent(GameActor* pOwner, const Transform& pTransform, const short pUpdateOrder = 50);
+    ~ColliderComponent() override;
+    
+    void OnUpdate() override {}
 
-    virtual ~ColliderComponent() = default;
-
-    void OnUpdate() override {};
+#ifdef _DEBUG
+    virtual void Draw(const Matrix4Row& pViewProj) = 0;
+#endif
 };
 
