@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "EnviroActor.h"
 #include "Floor.h"
+#include "RigidBody.h"
 #include "SphereCollider.h"
 
 
@@ -34,6 +35,7 @@ private:
 		BowlingBall* ball  = new BowlingBall(Transform(pPosition, Quaternion(), Vector3(0.6f, 0.6f, 0.6f)));
 		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling")));
 		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 1.0f));
+		ball->AddComponent(new RigidBody(ball));
 		AddActor(ball);
 	}
 

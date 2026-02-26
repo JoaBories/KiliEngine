@@ -49,10 +49,10 @@ void BoxCollider::Draw(const Matrix4Row& pViewProj)
 {
     const Matrix4Row worldTransform = Matrix4Row::CreateScale(mHalfSize) * GetWorldTransform().GetWorldTransformMatrix();
 	
-    AssetManager::GetShader("Basic")->SetMatrix4Row("uViewProj", pViewProj);
-    AssetManager::GetShader("Basic")->SetMatrix4Row("uWorldTransform", worldTransform);
+    AssetManager::GetShader("Collider")->SetMatrix4Row("uViewProj", pViewProj);
+    AssetManager::GetShader("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
 
-    AssetManager::GetTexture("rock")->SetActive();
+    AssetManager::GetShader("Collider")->SetVec4("color", 0,1,0,1);
 	
     mMesh->GetVertexArray()->SetActive();
 	

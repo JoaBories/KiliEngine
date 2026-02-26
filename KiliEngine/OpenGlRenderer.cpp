@@ -238,6 +238,8 @@ void GlRenderer::DrawColliders()
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glLineWidth(2.0f);
+
+    AssetManager::GetShader("Collider")->Use();
     
     for (ColliderComponent* collider : mColliders)
     {

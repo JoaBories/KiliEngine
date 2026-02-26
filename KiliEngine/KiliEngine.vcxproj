@@ -144,6 +144,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="OpenGlRenderer.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SdlRenderer.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="main.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="OpenGlRenderer.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SdlRenderer.h" />
     <ClInclude Include="Inputs.h" />
@@ -291,6 +293,8 @@
   <ItemGroup>
     <Content Include="Resources\Shaders\Basic.frag" />
     <Content Include="Resources\Shaders\Basic.vert" />
+    <Content Include="Resources\Shaders\Collider.frag" />
+    <Content Include="Resources\Shaders\Collider.vert" />
     <Content Include="Resources\Shaders\Decals.frag" />
     <Content Include="Resources\Shaders\Decals.vert" />
     <Content Include="Resources\Shaders\Normal.frag" />

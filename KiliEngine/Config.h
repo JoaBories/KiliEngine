@@ -2,6 +2,7 @@
 
 #include <string>
 #include "SDL_keycode.h"
+#include "Vector3.h"
 
 const std::string TEXTURE_PATH = "Resources/Textures/";
 const std::string SHADER_PATH = "Resources/Shaders/";
@@ -11,6 +12,9 @@ constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
 
 const std::string WINDOW_TITLE = "Kili Engine";
+
+constexpr float GRAVITY_FORCE = 9.8f;
+const Vector3 GRAVITY_DIR = Vector3(0,0,-1);
 
 #ifdef _DEBUG
 constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;
