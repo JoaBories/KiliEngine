@@ -6,6 +6,7 @@
 #include "GameTime.h"
 #include "Inputs.h"
 #include "Config.h"
+#include "PhysicManager.h"
 
 GameEngine::GameEngine(const std::string& pTitle) :
 	mIsRunning(true), mTitle(pTitle), 
@@ -69,6 +70,7 @@ void GameEngine::Render()
 void GameEngine::Update()
 {
 	SceneManager::UpdateScene();
+	PhysicManager::Update();
 }
 
 void GameEngine::CheckForInputs()

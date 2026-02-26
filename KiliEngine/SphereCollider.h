@@ -11,10 +11,10 @@ private:
     
 public:
     SphereCollider(GameActor* pOwner, const Transform& pTransform, float pRadius, short pUpdateOrder = 50);
+    ~SphereCollider() override;
+    
     void SetRadius(const float pRadius) { mRadius = pRadius; }
     float GetRadius() const { return mRadius; }  
-    
-    Vector3 Collide(SphereCollider* pOther);
 
 #ifdef _DEBUG
 

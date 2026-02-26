@@ -35,7 +35,7 @@ private:
 		BowlingBall* ball  = new BowlingBall(Transform(pPosition, Quaternion(), Vector3(0.6f, 0.6f, 0.6f)));
 		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling")));
 		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 1.0f));
-		ball->AddComponent(new RigidBody(ball));
+		//ball->AddComponent(new RigidBody(ball));
 		AddActor(ball);
 	}
 
@@ -82,9 +82,10 @@ public:
 
 		CreateFloor(Vector3(40,0,-2), Vector3(50,2.65f,2));
 
-		CreateBowlingBall(Vector3(70,0,0.6f));
+		CreateBowlingBall(Vector3(0,0.0f,0.6f));
+		CreateBowlingBall(Vector3(0.2f,0.8f,0.8f));
 
-		CreatePinGroup(Vector3(70,0,1));
+		CreatePinGroup(Vector3(70,0,0));
 
 		CreateBowlingPin(Vector3(0,0,1));
 	}

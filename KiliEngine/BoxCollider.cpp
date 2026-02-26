@@ -5,6 +5,7 @@
 #include "AssetManager.h"
 #include "Inputs.h"
 #include "Log.h"
+#include "PhysicManager.h"
 
 std::vector<Vector3> BoxCollider::GetCorners()
 {
@@ -31,17 +32,17 @@ BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const V
     ColliderComponent(pOwner, pTransform, pUpdateOrder),
     mHalfSize(pHalfSize), mRadius(0.0f)
 {
+    PhysicManager::AddBoxCollider(this);
+    
     mRadius = mHalfSize.Length();
 #ifdef _DEBUG
     mMesh = AssetManager::GetMesh("cube");    
 #endif
 }
 
-Vector3 BoxCollider::Collide(BoxCollider* pOther)
+BoxCollider::~BoxCollider()
 {
-    Vector3 overlap = Vector3::zero;
-    // todo implement collision between obb
-    return overlap;
+    PhysicManager::RemoveBoxCollider(this);
 }
 
 #ifdef _DEBUG
@@ -52,7 +53,9 @@ void BoxCollider::Draw(const Matrix4Row& pViewProj)
     AssetManager::GetShader("Collider")->SetMatrix4Row("uViewProj", pViewProj);
     AssetManager::GetShader("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
 
-    AssetManager::GetShader("Collider")->SetVec4("color", 0,1,0,1);
+    const Vector4 color = mCollided ? Vector4(1,0,0,1) : Vector4(0,1,0,1);
+    AssetManager::GetShader("Collider")->SetVec4("color", color.x,color.y,color.z,color.w);
+    mCollided = false;
 	
     mMesh->GetVertexArray()->SetActive();
 	

@@ -14,12 +14,12 @@ private:
     
 public:
     BoxCollider(GameActor* pOwner, const Transform& pTransform, const Vector3& pHalfSize, short pUpdateOrder = 50);
+    ~BoxCollider() override;
+    
     Vector3 GetHalfSize() const {return mHalfSize;}
     void SetHalfSize(const Vector3& pHalfSize) {mHalfSize = pHalfSize;}
     
     float GetRadius() const {return mRadius;}
-    
-    Vector3 Collide(BoxCollider* pOther);
 
 #ifdef _DEBUG
 

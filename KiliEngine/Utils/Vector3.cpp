@@ -41,6 +41,13 @@ void Vector3::Normalize()
 	z /= len;
 }
 
+Vector3 Vector3::Normalized() const
+{
+	Vector3 result = *this;
+	result.Normalize();
+	return result;
+}
+
 Vector3 Vector3::Transform(Vector3& vec, Matrix4Row& mat, float w)
 {
 	Vector3 retVal;

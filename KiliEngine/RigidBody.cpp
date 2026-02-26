@@ -19,3 +19,8 @@ void RigidBody::OnUpdate()
     
     MoveComponent::OnUpdate();
 }
+
+void RigidBody::OnCollide(Collision pCollision, ColliderComponent* pOtherCollider)
+{
+    
+}

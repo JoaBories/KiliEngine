@@ -17,6 +17,7 @@ public:
 	float LengthSq() const;
 	float Length() const;
 	void Normalize();
+	Vector3 Normalized() const;
 
 	const float* GetAsFloatPtr() const
 	{
@@ -53,12 +54,31 @@ public:
 		return Vector3(vec.x * scalar, vec.y * scalar, vec.z * scalar);
 	}
 
+	friend Vector3 operator/(const Vector3& vec, float scalar)
+	{
+		return Vector3(vec.x / scalar, vec.y / scalar, vec.z / scalar);
+	}
+	
+	friend Vector3 operator/(float scalar, const Vector3& vec)
+	{
+		return Vector3(vec.x / scalar, vec.y / scalar, vec.z / scalar);
+	}
+
+
 	// Scalar *=
 	Vector3& operator*=(float scalar)
 	{
 		x *= scalar;
 		y *= scalar;
 		z *= scalar;
+		return *this;
+	}
+
+	Vector3& operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
 		return *this;
 	}
 

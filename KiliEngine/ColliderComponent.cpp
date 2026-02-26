@@ -1,5 +1,7 @@
 #include "ColliderComponent.h"
 
+#include "RigidBody.h"
+
 #ifdef _DEBUG
 #include "SceneManager.h"
 #endif
@@ -17,4 +19,14 @@ ColliderComponent::~ColliderComponent()
 #ifdef _DEBUG
     SceneManager::ActiveScene()->GetRenderer()->RemoveCollider(this);
 #endif
+}
+
+void ColliderComponent::OnCollide(Collision pColl, ColliderComponent* pOtherCollider)
+{
+    if (RigidBody* rb = mOwner->GetComponent<RigidBody>())
+    {
+        rb->OnCollide(pColl, pOtherCollider);
+    }
+
+    mCollided = true;
 }
