@@ -314,6 +314,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Utils\CollisionUtils.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\Matrix4Row.cpp" />
     <ClCompile Include="Utils\Quaternion.cpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Utils\CollisionUtils.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />
     <ClInclude Include="Utils\Quaternion.h" />

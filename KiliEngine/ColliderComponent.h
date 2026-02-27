@@ -1,15 +1,8 @@
 #pragma once
 #include "ActorComponent.h"
+#include "CollisionUtils.h"
 
-struct Collision
-{
-    bool Collided = false;
-    Vector3 OverlapDir = Vector3(0, 0, 0);
-    float OverlapLength = 0;
-
-    explicit operator bool() const { return Collided; }
-    [[nodiscard]] Vector3 Overlap() const { return OverlapDir * OverlapLength; }
-};
+using namespace CollisionUtils;
 
 class ColliderComponent : public ActorComponent
 {
