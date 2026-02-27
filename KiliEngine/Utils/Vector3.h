@@ -1,4 +1,5 @@
 #pragma once
+#include "MathUtils.h"
 
 class Vector3
 {
@@ -64,6 +65,10 @@ public:
 		return Vector3(vec.x / scalar, vec.y / scalar, vec.z / scalar);
 	}
 
+	Vector3 operator-() const
+	{
+		return Vector3{ -x, -y, -z };
+	}
 
 	// Scalar *=
 	Vector3& operator*=(float scalar)
@@ -98,6 +103,27 @@ public:
 		y -= right.y;
 		z -= right.z;
 		return *this;
+	}
+
+	bool operator==(const Vector3& pOther) const
+	{
+		if (MathUtils::NearlyEqual(x, pOther.x))
+		{
+			if (MathUtils::NearlyEqual(y, pOther.y))
+			{
+				if (MathUtils::NearlyEqual(z, pOther.z))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	bool operator!=(const Vector3& pOther) const
+	{
+		return !(*this == pOther);
 	}
 
 	// Normalize the provided vector

@@ -1,5 +1,5 @@
 #include "ColliderComponent.h"
-
+#include "GameActor.h"
 #include "RigidBody.h"
 
 #ifdef _DEBUG

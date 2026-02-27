@@ -35,7 +35,7 @@ private:
 		BowlingBall* ball  = new BowlingBall(Transform(pPosition, Quaternion(), Vector3(0.6f, 0.6f, 0.6f)));
 		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling")));
 		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 1.0f));
-		//ball->AddComponent(new RigidBody(ball));
+		ball->AddComponent(new RigidBody(ball, 0,5));
 		AddActor(ball);
 	}
 
@@ -72,7 +72,10 @@ public:
 	}
 
 	void OnStart() override {
-		AddActor(new Camera(Transform::Origin, 70.0f, 0.1f, 1000.0f));
+
+		Camera* camera = new Camera(Transform::Origin, 70.0f, 0.1f, 1000.0f);
+		//camera->AddComponent(new SphereCollider(camera, Transform(Vector3(1,0,0), Quaternion(), Vector3::unit), 0.1f));
+		AddActor(camera);
 		
 		CreateEnviroActor("Enviro1", "floor");
 		CreateEnviroActor("Enviro2", "return");
@@ -80,14 +83,14 @@ public:
 		CreateEnviroActor("Gutters", "gutters");
 		CreateEnviroActor("Board", "board");
 
-		CreateFloor(Vector3(40,0,-2), Vector3(50,2.65f,2));
+		CreateFloor(Vector3(40,0,-20), Vector3(50,2.65f,20));
 
-		CreateBowlingBall(Vector3(0,0.0f,0.6f));
-		CreateBowlingBall(Vector3(0.2f,0.8f,0.8f));
+		CreateBowlingBall(Vector3(0,1.0f,100));
+		//CreateBowlingBall(Vector3(0.2f,0.8f,0.8f));
 
-		CreatePinGroup(Vector3(70,0,0));
+		//CreatePinGroup(Vector3(70,0,0));
 
-		CreateBowlingPin(Vector3(0,0,1));
+		//CreateBowlingPin(Vector3(0,0,1));
 	}
 
 	void OnUpdate() override {

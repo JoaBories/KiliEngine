@@ -14,7 +14,7 @@ public:
     
     void OnUpdate() override;
 
-    void OnCollide(Collision pCollision, ColliderComponent* pOtherCollider);
+    void OnCollide(const Collision& pCollision, ColliderComponent* pOtherCollider);
 
     [[nodiscard]] float GetGravityScale() const { return mGravityScale; }
     void SetGravityScale(const float pGravityScale) { mGravityScale = pGravityScale; }
