@@ -30,7 +30,7 @@ Vector3 CollisionUtils::Sphere::SphereOnSphere(const Sphere& pOther) const
 
     if (distance.LengthSq() < radiusSum * radiusSum)
     {
-        const float overlapLength = distance.Length() - radiusSum;
+        const float overlapLength = radiusSum - distance.Length();
         return distance.Normalized() * overlapLength;
     }
 
@@ -41,9 +41,9 @@ Vector3 CollisionUtils::Sphere::PointOnSphere(const Vector3& pPoint) const
 {
     const Vector3 distance = pPoint - Center;
 
-    if (distance.LengthSq() < Radius * Radius * Radius)
+    if (distance.LengthSq() < Radius * Radius)
     {
-        const float overlapLength = distance.Length() - Radius;
+        const float overlapLength = Radius - distance.Length();
         return distance.Normalized() * overlapLength;
     }
 

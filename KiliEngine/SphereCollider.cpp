@@ -1,5 +1,6 @@
 #include "SphereCollider.h"
 #include "AssetManager.h"
+#include "GameActor.h"
 #include "PhysicManager.h"
 
 SphereCollider::SphereCollider(GameActor* pOwner, const Transform& pTransform, const float pRadius, const short pUpdateOrder) :
@@ -21,7 +22,7 @@ SphereCollider::~SphereCollider()
 #ifdef _DEBUG
 void SphereCollider::Draw(const Matrix4Row& pViewProj)
 {
-    const Matrix4Row worldTransform = Matrix4Row::CreateScale(mRadius) * GetWorldTransform().GetWorldTransformMatrix();
+    const Matrix4Row worldTransform = Matrix4Row::CreateScale(mRadius) * Matrix4Row::CreateTranslation(GetWorldTransform().GetPosition());
 	
     AssetManager::GetShader("Collider")->SetMatrix4Row("uViewProj", pViewProj);
     AssetManager::GetShader("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);

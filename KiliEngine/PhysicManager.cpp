@@ -15,9 +15,9 @@ Collision PhysicManager::Collide(BoxCollider* pBox, SphereCollider* pSphere)
     const Transform boxTransform = pBox->GetWorldTransform().GetTransform();
 
     const Obb obb = {boxTransform.GetPosition(), pBox->GetHalfSize() * pBox->GetWorldTransform().GetScale(), Vector3::unitX, Vector3::unitY, Vector3::unitZ};
-    const Sphere sp = {pSphere->GetWorldTransform().GetPosition(), pSphere->GetRadius() * pSphere->GetWorldTransform().GetScale().x};
+    const Sphere sp = {pSphere->GetWorldTransform().GetPosition(), pSphere->GetRadius()};
 
-    const Vector3 overlap = -sp.PointOnSphere(obb.GetClosestFromPoint(sp.Center));
+    const Vector3 overlap = sp.PointOnSphere(obb.GetClosestFromPoint(sp.Center));
     if (overlap != Vector3::zero)
     {
         result.Collided = true;
@@ -35,7 +35,7 @@ Collision PhysicManager::Collide(SphereCollider* pSphere1, SphereCollider* pSphe
     const Sphere sp1 = {pSphere1->GetWorldTransform().GetPosition(), pSphere1->GetRadius()};
     const Sphere sp2 = {pSphere2->GetWorldTransform().GetPosition(), pSphere2->GetRadius()};
     
-    if (const Vector3 overlap = sp1.SphereOnSphere(sp2); overlap != Vector3::zero)
+    if (const Vector3 overlap = -sp1.SphereOnSphere(sp2); overlap != Vector3::zero)
     {
         result.Collided = true;
         result.OverlapLength = overlap.Length();
