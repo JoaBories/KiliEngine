@@ -14,7 +14,7 @@ Collision PhysicManager::Collide(BoxCollider* pBox, SphereCollider* pSphere)
 
     const Transform boxTransform = pBox->GetWorldTransform().GetTransform();
 
-    const Obb obb = {boxTransform.GetPosition(), pBox->GetHalfSize() * pBox->GetWorldTransform().GetScale(), Vector3::unitX, Vector3::unitY, Vector3::unitZ};
+    const Obb obb = {boxTransform.GetPosition(), pBox->GetHalfSize() * boxTransform.GetScale(), boxTransform.GetForwardVector(), boxTransform.GetRightVector(), boxTransform.GetUpVector()};
     const Sphere sp = {pSphere->GetWorldTransform().GetPosition(), pSphere->GetRadius()};
 
     const Vector3 overlap = sp.PointOnSphere(obb.GetClosestFromPoint(sp.Center));

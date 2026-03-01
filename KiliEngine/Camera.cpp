@@ -48,7 +48,7 @@ void Camera::OnEarlyUpdate()
 
     if (mProjNeedsUpdate)
     {
-        mProjMatrix = Matrix4Row::CreatePerspectiveFOV(mFov, WINDOW_WIDTH, WINDOW_HEIGHT, mNearPane, mFarPane);
+        mProjMatrix = Matrix4Row::CreatePerspectiveFOV(mFov, Cfg::WINDOW_WIDTH, Cfg::WINDOW_HEIGHT, mNearPane, mFarPane);
     }
 }
 

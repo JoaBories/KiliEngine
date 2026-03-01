@@ -3,9 +3,9 @@
 #include "GameActor.h"
 #include "GameTime.h"
 
-RigidBody::RigidBody(GameActor* pOwner, const float pLinearDamping, const float pGravity, const float pMass):
+RigidBody::RigidBody(GameActor* pOwner, const float pLinearDamping, const float pGravity, const float pMass, const float pRestitution) :
     MoveComponent(pOwner),
-    mGravityScale(pGravity), mLinearDamping(pLinearDamping), mMass(pMass)
+    mGravityScale(pGravity), mLinearDamping(pLinearDamping), mMass(pMass), mRestitution(pRestitution)
 {
 }
 
@@ -13,7 +13,7 @@ void RigidBody::OnUpdate()
 {
     Vector3 velocity = GetVelocity();
     
-    velocity += GRAVITY_DIR * GRAVITY_FORCE * mGravityScale * GameTime::DeltaTime;  //Gravity
+    velocity += Cfg::GRAVITY_DIR * Cfg::GRAVITY_FORCE * mGravityScale * GameTime::DeltaTime;  //Gravity
     velocity *= (1.0f - mLinearDamping * GameTime::DeltaTime);                      //Linear Damping
 
     SetVelocity(velocity);
@@ -21,10 +21,25 @@ void RigidBody::OnUpdate()
     MoveComponent::OnUpdate();
 }
 
-void RigidBody::OnCollide(const Collision& pCollision, ColliderComponent* pOtherCollider)
+void RigidBody::OnCollide(const Collision& pCollision, const ColliderComponent* pOtherCollider)
 {
-    mOwner->AddPosition(pCollision.Overlap());
-    SetVelocity(Vector3::zero);
+    mOwner->AddPosition(pCollision.OverlapDir * Cfg::CORRECTION_STRENGTH * MathUtils::Max(pCollision.OverlapLength - Cfg::ALLOWED_PENETRATION, 0.0f));
+
+    const RigidBody* otherRb = pOtherCollider->GetOwner()->GetComponent<RigidBody>();
+
+    const Vector3 velocityB = otherRb ? otherRb->GetVelocity() : Vector3::zero;
+
+    const float normalVelocity = Vector3::Dot(velocityB - mVelocity, -pCollision.OverlapDir);
+
+    if (normalVelocity >= 0) return;
+
+    const float massB = otherRb ? otherRb->GetMass() : 0.0f;
+    const float restitutionB = otherRb ? otherRb->GetRestitution() : 1.0f;
+
+    const float invMassA = 1 / mMass;
+    const float invMassB = (massB > 0.0f) ? 1.0f / massB : 0.0f;
+
+    float j = -(1.0f + mRestitution * restitutionB) * normalVelocity / (invMassA + invMassB);
     
-    Log::Info("x : " + std::to_string(pCollision.Overlap().x) + " , y: " + std::to_string(pCollision.Overlap().y) + " , z: " + std::to_string(pCollision.Overlap().z));
+    AddVelocity(j * pCollision.OverlapDir * invMassA);
 }

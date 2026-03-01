@@ -25,7 +25,7 @@ GameEngine::GameEngine(const std::string& pTitle) :
 
 void GameEngine::Init()
 {
-	mWindow = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+	mWindow = new Window(Cfg::WINDOW_WIDTH, Cfg::WINDOW_HEIGHT);
 	mRenderer = new GlRenderer();
 
 	if (mWindow->Open()) 

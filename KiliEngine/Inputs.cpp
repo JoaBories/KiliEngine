@@ -29,15 +29,15 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 	else if (pEvent.type == SDL_KEYDOWN)
 	{
 #ifdef _DEBUG
-		if (pEvent.key.keysym.sym == EXIT_KEY)
+		if (pEvent.key.keysym.sym == Cfg::EXIT_KEY)
 		{
 			return true;
 		}
 		
-		if (pEvent.key.keysym.sym == RENDER_MODE_DEFAULT) GlRenderer::RenderMode = DefaultRender;
-		else if (pEvent.key.keysym.sym == RENDER_MODE_UV) GlRenderer::RenderMode = Uvs;
-		else if (pEvent.key.keysym.sym == RENDER_MODE_NORMAL) GlRenderer::RenderMode = Normals;
-		else if (pEvent.key.keysym.sym == RENDER_MODE_WIREFRAME) GlRenderer::RenderMode = Wireframe;
+		if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_DEFAULT) GlRenderer::RenderMode = DefaultRender;
+		else if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_UV) GlRenderer::RenderMode = Uvs;
+		else if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_NORMAL) GlRenderer::RenderMode = Normals;
+		else if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_WIREFRAME) GlRenderer::RenderMode = Wireframe;
 #endif		
 		const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
 		if (it == mCurrentPressedInputs.end())

@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "MathUtils.h"
 
 class Vector3
@@ -15,15 +17,17 @@ public:
 		:x(xP), y(yP), z(zP) {}
 
 	void Set(float xP, float yP, float zP);
-	float LengthSq() const;
-	float Length() const;
+	[[nodiscard]] float LengthSq() const;
+	[[nodiscard]] float Length() const;
 	void Normalize();
-	Vector3 Normalized() const;
+	[[nodiscard]] Vector3 Normalized() const;
 
-	const float* GetAsFloatPtr() const
+	[[nodiscard]] const float* GetAsFloatPtr() const
 	{
 		return reinterpret_cast<const float*>(&x);
 	}
+
+	[[nodiscard]] std::string ToString() const;
 
 	// Vector addition (a + b)
 	friend Vector3 operator+(const Vector3& a, const Vector3& b)

@@ -115,9 +115,9 @@ void AssetManager::FetchAll()
 
     UnfetchAll();
     
-    SearchAFolderFor(path(TEXTURE_PATH), AssetTexture);
-    SearchAFolderFor(path(SHADER_PATH), AssetShader);
-    SearchAFolderFor(path(MESH_PATH), AssetMesh);
+    SearchAFolderFor(path(Cfg::TEXTURE_PATH), AssetTexture);
+    SearchAFolderFor(path(Cfg::SHADER_PATH), AssetShader);
+    SearchAFolderFor(path(Cfg::MESH_PATH), AssetMesh);
 
     const auto endTime = Clk::now();
     const std::string time = std::to_string(std::chrono::duration<double>(endTime - startTime).count());

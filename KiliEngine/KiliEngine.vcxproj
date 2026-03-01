@@ -135,6 +135,7 @@
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BowlingBall.cpp" />
+    <ClCompile Include="BowlingPin.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="Camera.cpp" />
