@@ -5,19 +5,30 @@ std::vector<SphereCollider*> PhysicManager::mSphereColliders = {};
 
 Collision PhysicManager::Collide(BoxCollider* pBox1, BoxCollider* pBox2)
 {
-    return {};
+    Collision result;
+    
+    const Obb obb1 = BoxToObb(pBox1);
+    const Obb obb2 = BoxToObb(pBox2);
+    
+    const Vector3 overlap = Obb::ObbOnObb(obb1,obb2);
+    if (overlap != Vector3::zero)
+    {
+        result.Collided = true;
+        result.OverlapLength = overlap.Length();
+        result.OverlapDir = overlap / result.OverlapLength;
+    }
+    
+    return result;
 }
 
 Collision PhysicManager::Collide(BoxCollider* pBox, SphereCollider* pSphere)
 {
     Collision result;
+    
+    const Obb obb = BoxToObb(pBox);
+    const Sphere sp = SphereToSphere(pSphere);
 
-    const Transform boxTransform = pBox->GetWorldTransform().GetTransform();
-
-    const Obb obb = {boxTransform.GetPosition(), pBox->GetHalfSize() * boxTransform.GetScale(), boxTransform.GetForwardVector(), boxTransform.GetRightVector(), boxTransform.GetUpVector()};
-    const Sphere sp = {pSphere->GetWorldTransform().GetPosition(), pSphere->GetRadius()};
-
-    const Vector3 overlap = sp.PointOnSphere(obb.GetClosestFromPoint(sp.Center));
+    const Vector3 overlap = Sphere::PointOnSphere(sp, obb.GetClosestFromPoint(sp.Center));
     if (overlap != Vector3::zero)
     {
         result.Collided = true;
@@ -32,10 +43,11 @@ Collision PhysicManager::Collide(SphereCollider* pSphere1, SphereCollider* pSphe
 {
     Collision result;
 
-    const Sphere sp1 = {pSphere1->GetWorldTransform().GetPosition(), pSphere1->GetRadius()};
-    const Sphere sp2 = {pSphere2->GetWorldTransform().GetPosition(), pSphere2->GetRadius()};
+    const Sphere sp1 = SphereToSphere(pSphere1);
+    const Sphere sp2 = SphereToSphere(pSphere2);
     
-    if (const Vector3 overlap = -sp1.SphereOnSphere(sp2); overlap != Vector3::zero)
+    const Vector3 overlap = -Sphere::SphereOnSphere(sp1,sp2);
+    if (overlap != Vector3::zero)
     {
         result.Collided = true;
         result.OverlapLength = overlap.Length();
@@ -43,6 +55,24 @@ Collision PhysicManager::Collide(SphereCollider* pSphere1, SphereCollider* pSphe
     }
     
     return result;
+}
+
+Obb PhysicManager::BoxToObb(BoxCollider* pBox)
+{
+    const Transform boxTransform = pBox->GetWorldTransform().GetTransform();
+    
+    return {
+        boxTransform.GetPosition(), 
+        pBox->GetHalfSize() * boxTransform.GetScale(), 
+        boxTransform.GetForwardVector(), 
+        boxTransform.GetRightVector(), 
+        boxTransform.GetUpVector()
+    };
+}
+
+Sphere PhysicManager::SphereToSphere(SphereCollider* pSphere)
+{
+    return {pSphere->GetWorldTransform().GetPosition(), pSphere->GetRadius()};
 }
 
 void PhysicManager::Update()

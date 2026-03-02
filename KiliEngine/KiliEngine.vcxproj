@@ -137,7 +137,6 @@
     <ClCompile Include="BowlingBall.cpp" />
     <ClCompile Include="BowlingPin.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
-    <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="GameActor.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="BowlingBall.h" />
     <ClInclude Include="BowlingPin.h" />
     <ClInclude Include="BoxCollider.h" />
-    <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Config.h" />
@@ -210,7 +208,6 @@
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />
     <ClInclude Include="Utils\Quaternion.h" />
-    <ClInclude Include="Utils\Struct.h" />
     <ClInclude Include="Utils\Vector3.h" />
     <ClInclude Include="Utils\Vector4.h" />
     <ClInclude Include="Utils\Vertex.h" />

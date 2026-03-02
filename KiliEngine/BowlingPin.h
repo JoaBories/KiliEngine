@@ -9,7 +9,4 @@ public:
         GameActor(pTransform)
     {
     }
-
-protected:
-    void OnLateUpdate() override;
 };

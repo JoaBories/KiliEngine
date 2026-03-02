@@ -14,6 +14,9 @@ private:
     static Collision Collide(BoxCollider* pBox, SphereCollider* pSphere);
     static Collision Collide(SphereCollider* pSphere1, SphereCollider* pSphere2);
     
+    static Obb BoxToObb(BoxCollider* pBox);
+    static Sphere SphereToSphere(SphereCollider* pSphere);
+    
 public:
     static void Update();
 
