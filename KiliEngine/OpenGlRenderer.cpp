@@ -107,7 +107,7 @@ void GlRenderer::DrawMeshes() const
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera->GetViewProjMatrix(), shader);
+            mesh->Draw(mCamera, shader);
         }
     }
 
@@ -120,7 +120,7 @@ void GlRenderer::DrawMeshes() const
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera->GetViewProjMatrix(), shader);
+            mesh->Draw(mCamera, shader);
         }
     }
 #endif

@@ -139,6 +139,8 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="FollowCameraComponent.cpp" />
+    <ClCompile Include="FreeCamComponent.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -182,6 +184,8 @@
     <ClInclude Include="DefaultScene.h" />
     <ClInclude Include="EnviroActor.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="FollowCameraComponent.h" />
+    <ClInclude Include="FreeCamComponent.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Mesh.h" />
@@ -217,6 +221,8 @@
   <ItemGroup>
     <Content Include="Resources\Shaders\Basic.frag" />
     <Content Include="Resources\Shaders\Basic.vert" />
+    <Content Include="Resources\Shaders\BasicLight.frag" />
+    <Content Include="Resources\Shaders\BasicLight.vert" />
     <Content Include="Resources\Shaders\Collider.frag" />
     <Content Include="Resources\Shaders\Collider.vert" />
     <Content Include="Resources\Shaders\Decals.frag" />

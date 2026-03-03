@@ -8,6 +8,8 @@
 #include "Camera.h"
 #include "EnviroActor.h"
 #include "Floor.h"
+#include "FollowCameraComponent.h"
+#include "FreeCamComponent.h"
 #include "RigidBody.h"
 #include "SphereCollider.h"
 
@@ -16,7 +18,7 @@ class Bowling : public Scene
 {
 
 private:
-	void CreateEnviroActor(const std::string& pMeshName, const std::string& pTextureName, const std::string& pShaderName = "Basic")
+	void CreateEnviroActor(const std::string& pMeshName, const std::string& pTextureName, const std::string& pShaderName = "BasicLight")
 	{
 		EnviroActor* enviro = new EnviroActor(Transform(Vector3::zero, Quaternion(Vector3::unitZ, 90.0f * MathUtils::DEG2RAD), Vector3(0.5f, 0.4f, 0.5f)));
 		enviro->AddComponent(new MeshComponent(enviro, Transform::Origin, AssetManager::GetMesh(pMeshName), AssetManager::GetTexture(pTextureName), pShaderName));
@@ -32,18 +34,18 @@ private:
 
 	void CreateBowlingBall(const Vector3& pPosition)
 	{
-		BowlingBall* ball  = new BowlingBall(Transform(pPosition, Quaternion(), Vector3(0.6f, 0.6f, 0.6f)));
-		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling")));
-		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 0.6f));
+		BowlingBall* ball  = new BowlingBall(Transform(pPosition, Quaternion(), Vector3(0.55f, 0.55f, 0.55f)));
+		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling"), "BasicLight"));
+		ball->AddComponent(new MeshComponent(ball, Transform(Vector3::zero, Quaternion(), Vector3::unit * -5.0f), AssetManager::GetMesh("plane"), AssetManager::GetTexture("arrow"), "Decals"));
+		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 0.55f));
 		ball->AddComponent(new RigidBody(ball, 0.1f,1,7,0.1f));
-		ball->GetComponent<RigidBody>()->AddVelocity(Vector3(20,1,0));
 		AddActor(ball);
 	}
 
 	void CreateBowlingPin(const Vector3& pPosition)
 	{
 		BowlingPin* pin  = new BowlingPin(Transform(pPosition, Quaternion(), Vector3(0.2f, 0.2f, 0.2f)));
-		pin->AddComponent(new MeshComponent(pin, Transform::Origin, AssetManager::GetMesh("Pin"), AssetManager::GetTexture("pin")));
+		pin->AddComponent(new MeshComponent(pin, Transform::Origin, AssetManager::GetMesh("Pin"), AssetManager::GetTexture("pin"), "BasicLight"));
 		pin->AddComponent(new BoxCollider(pin, Transform::Origin, Vector3(1.4f,1.4f,4.5f)));
 		pin->AddComponent(new RigidBody(pin, 0.5f,1, 1.25f, 0.1f));
 		AddActor(pin);
@@ -75,8 +77,9 @@ public:
 
 	void OnStart() override {
 
-		Camera* camera = new Camera(Transform::Origin, 70.0f, 0.1f, 1000.0f);
-		//camera->AddComponent(new SphereCollider(camera, Transform(Vector3(1,0,0), Quaternion(), Vector3::unit), 0.1f));
+		Camera* camera = new Camera(Transform(Vector3(0, 0, 5), Quaternion(), Vector3::zero), 70.0f, 0.1f, 1000.0f);
+		//camera->AddComponent(new FreeCamComponent(camera, 20.0f, 10.0f));
+		camera->AddComponent(new FollowCameraComponent(camera, nullptr, {false, true, true}, Vector3(-10,0,0)));
 		AddActor(camera);
 		
 		CreateEnviroActor("Enviro1", "floor");
@@ -93,6 +96,8 @@ public:
 		CreateBowlingBall(Vector3(0,0,5));
 
 		CreatePinGroup(Vector3(70,0,5));
+		
+		camera->GetComponent<FollowCameraComponent>()->SetTargetActor(GetActorOfClass<BowlingBall>());
 	}
 
 	void OnUpdate() override {
