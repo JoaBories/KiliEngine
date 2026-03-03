@@ -2,6 +2,7 @@
 
 #include "GameTime.h"
 #include "Inputs.h"
+#include "SceneManager.h"
 
 void BowlingBall::UpdateArrow() const
 {
@@ -51,12 +52,18 @@ void BowlingBall::OnLateUpdate()
         {
             mLaunched = true;
             mRb->AddVelocity(GetWorldTransform().GetTransform().GetForwardVector() * mForce * 10.0f);
+            SceneManager::ActiveScene()->GetActorOfClass<Camera>()->AddPosition(Vector3(0,0,-2));
             mArrow->SetActive(false);
         }
     }
     else
     {
         Rotate(GetWorldTransform().GetTransform().GetRightVector(), 5.0f * GameTime::DeltaTime);
+    }
+
+    if (GetWorldTransform().GetPosition().z <= -10.0f)
+    {
+        SceneManager::ReloadScene();
     }
     
 }

@@ -20,9 +20,9 @@ void FollowCameraComponent::OnUpdate()
     Vector3 targetPosition = mTargetActor->GetWorldTransform().GetPosition() + mTargetOffset;
     Vector3 newPos = targetPosition + mPositionOffset;
     newPos = Vector3(
-        MathUtils::Lerp(position.x, newPos.x, (mPositionLock.X) ? 0.0f : 0.5f),
-        MathUtils::Lerp(position.y, newPos.y, (mPositionLock.Y) ? 0.0f : 0.5f),
-        MathUtils::Lerp(position.z, newPos.z, (mPositionLock.Z) ? 0.0f : 0.5f)
+        MathUtils::Lerp(position.x, newPos.x, (mPositionLock.X) ? 0.0f : 0.05f),
+        MathUtils::Lerp(position.y, newPos.y, (mPositionLock.Y) ? 0.0f : 0.05f),
+        MathUtils::Lerp(position.z, newPos.z, (mPositionLock.Z) ? 0.0f : 0.05f)
         );
     
     mOwner->SetPosition(newPos);

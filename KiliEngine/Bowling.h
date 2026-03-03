@@ -38,16 +38,16 @@ private:
 		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling"), "BasicLight"));
 		ball->AddComponent(new MeshComponent(ball, Transform(Vector3::zero, Quaternion(), Vector3::unit * -5.0f), AssetManager::GetMesh("plane"), AssetManager::GetTexture("arrow"), "Decals"));
 		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 0.55f));
-		ball->AddComponent(new RigidBody(ball, 0.1f,1,7,0.1f));
+		ball->AddComponent(new RigidBody(ball, 0.01f,1,7,0.1f));
 		AddActor(ball);
 	}
 
 	void CreateBowlingPin(const Vector3& pPosition)
 	{
-		BowlingPin* pin  = new BowlingPin(Transform(pPosition, Quaternion(), Vector3(0.2f, 0.2f, 0.2f)));
+		BowlingPin* pin  = new BowlingPin(Transform(pPosition, Quaternion(Vector3::unitZ, 45.0f), Vector3(0.2f, 0.2f, 0.2f)));
 		pin->AddComponent(new MeshComponent(pin, Transform::Origin, AssetManager::GetMesh("Pin"), AssetManager::GetTexture("pin"), "BasicLight"));
 		pin->AddComponent(new BoxCollider(pin, Transform::Origin, Vector3(1.4f,1.4f,4.5f)));
-		pin->AddComponent(new RigidBody(pin, 0.5f,1, 1.25f, 0.1f));
+		pin->AddComponent(new RigidBody(pin, 0.5f,1, 2.0f, 0.5f));
 		AddActor(pin);
 	}
 
@@ -77,7 +77,7 @@ public:
 
 	void OnStart() override {
 
-		Camera* camera = new Camera(Transform(Vector3(0, 0, 5), Quaternion(), Vector3::zero), 70.0f, 0.1f, 1000.0f);
+		Camera* camera = new Camera(Transform(Vector3(0, 0, 5.0f), Quaternion(), Vector3::zero), 70.0f, 0.1f, 1000.0f);
 		//camera->AddComponent(new FreeCamComponent(camera, 20.0f, 10.0f));
 		camera->AddComponent(new FollowCameraComponent(camera, nullptr, {false, true, true}, Vector3(-10,0,0)));
 		AddActor(camera);
