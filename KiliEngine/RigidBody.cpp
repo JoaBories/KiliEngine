@@ -39,7 +39,7 @@ void RigidBody::OnCollide(const Collision& pCollision, const ColliderComponent* 
     const float invMassA = 1 / mMass;
     const float invMassB = (massB > 0.0f) ? 1.0f / massB : 0.0f;
 
-    float j = -(1.0f + mRestitution * restitutionB) * normalVelocity / (invMassA + invMassB);
+    const float force = -(1.0f + mRestitution * restitutionB) * normalVelocity / (invMassA + invMassB);
     
-    AddVelocity(j * pCollision.OverlapDir * invMassA);
+    AddVelocity(force * pCollision.OverlapDir * invMassA);
 }

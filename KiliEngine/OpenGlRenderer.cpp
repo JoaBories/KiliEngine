@@ -45,6 +45,8 @@ bool GlRenderer::Initialize(Window& pWindow)
     }
 
     mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
+
+    SDL_GL_SetSwapInterval(0);
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -56,7 +58,6 @@ void GlRenderer::BeginDraw()
 {
     glClearColor(0.45f, 0.45f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
 }
 
 void GlRenderer::Draw()
