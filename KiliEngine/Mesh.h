@@ -11,16 +11,15 @@ class Mesh
 {
 private:
 	std::string mFilename;
-	std::vector<Vertex> mVertices;
 	VertexArray* mVao;
 	std::vector<Texture*> mTextures;
 	std::string mShaderName;
 	
-	float* ToVerticeArray();
+	float* ToVerticeArray(const std::vector<Vertex>& pVertices);
 
 public:
 	Mesh();
-	explicit Mesh(std::vector<Vertex> pVertices);
+	explicit Mesh(const std::vector<Vertex>& pVertices);
 	
 	void Unload();
 

@@ -4,18 +4,18 @@
 #include "GameTime.h"
 #include "Log.h"
 
-MoveComponent::MoveComponent(GameActor* pOwner, Transform pTransform, int pUpdateOrder) :
-	ActorComponent(pOwner, pTransform, pUpdateOrder),
+MoveComponent::MoveComponent(GameActor* pOwner, const short pUpdateOrder) :
+	ActorComponent(pOwner, Transform::Origin, pUpdateOrder),
 	mVelocity(Vector3::zero)
 {
 }
 
-void MoveComponent::SetVelocity(Vector3 pVelocity)
+void MoveComponent::SetVelocity(const Vector3& pVelocity)
 {
 	mVelocity = pVelocity;
 }
 
-void MoveComponent::AddVelocity(Vector3 pVelocity)
+void MoveComponent::AddVelocity(const Vector3& pVelocity)
 {
 	mVelocity += pVelocity;
 }

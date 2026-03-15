@@ -4,8 +4,6 @@
 #include "SpriteComponent.h"
 #include "Log.h"
 
-RenderMode GlRenderer::RenderMode = DefaultRender;
-
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
     mSpriteVao(nullptr), mSpriteShader(nullptr),
@@ -47,6 +45,11 @@ bool GlRenderer::Initialize(Window& pWindow)
     }
 
     mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
+
+    SDL_GL_SetSwapInterval(0);
+    
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     
     return true;
 }
@@ -61,15 +64,20 @@ void GlRenderer::Draw()
 {
     DrawMeshes();
     DrawSprites();
+
+#ifdef _DEBUG
+    DrawColliders();
+#endif
 }
 
 void GlRenderer::DrawMeshes() const
 {
-    glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
     
+#ifdef _DEBUG
     ShaderProgram* shader = nullptr;
-
+    
     switch (RenderMode)
     {
     case Uvs:
@@ -86,6 +94,8 @@ void GlRenderer::DrawMeshes() const
         
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         break;
+    default:
+        break;
     }
     
     for (const auto& [shaderName, meshVector] : mMeshes)
@@ -98,19 +108,31 @@ void GlRenderer::DrawMeshes() const
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera->GetViewProjMatrix(), shader);
+            mesh->Draw(mCamera, shader);
         }
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#else
+    for (const auto& [shaderName, meshVector] : mMeshes)
+    {
+        ShaderProgram* shader = AssetManager::GetShader(shaderName);
+        shader->Use();
+        
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera, shader);
+        }
+    }
+#endif
 }
 
 void GlRenderer::DrawSprites()
 {
-    glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
     
     if (!mSpriteShader) mSpriteShader = AssetManager::GetShader("Sprite");
     mSpriteShader->Use();
@@ -193,3 +215,41 @@ RendererType GlRenderer::GetType()
 {
 	return OpenGl;
 }
+
+#ifdef _DEBUG
+
+RenderMode GlRenderer::RenderMode = DefaultRender;
+
+void GlRenderer::AddCollider(ColliderComponent* pCollider)
+{
+    mColliders.push_back(pCollider);
+}
+
+void GlRenderer::RemoveCollider(ColliderComponent* pCollider)
+{
+    const auto iterator = std::find(mColliders.begin(), mColliders.end(), pCollider);
+    mColliders.erase(iterator);
+}
+
+void GlRenderer::DrawColliders()
+{
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glLineWidth(2.0f);
+
+    AssetManager::GetShader("Collider")->Use();
+    
+    for (ColliderComponent* collider : mColliders)
+    {
+        collider->Draw(mCamera->GetViewProjMatrix());
+    }
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+}
+
+#endif

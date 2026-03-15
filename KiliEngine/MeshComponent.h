@@ -1,5 +1,6 @@
 #pragma once
 #include "ActorComponent.h"
+#include "Camera.h"
 #include "Mesh.h"
 
 class MeshComponent : public ActorComponent
@@ -16,7 +17,7 @@ public:
 	MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, Texture* pTextureOverride = nullptr, const std::string& pShaderOverride = "Null");
 	~MeshComponent() override;
 	
-	virtual void Draw(const Matrix4Row& pViewProj, ShaderProgram* pShader);
+	virtual void Draw(Camera* pCamera, ShaderProgram* pShader);
 	virtual void SetMesh(Mesh& pMesh); // todo doesn't support shader change after loading
 	Mesh* GetMesh() const { return mMesh; }
 

@@ -15,22 +15,22 @@ private:
 	SDL_Texture* mSdlTexture;
 	int	  mWidth, mHeight;
 	unsigned int mTextureId;
-	bool LoadSdl(SdlRenderer* renderer, SDL_Surface* surface);
-	bool LoadGl(GlRenderer* renderer, SDL_Surface* surface);
+	bool LoadSdl(SdlRenderer* pRenderer, SDL_Surface* pSurface);
+	bool LoadGl(GlRenderer* pRenderer, SDL_Surface* pSurface);
 
 public:
 	Texture();
 	~Texture();
 
 	bool Unload();
-	bool Load(IRenderer* renderer, const std::string& filename);
+	bool Load(IRenderer* pRenderer, const std::string& pFilename);
 	void SetActive() const;
 
-	const std::string& GetFileName() const { return mFileName; };
-	inline SDL_Texture* GetTexture() const { return mSdlTexture; };
-	int GetWidth() const { return mWidth; };
-	int GetHeight() const { return mHeight; };
+	const std::string& GetFileName() const { return mFileName; }
+	SDL_Texture* GetTexture() const { return mSdlTexture; }
+	int GetWidth() const { return mWidth; }
+	int GetHeight() const { return mHeight; }
 
-	void UpdateInfo(int& wOut, int& hOut);
+	void UpdateInfo(int& pWOut, int& pHOut);
 };
 

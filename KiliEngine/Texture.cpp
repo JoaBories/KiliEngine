@@ -3,9 +3,9 @@
 #include "OpenGlRenderer.h"
 #include "Log.h"
 
-bool Texture::LoadSdl(SdlRenderer* renderer, SDL_Surface* surface)
+bool Texture::LoadSdl(SdlRenderer* pRenderer, SDL_Surface* pSurface)
 {
-	mSdlTexture = SDL_CreateTextureFromSurface(renderer->GetSdlRenderer(), surface);
+	mSdlTexture = SDL_CreateTextureFromSurface(pRenderer->GetSdlRenderer(), pSurface);
 	if (!mSdlTexture)
 	{
 		Log::Error(LogType::Render, "Failed to convert surface to texture :" + mFileName);
@@ -15,21 +15,21 @@ bool Texture::LoadSdl(SdlRenderer* renderer, SDL_Surface* surface)
 	return true;
 }
 
-bool Texture::LoadGl(GlRenderer* renderer, SDL_Surface* surface)
+bool Texture::LoadGl(GlRenderer* pRenderer, SDL_Surface* pSurface)
 {
 	int format = 0;
-	if (surface->format->format == SDL_PIXELFORMAT_RGB24)
+	if (pSurface->format->format == SDL_PIXELFORMAT_RGB24)
 	{
 		format = GL_RGB;
 	}
-	else if (surface->format->format == SDL_PIXELFORMAT_RGBA32)
+	else if (pSurface->format->format == SDL_PIXELFORMAT_RGBA32)
 	{
 		format = GL_RGBA;
 	}
 	glGenTextures(1, &mTextureId);
 	glBindTexture(GL_TEXTURE_2D, mTextureId);
-	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, surface->pixels);
-	SDL_FreeSurface(surface);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, pSurface->pixels);
+	SDL_FreeSurface(pSurface);
 	Log::Info("Loaded Gl Texture : " + mFileName);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -50,9 +50,9 @@ Texture::~Texture()
 {
 }
 
-bool Texture::Load(IRenderer* renderer, const std::string& filename)
+bool Texture::Load(IRenderer* pRenderer, const std::string& pFilename)
 {
-	mFileName = filename;
+	mFileName = pFilename;
 	SDL_Surface* surface = IMG_Load(mFileName.c_str());
 	SDL_Surface* goodFormatSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
 	if (!surface)
@@ -63,13 +63,13 @@ bool Texture::Load(IRenderer* renderer, const std::string& filename)
 	mWidth = surface->w;
 	mHeight = surface->h;
 
-	if (renderer->GetType() == Sdl)
+	if (pRenderer->GetType() == Sdl)
 	{
-		return LoadSdl(static_cast<SdlRenderer*>(renderer), surface);
+		return LoadSdl(dynamic_cast<SdlRenderer*>(pRenderer), surface);
 	}
 	else
 	{
-		return LoadGl(static_cast<GlRenderer*>(renderer), surface);
+		return LoadGl(dynamic_cast<GlRenderer*>(pRenderer), surface);
 	}
 
 	SDL_FreeSurface(surface);

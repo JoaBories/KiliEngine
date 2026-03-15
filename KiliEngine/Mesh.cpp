@@ -1,11 +1,11 @@
 #include "Mesh.h"
 #include "AssetManager.h"
 
-float* Mesh::ToVerticeArray()
+float* Mesh::ToVerticeArray(const std::vector<Vertex>& pVertices)
 {
-	const auto array = new float[mVertices.size() * 8];
+	const auto array = new float[pVertices.size() * 8];
 	int counter = 0;
-	for (auto& [Position, Normal, Uv] : mVertices)
+	for (auto& [Position, Normal, Uv] : pVertices)
 	{
 		array[counter+0] = Position.x;
 		array[counter+1] = Position.y;
@@ -25,11 +25,11 @@ Mesh::Mesh() :
 {
 }
 
-Mesh::Mesh(std::vector<Vertex> pVertices) :
-	mVertices(std::move(pVertices)), mShaderName("Basic")
+Mesh::Mesh(const std::vector<Vertex>& pVertices) :
+	mShaderName("Basic")
 {
-	float* verticeInfo = ToVerticeArray();
-	mVao = new VertexArray(verticeInfo, mVertices.size());
+	float* verticeInfo = ToVerticeArray(pVertices);
+	mVao = new VertexArray(verticeInfo, pVertices.size());
 	delete[] verticeInfo;
 }
 

@@ -7,6 +7,8 @@
 #include "Matrix4Row.h"
 #include "MeshComponent.h"
 
+
+#ifdef _DEBUG
 enum RenderMode : Uint8
 {
 	DefaultRender,
@@ -14,7 +16,7 @@ enum RenderMode : Uint8
 	Normals,
 	Wireframe,
 };
-
+#endif
 
 class SpriteComponent;
 
@@ -31,9 +33,8 @@ private:
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
 	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by shader
-public:
 
-	static RenderMode RenderMode;
+public:
 	
 	GlRenderer();
 
@@ -57,4 +58,19 @@ public:
 	void RemoveMesh(const MeshComponent* pMesh) override;
 	
 	RendererType GetType() override;
+
+#ifdef _DEBUG
+
+private:
+	std::vector<ColliderComponent*> mColliders;
+	
+public:
+	static RenderMode RenderMode;
+	
+	void AddCollider(ColliderComponent* pCollider) override;
+	void RemoveCollider(ColliderComponent* pCollider) override;
+
+	void DrawColliders();
+	
+#endif
 };

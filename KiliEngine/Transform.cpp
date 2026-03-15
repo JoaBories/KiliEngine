@@ -12,6 +12,18 @@ Transform::Transform(const Vector3& pPosition, const Quaternion& pRotation, cons
 {
 }
 
+void Transform::AddRotation(const Quaternion& pRotation)
+{
+	mRotation = Quaternion::Concatenate(mRotation, pRotation);
+	mRotation.Normalize();
+}
+
+void Transform::Rotate(const Vector3& pAxis, const float pAngle)
+{
+	const Quaternion increment(pAxis, pAngle);
+	mRotation = Quaternion::Concatenate(mRotation, increment);
+}
+
 WorldTransform::WorldTransform() :
 	mTransform(Transform::Origin), mNeedUpdate(true)
 {

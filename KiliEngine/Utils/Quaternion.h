@@ -25,8 +25,11 @@ public:
 	// and the angle is in radians
 	explicit Quaternion(const Vector3& axis, float angle);
 
+	explicit Quaternion(const class Matrix4Row& rotationMatrix);
+
 	void Set(float inX, float inY, float inZ, float inW);
 	void Conjugate();
+	Quaternion Conjugated() const;
 	void Normalize();
 
 	float LengthSqr() const
@@ -37,6 +40,16 @@ public:
 	float Length() const
 	{
 		return MathUtils::Sqrt(LengthSqr());
+	}
+
+	Quaternion operator*(const Quaternion& q2) const
+	{
+		Quaternion result;
+		result.x = w * q2.x + x * q2.w + y * q2.z - z * q2.y;
+		result.y = w * q2.y - x * q2.z + y * q2.w + z * q2.x;
+		result.z = w * q2.z + x * q2.y - y * q2.x + z * q2.w;
+		result.w = w * q2.w - x * q2.x - y * q2.y - z * q2.z;
+		return result;
 	}
 
 	// Normalize the provided quaternion

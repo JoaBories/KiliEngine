@@ -58,43 +58,49 @@ const WorldTransform& GameActor::GetWorldTransform() const
 	return mTransform;
 }
 
-void GameActor::SetTransform(WorldTransform pTransform)
+void GameActor::SetTransform(const WorldTransform& pTransform)
 {
 	mTransform = pTransform;
 	UpdateComponentsTransform();
 }
 
-void GameActor::AddPosition(Vector3 pPosition)
+void GameActor::AddPosition(const Vector3& pPosition)
 {
 	mTransform.AddPosition(pPosition);
 	UpdateComponentsTransform();
 }
 
-void GameActor::SetPosition(Vector3 pPosition)
+void GameActor::SetPosition(const Vector3& pPosition)
 {
 	mTransform.SetPosition(pPosition);
 	UpdateComponentsTransform();
 }
 
-void GameActor::SetScale(Vector3 pScale)
+void GameActor::SetScale(const Vector3& pScale)
 {
 	mTransform.SetScale(pScale);
 	UpdateComponentsTransform();
 }
 
-void GameActor::AddRotation(Quaternion pRotation)
+void GameActor::AddRotation(const Quaternion& pRotation)
 {
 	mTransform.AddRotation(pRotation);
 	UpdateComponentsTransform();
 }
 
-void GameActor::SetRotation(Quaternion pRotation)
+void GameActor::Rotate(const Vector3& pAxis, const float pAngle)
+{
+	mTransform.Rotate(pAxis, pAngle);
+	UpdateComponentsTransform();
+}
+
+void GameActor::SetRotation(const Quaternion& pRotation)
 {
 	mTransform.SetRotation(pRotation);
 	UpdateComponentsTransform();
 }
 
-void GameActor::RemoveComponent(ActorComponent* pComp)
+void GameActor::RemoveComponent(const ActorComponent* pComp)
 {
 	std::vector<ActorComponent*>::iterator it = std::find(mComponents.begin(), mComponents.end(), pComp);
 

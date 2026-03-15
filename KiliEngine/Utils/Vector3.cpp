@@ -41,6 +41,18 @@ void Vector3::Normalize()
 	z /= len;
 }
 
+Vector3 Vector3::Normalized() const
+{
+	Vector3 result = *this;
+	result.Normalize();
+	return result;
+}
+
+std::string Vector3::ToString() const
+{
+	return "x : " + std::to_string(x) + " , y: " + std::to_string(y) + " , z: " + std::to_string(z);
+}
+
 Vector3 Vector3::Transform(Vector3& vec, Matrix4Row& mat, float w)
 {
 	Vector3 retVal;

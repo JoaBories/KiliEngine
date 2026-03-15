@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+
+#include "MathUtils.h"
 
 class Vector3
 {
@@ -14,14 +17,17 @@ public:
 		:x(xP), y(yP), z(zP) {}
 
 	void Set(float xP, float yP, float zP);
-	float LengthSq() const;
-	float Length() const;
+	[[nodiscard]] float LengthSq() const;
+	[[nodiscard]] float Length() const;
 	void Normalize();
+	[[nodiscard]] Vector3 Normalized() const;
 
-	const float* GetAsFloatPtr() const
+	[[nodiscard]] const float* GetAsFloatPtr() const
 	{
 		return reinterpret_cast<const float*>(&x);
 	}
+
+	[[nodiscard]] std::string ToString() const;
 
 	// Vector addition (a + b)
 	friend Vector3 operator+(const Vector3& a, const Vector3& b)
@@ -53,12 +59,35 @@ public:
 		return Vector3(vec.x * scalar, vec.y * scalar, vec.z * scalar);
 	}
 
+	friend Vector3 operator/(const Vector3& vec, float scalar)
+	{
+		return Vector3(vec.x / scalar, vec.y / scalar, vec.z / scalar);
+	}
+	
+	friend Vector3 operator/(float scalar, const Vector3& vec)
+	{
+		return Vector3(vec.x / scalar, vec.y / scalar, vec.z / scalar);
+	}
+
+	Vector3 operator-() const
+	{
+		return Vector3{ -x, -y, -z };
+	}
+
 	// Scalar *=
 	Vector3& operator*=(float scalar)
 	{
 		x *= scalar;
 		y *= scalar;
 		z *= scalar;
+		return *this;
+	}
+
+	Vector3& operator/=(float scalar)
+	{
+		x /= scalar;
+		y /= scalar;
+		z /= scalar;
 		return *this;
 	}
 
@@ -78,6 +107,27 @@ public:
 		y -= right.y;
 		z -= right.z;
 		return *this;
+	}
+
+	bool operator==(const Vector3& pOther) const
+	{
+		if (MathUtils::NearlyEqual(x, pOther.x))
+		{
+			if (MathUtils::NearlyEqual(y, pOther.y))
+			{
+				if (MathUtils::NearlyEqual(z, pOther.z))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	bool operator!=(const Vector3& pOther) const
+	{
+		return !(*this == pOther);
 	}
 
 	// Normalize the provided vector

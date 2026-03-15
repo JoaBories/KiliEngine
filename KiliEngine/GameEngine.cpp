@@ -6,6 +6,7 @@
 #include "GameTime.h"
 #include "Inputs.h"
 #include "Config.h"
+#include "PhysicManager.h"
 
 GameEngine::GameEngine(const std::string& pTitle) :
 	mIsRunning(true), mTitle(pTitle), 
@@ -24,7 +25,7 @@ GameEngine::GameEngine(const std::string& pTitle) :
 
 void GameEngine::Init()
 {
-	mWindow = new Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+	mWindow = new Window(Cfg::WINDOW_WIDTH, Cfg::WINDOW_HEIGHT);
 	mRenderer = new GlRenderer();
 
 	if (mWindow->Open()) 
@@ -53,6 +54,7 @@ void GameEngine::Loop()
 		GameTime::DelayTime();
 	}
 
+	Log::Info(" Avg : " + std::to_string(1000.0f/GameTime::GetAvgFrameTime()));
 	Close();
 }
 
@@ -68,6 +70,7 @@ void GameEngine::Render()
 void GameEngine::Update()
 {
 	SceneManager::UpdateScene();
+	PhysicManager::Update();
 }
 
 void GameEngine::CheckForInputs()

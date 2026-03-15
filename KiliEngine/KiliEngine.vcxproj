@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir)Utils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir)Utils;$(ProjectDir)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,14 +134,20 @@
     <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BowlingBall.cpp" />
+    <ClCompile Include="BowlingPin.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
-    <ClCompile Include="BoxCollider2D.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="FollowCameraComponent.cpp" />
+    <ClCompile Include="FreeCamComponent.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="OpenGlRenderer.cpp" />
+    <ClCompile Include="PhysicManager.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SdlRenderer.cpp" />
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="main.cpp" />
@@ -149,11 +155,12 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
-    <ClCompile Include="TestActor.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Utils\CollisionUtils.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\Matrix4Row.cpp" />
     <ClCompile Include="Utils\Quaternion.cpp" />
@@ -168,17 +175,24 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="AnimatedSpriteComponent.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BowlingBall.h" />
+    <ClInclude Include="BowlingPin.h" />
     <ClInclude Include="BoxCollider.h" />
-    <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="DefaultScene.h" />
+    <ClInclude Include="EnviroActor.h" />
+    <ClInclude Include="Floor.h" />
+    <ClInclude Include="FollowCameraComponent.h" />
+    <ClInclude Include="FreeCamComponent.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="OpenGlRenderer.h" />
+    <ClInclude Include="PhysicManager.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SdlRenderer.h" />
     <ClInclude Include="Inputs.h" />
@@ -187,17 +201,17 @@
     <ClInclude Include="MoveComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="SpriteComponent.h" />
-    <ClInclude Include="TestActor.h" />
-    <ClInclude Include="TestGl.h" />
+    <ClInclude Include="Bowling.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Utils\CollisionUtils.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />
     <ClInclude Include="Utils\Quaternion.h" />
-    <ClInclude Include="Utils\Struct.h" />
     <ClInclude Include="Utils\Vector3.h" />
     <ClInclude Include="Utils\Vector4.h" />
     <ClInclude Include="Utils\Vertex.h" />
@@ -205,14 +219,20 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Shaders\Basic.frag" />
-    <Content Include="Resources\Shaders\Basic.vert" />
-    <Content Include="Resources\Shaders\Normal.frag" />
-    <Content Include="Resources\Shaders\Normal.vert" />
-    <Content Include="Resources\Shaders\Sprite.frag" />
-    <Content Include="Resources\Shaders\Sprite.vert" />
-    <Content Include="Resources\Shaders\Uv.frag" />
-    <Content Include="Resources\Shaders\Uv.vert" />
+    <Content Include="Resources\Shaders\Engine\Basic.frag" />
+    <Content Include="Resources\Shaders\Engine\Basic.vert" />
+    <Content Include="Resources\Shaders\Engine\BasicLight.frag" />
+    <Content Include="Resources\Shaders\Engine\BasicLight.vert" />
+    <Content Include="Resources\Shaders\Engine\Collider.frag" />
+    <Content Include="Resources\Shaders\Engine\Collider.vert" />
+    <Content Include="Resources\Shaders\Engine\Decals.frag" />
+    <Content Include="Resources\Shaders\Engine\Decals.vert" />
+    <Content Include="Resources\Shaders\Engine\Normal.frag" />
+    <Content Include="Resources\Shaders\Engine\Normal.vert" />
+    <Content Include="Resources\Shaders\Engine\Sprite.frag" />
+    <Content Include="Resources\Shaders\Engine\Sprite.vert" />
+    <Content Include="Resources\Shaders\Engine\Uv.frag" />
+    <Content Include="Resources\Shaders\Engine\Uv.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,18 +19,21 @@ MeshComponent::~MeshComponent()
 	SceneManager::ActiveScene()->GetRenderer()->RemoveMesh(this);
 }
 
-void MeshComponent::Draw(const Matrix4Row& pViewProj, ShaderProgram* pShader)
+void MeshComponent::Draw(Camera* pCamera, ShaderProgram* pShader)
 {
-	const Matrix4Row worldTransform = GetWorldTransform().GetWorldTransformMatrix();
+	if (IsActive())
+	{
+		const Matrix4Row worldTransform = GetWorldTransform().GetWorldTransformMatrix();
 	
-	pShader->SetMatrix4Row("uViewProj", pViewProj);
-	pShader->SetMatrix4Row("uWorldTransform", worldTransform);
+		pShader->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
+		pShader->SetMatrix4Row("uWorldTransform", worldTransform);
 
-	if(const Texture* texture = GetTexture()) texture->SetActive();
+		if(const Texture* texture = GetTexture()) texture->SetActive();
 	
-	mMesh->GetVertexArray()->SetActive();
+		mMesh->GetVertexArray()->SetActive();
 	
-	glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount());
+		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount());
+	}
 }
 
 void MeshComponent::SetMesh(Mesh& pMesh)

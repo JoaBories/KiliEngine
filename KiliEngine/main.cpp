@@ -4,23 +4,17 @@
 
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-// Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
-// allocations to be of _CLIENT_BLOCK type
 #else
 #define DBG_NEW new
 #endif
 
-#include <SDL.h>
-#include <glew.h>
 #include "GameEngine.h"
 #include "DefaultScene.h"
-#include "TestGl.h"
-
-using namespace std;
+#include "Bowling.h"
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new TestGl() });
+	SceneManager::SetScenes({ new DefaultScene() });
 
 	GameEngine* kili = new GameEngine("KiliEngine");
 	kili->Init();

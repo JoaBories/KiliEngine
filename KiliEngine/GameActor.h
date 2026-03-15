@@ -28,11 +28,13 @@ class GameActor
 {
 private:
 	ActorState mActiveState;
-	WorldTransform mTransform;
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
 
 protected:
+	
+	WorldTransform mTransform;
+	
 	// only called by the base class in Start() and Update()
 	virtual void OnStart() {}
 	virtual void OnEarlyUpdate() {} // Before components
@@ -51,12 +53,13 @@ public:
 	void Update();
 
 	const WorldTransform& GetWorldTransform() const;
-	void SetTransform(WorldTransform pTransform);
-	void AddPosition(Vector3 pPosition);
-	void SetPosition(Vector3 pPosition);
-	void SetScale(Vector3 pScale);
-	void AddRotation(Quaternion pRotation);
-	void SetRotation(Quaternion pRotation);
+	void SetTransform(const WorldTransform& pTransform);
+	void AddPosition(const Vector3& pPosition);
+	void SetPosition(const Vector3& pPosition);
+	void SetScale(const Vector3& pScale);
+	void AddRotation(const Quaternion& pRotation);
+	void Rotate(const Vector3& pAxis, float pAngle);
+	void SetRotation(const Quaternion& pRotation);
 
 	void Destroy()							{ mActiveState = Dead; }
 	void SetActive(const bool pNewActive)	{ mActiveState = pNewActive ? Active : Paused; }
@@ -65,7 +68,7 @@ public:
 
 	ActorTags GetTag() const				{ return mTag; }
 
-	void RemoveComponent(ActorComponent* pComp) ;
+	void RemoveComponent(const ActorComponent* pComp) ;
 
 	void AddComponent(ActorComponent* pComp) {
 		if (mActiveState != WaitingStart) pComp->Start();
