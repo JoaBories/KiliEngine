@@ -4,6 +4,11 @@
 #include "SDL_keycode.h"
 #include "Utils/Vector3.h"
 
+enum ScreenMode : Uint8
+{
+    Windowed,
+    Fullscreen,
+};
 
 namespace Cfg
 {
@@ -13,6 +18,10 @@ namespace Cfg
 
     constexpr int WINDOW_WIDTH = 800;
     constexpr int WINDOW_HEIGHT = 600;
+    
+    constexpr ScreenMode WINDOW_MODE = ScreenMode::Windowed;
+    constexpr bool WINDOW_BORDERLESS = false;
+    constexpr bool WINDOW_ALWAYS_ON_TOP = false;
 
     const std::string WINDOW_TITLE = "Kili Engine";
 
@@ -21,6 +30,8 @@ namespace Cfg
 
     constexpr float CORRECTION_STRENGTH = 0.9f;
     constexpr float ALLOWED_PENETRATION = 0.01f;
+
+    constexpr bool MOUSE_CAPTURE = false;
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;

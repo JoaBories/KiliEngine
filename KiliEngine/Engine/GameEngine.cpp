@@ -8,6 +8,10 @@
 #include "Config.h"
 #include "PhysicManager.h"
 
+#ifdef _DEBUG
+#include "Gui.h"
+#endif
+
 GameEngine::GameEngine(const std::string& pTitle) :
 	mIsRunning(true), mTitle(pTitle), 
 	mWindow(nullptr), 
@@ -25,13 +29,16 @@ GameEngine::GameEngine(const std::string& pTitle) :
 
 void GameEngine::Init()
 {
-	mWindow = new Window(Cfg::WINDOW_WIDTH, Cfg::WINDOW_HEIGHT);
+	mWindow = new Window();
 	mRenderer = new GlRenderer();
 
 	if (mWindow->Open()) 
 	{
 		if (mRenderer->Initialize(*mWindow))
 		{
+#ifdef _DEBUG
+			Gui::Init(mWindow, mRenderer);
+#endif
 			AssetManager::Init(mRenderer);
 			Inputs::Init();
 			SceneManager::LoadScene(mRenderer);
@@ -61,9 +68,15 @@ void GameEngine::Loop()
 void GameEngine::Render()
 {
 	mRenderer->BeginDraw();
+#ifdef _DEBUG
+	Gui::BeginGui();
+#endif
 
 	mRenderer->Draw();
-
+	
+#ifdef _DEBUG
+	Gui::EndGui();
+#endif
 	mRenderer->EndDraw();
 }
 
@@ -89,6 +102,9 @@ void GameEngine::CheckForInputs()
 				break;
 
 			default:
+#ifdef _DEBUG
+				Gui::Input(event);
+#endif
 				if (Inputs::InputUpdate(event))
 				{
 					mIsRunning = false;
@@ -104,6 +120,10 @@ void GameEngine::Close()
 	Log::Info("Close Game");
 
 	SceneManager::UnloadScene();
+
+#ifdef _DEBUG
+	Gui::Close();	
+#endif
 
 	mWindow->Close();
 	delete mWindow;

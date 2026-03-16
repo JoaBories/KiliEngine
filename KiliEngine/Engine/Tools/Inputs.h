@@ -17,6 +17,8 @@ public:
 	static void Init();
 	static void MouseUpdate();
 	static bool InputUpdate(SDL_Event pEvent); // Return false if ExitKey
+
+	static void SetMouseTracking(bool pIsTracking);
 	
 	static bool IsKeyPressed(SDL_Keycode pKey);
 	static Vector2 GetMouseDelta();

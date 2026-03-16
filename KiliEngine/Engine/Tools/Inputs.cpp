@@ -8,7 +8,10 @@ int Inputs::mLastMouseDeltaY = 0;
 
 void Inputs::Init()
 {
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	if (Cfg::MOUSE_CAPTURE)
+	{
+		SetMouseTracking(true);
+	}
 }
 
 void Inputs::MouseUpdate()
@@ -47,6 +50,11 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 	}
 
 	return false;
+}
+
+void Inputs::SetMouseTracking(const bool pIsTracking)
+{
+	SDL_SetRelativeMouseMode(pIsTracking ? SDL_TRUE : SDL_FALSE);
 }
 
 bool Inputs::IsKeyPressed(const SDL_Keycode pKey)
