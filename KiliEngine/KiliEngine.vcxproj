@@ -241,6 +241,7 @@
     <ClInclude Include="Game\Bowling\BowlingPin.h" />
     <ClInclude Include="Game\Bowling\EnviroActor.h" />
     <ClInclude Include="Game\Bowling\Floor.h" />
+    <ClInclude Include="Game\Doom\Doom.h" />
     <ClInclude Include="Utils\CollisionUtils.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />
