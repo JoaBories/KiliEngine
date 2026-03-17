@@ -7,6 +7,7 @@ RigidBody::RigidBody(GameActor* pOwner, const float pLinearDamping, const float 
     MoveComponent(pOwner),
     mGravityScale(pGravity), mLinearDamping(pLinearDamping), mMass(pMass), mRestitution(pRestitution)
 {
+    SetName("RigidBody");
 }
 
 void RigidBody::OnUpdate()

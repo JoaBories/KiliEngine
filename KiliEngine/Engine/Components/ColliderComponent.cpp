@@ -9,6 +9,8 @@
 ColliderComponent::ColliderComponent(GameActor* pOwner, const Transform& pTransform, const short pUpdateOrder) :
     ActorComponent(pOwner, pTransform, pUpdateOrder)
 {
+    SetName("ColliderComponent");
+    
 #ifdef _DEBUG
     SceneManager::ActiveScene()->GetRenderer()->AddCollider(this);
 #endif

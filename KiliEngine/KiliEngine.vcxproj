@@ -228,6 +228,7 @@
     <ClInclude Include="Engine\Components\SphereCollider.h" />
     <ClInclude Include="Engine\Components\SpriteComponent.h" />
     <ClInclude Include="Engine\Config.h" />
+    <ClInclude Include="Engine\EnviroActor.h" />
     <ClInclude Include="Engine\GameActor.h" />
     <ClInclude Include="Engine\GameEngine.h" />
     <ClInclude Include="Engine\Gui.h" />
@@ -247,7 +248,6 @@
     <ClInclude Include="Game\Bowling\Bowling.h" />
     <ClInclude Include="Game\Bowling\BowlingBall.h" />
     <ClInclude Include="Game\Bowling\BowlingPin.h" />
-    <ClInclude Include="Game\Bowling\EnviroActor.h" />
     <ClInclude Include="Game\Bowling\Floor.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3_loader.h" />

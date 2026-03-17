@@ -1,7 +1,56 @@
+#ifdef _DEBUG
+
 #include "Gui.h"
 #include "Renderer/OpenGlRenderer.h"
 #include "Renderer/SdlRenderer.h"
+#include "Scene/SceneManager.h"
 #include "Tools/GameTime.h"
+
+void Gui::DrawFps()
+{
+    ImGuiWindowFlags window_flags =
+        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground |
+        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
+    
+    if (ImGui::Begin("Fps", nullptr, window_flags))
+    {
+        ImGui::Text(("Fps : " + std::to_string(1.0f / GameTime::DeltaTime)).c_str());
+        ImGui::Text(("Avg : " + std::to_string(1000.0f / GameTime::GetAvgFrameTime())).c_str());
+    }
+    ImGui::End();
+}
+
+void Gui::Properties()
+{
+    ImGui::Begin("Properties");
+    ImGui::Text("Hello World!");
+    ImGui::End();
+}
+
+void Gui::Scene()
+{
+    ImGui::Begin("Scene");
+    ImGui::Text("List of Actors");
+    ImGui::Separator();
+    for (GameActor* actor : SceneManager::ActiveScene()->GetActorsOfClass<GameActor>())
+    {
+        ImGui::PushID(actor);
+        if (ImGui::TreeNode(actor->GetName().c_str()))
+        {
+            for (ActorComponent* component : actor->GetComponents<ActorComponent>())
+            {
+                ImGui::PushID(component);
+                ImGui::Indent();
+                ImGui::Text(component->GetName().c_str());
+                ImGui::Unindent();
+                ImGui::PopID();
+            }
+            ImGui::TreePop();
+        }
+        ImGui::PopID();
+    }
+    ImGui::End();
+}
 
 bool Gui::Init(Window* pWindow, IRenderer* pRenderer)
 {
@@ -29,8 +78,6 @@ bool Gui::Init(Window* pWindow, IRenderer* pRenderer)
         return true;
     }
 
-    ImGui::DockSpaceOverViewport();
-
     return false;
 }
 
@@ -44,18 +91,11 @@ void Gui::BeginGui()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
+
+    //Properties();
+    Scene();
     
-    ImGuiWindowFlags window_flags =
-        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize |
-        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
-    
-    ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
-    if (ImGui::Begin("Fps", nullptr, window_flags))
-    {
-        ImGui::Text(("Fps : " + std::to_string(1.0f / GameTime::DeltaTime)).c_str());
-        ImGui::Text(("Avg : " + std::to_string(1000.0f / GameTime::GetAvgFrameTime())).c_str());
-    }
-    ImGui::End();
+    DrawFps();
 }
 
 void Gui::EndGui()
@@ -70,3 +110,5 @@ void Gui::Close()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 }
+
+#endif

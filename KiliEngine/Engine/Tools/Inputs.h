@@ -12,6 +12,8 @@ class Inputs
 	static int mLastMouseDeltaX;
 	static int mLastMouseDeltaY;
 
+	static bool mCapturingMouse;
+
 public:
 
 	static void Init();

@@ -11,6 +11,7 @@ private:
 	short mUpdateOrder;
 	bool mWorldNeedUpdate;
 	WorldTransform mWorldTransform;
+	std::string mName;
 
 protected:
 	Transform mLocalTransform;
@@ -25,9 +26,9 @@ public:
 	virtual ~ActorComponent() = default;
 
 	ActorComponent(GameActor* pOwner, const Transform& pTransform, const short pUpdateOrder = 100) :
-		mIsActive(true), mWorldNeedUpdate(true),
-		mUpdateOrder(pUpdateOrder),
-		mOwner(pOwner), mLocalTransform(pTransform)
+		mIsActive(true), mUpdateOrder(pUpdateOrder),
+		mWorldNeedUpdate(true),
+		mName("ActorComponent"), mLocalTransform(pTransform), mOwner(pOwner)
 	{
 	}
 
@@ -52,5 +53,8 @@ public:
 
 	short GetUpdateOrder() const	{ return mUpdateOrder; }
 	GameActor* GetOwner() const		{ return mOwner; }
+
+	std::string GetName() const		{ return mName; }
+	void SetName(const std::string& pName)	{ mName = pName; }
 };
 

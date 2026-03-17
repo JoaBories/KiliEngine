@@ -30,9 +30,9 @@ private:
 	ActorState mActiveState;
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
+	std::string mName;
 
 protected:
-	
 	WorldTransform mTransform;
 	
 	// only called by the base class in Start() and Update()
@@ -43,7 +43,7 @@ protected:
 	void UpdateComponentsTransform();
 
 public:
-	GameActor(const Transform& pTransform, ActorTags pTag = ActorDefault);
+	explicit GameActor(const Transform& pTransform, const std::string& pName, ActorTags pTag = ActorDefault);
 	~GameActor();
 
 	GameActor(const GameActor&) = delete;
@@ -67,6 +67,8 @@ public:
 	ActorState GetState() const				{ return mActiveState; }
 
 	ActorTags GetTag() const				{ return mTag; }
+
+	std::string GetName() const				{ return mName; }
 
 	void RemoveComponent(const ActorComponent* pComp) ;
 

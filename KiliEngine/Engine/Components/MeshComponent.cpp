@@ -11,6 +11,7 @@ MeshComponent::MeshComponent(GameActor* pOwner, const Transform& pTransform, Mes
 	ActorComponent(pOwner, pTransform),
 	mMesh(pMesh), mTextureOverride(pTextureOverride), mShaderOverride(pShaderOverride)
 {
+	SetName("MeshComponent");
 	SceneManager::ActiveScene()->GetRenderer()->AddMesh(this);
 }
 

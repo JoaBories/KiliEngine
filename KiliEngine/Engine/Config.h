@@ -31,7 +31,7 @@ namespace Cfg
     constexpr float CORRECTION_STRENGTH = 0.9f;
     constexpr float ALLOWED_PENETRATION = 0.01f;
 
-    constexpr bool MOUSE_CAPTURE = false;
+    constexpr bool MOUSECAPTURE_DEFAULT= false;
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;
@@ -40,5 +40,7 @@ namespace Cfg
     constexpr SDL_Keycode RENDER_MODE_UV = SDLK_F2;
     constexpr SDL_Keycode RENDER_MODE_NORMAL = SDLK_F3;
     constexpr SDL_Keycode RENDER_MODE_WIREFRAME = SDLK_F4;
+
+    constexpr SDL_Keycode MOUSECAPTURE_TOGGLE = SDLK_F5;
     #endif
 }

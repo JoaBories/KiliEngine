@@ -6,7 +6,7 @@ class BowlingPin : public GameActor // Just an actor that will store a mesh comp
 {
 public:
     BowlingPin(const Transform& pTransform) :
-        GameActor(pTransform)
+        GameActor(pTransform, "BowlingPin")
     {
     }
 };

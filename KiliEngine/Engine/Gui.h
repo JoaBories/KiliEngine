@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef _DEBUG
+
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -8,6 +10,11 @@
 
 class Gui
 {
+
+private:
+    static void DrawFps();
+    static void Properties();
+    static void Scene();
     
 public:
     static bool Init(Window* pWindow, IRenderer* pRenderer);
@@ -18,3 +25,5 @@ public:
 
     
 };
+
+#endif
