@@ -1,6 +1,7 @@
 #include "Gui.h"
 #include "Renderer/OpenGlRenderer.h"
 #include "Renderer/SdlRenderer.h"
+#include "Tools/GameTime.h"
 
 bool Gui::Init(Window* pWindow, IRenderer* pRenderer)
 {
@@ -28,6 +29,8 @@ bool Gui::Init(Window* pWindow, IRenderer* pRenderer)
         return true;
     }
 
+    ImGui::DockSpaceOverViewport();
+
     return false;
 }
 
@@ -41,7 +44,18 @@ void Gui::BeginGui()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
-    ImGui::ShowDemoWindow();
+    
+    ImGuiWindowFlags window_flags =
+        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize |
+        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
+    
+    ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
+    if (ImGui::Begin("Fps", nullptr, window_flags))
+    {
+        ImGui::Text(("Fps : " + std::to_string(1.0f / GameTime::DeltaTime)).c_str());
+        ImGui::Text(("Avg : " + std::to_string(1000.0f / GameTime::GetAvgFrameTime())).c_str());
+    }
+    ImGui::End();
 }
 
 void Gui::EndGui()

@@ -7,7 +7,7 @@ class GameTime
 {
 
 private:
-	static constexpr unsigned int Fps = 10000000;
+	static constexpr unsigned int Fps = 144;
 	static constexpr unsigned int FrameDelay = 1000/Fps;	//ms
 
 	static unsigned int mFrameStart;						//ms
