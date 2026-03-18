@@ -36,6 +36,7 @@ void GameEngine::Init()
 	{
 		if (mRenderer->Initialize(*mWindow))
 		{
+			GameTime::Init();
 #ifdef _DEBUG
 			Gui::Init(mWindow, mRenderer);
 #endif
@@ -52,7 +53,7 @@ void GameEngine::Loop()
 	while (mIsRunning)
 	{
 		GameTime::ComputeDeltaTime();
-
+		
 		CheckForInputs();
 		Update();
 

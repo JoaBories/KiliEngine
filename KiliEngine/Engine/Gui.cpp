@@ -9,13 +9,16 @@
 void Gui::DrawFps()
 {
     ImGuiWindowFlags window_flags =
-        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground |
-        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
+        ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize |
+        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
     
-    if (ImGui::Begin("Fps", nullptr, window_flags))
+    ImGui::SetNextWindowBgAlpha(0.5f);
+    if (ImGui::Begin("Performance", nullptr, window_flags))
     {
-        ImGui::Text(("Fps : " + std::to_string(1.0f / GameTime::DeltaTime)).c_str());
-        ImGui::Text(("Avg : " + std::to_string(1000.0f / GameTime::GetAvgFrameTime())).c_str());
+        std::string fps = std::to_string(MathUtils::Round(1.0f / GameTime::DeltaTime));
+        ImGui::Text(("Fps : " + fps).c_str());
+        std::string avg = std::to_string(MathUtils::Round(1000.0f / GameTime::GetAvgFrameTime()));
+        ImGui::Text(("Avg : " + avg).c_str());
     }
     ImGui::End();
 }
