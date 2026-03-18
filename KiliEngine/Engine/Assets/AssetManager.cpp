@@ -78,7 +78,7 @@ Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
             };
             Vector2 texCoord = {
                 attributes.texcoords[texcoord_index * 2],
-                -attributes.texcoords[texcoord_index * 2 + 1]
+                attributes.texcoords[texcoord_index * 2 + 1]
             };
             Vertex vertex = Vertex{position, normal, texCoord};
             vertices.push_back(vertex);
