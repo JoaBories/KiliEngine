@@ -17,7 +17,7 @@ public :
 
 	void OnStart() override {
 		Camera* camera = new Camera(Transform::Origin, 70.0f, 0.1f, 1000.0f);
-		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 10.0f));
+		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 5.0f));
 		AddActor(camera);
 
 		EnviroActor* cube = new EnviroActor(Transform::Origin);

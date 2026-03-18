@@ -4,17 +4,21 @@
 #include "Log.h"
 #include "Engine/Config.h"
 
+
 class GameTime
 {
 
 private:
-	static constexpr unsigned int FrameDelay = 1000 / Cfg::FPS_MAX;	//ms
-
-	static unsigned int mFrameStart;						//ms
-	static unsigned int mFrameTime;							//ms
-	static unsigned int mLastFrame;							//ms
-
-	static unsigned int mFrameCount;
+	
+	static Uint64 mFrameStart;							//tick
+	static Uint64 mFrameTime;							//tick
+	static Uint64 mLastFrame;							//tick
+	
+	static const Uint64 Frequency;						//hertz tick per second
+	static const Uint64 TicksPerFrame;
+	
+	static Uint64 mTotalTime;							//tick
+	static Uint64 mFrameCount;
 
 public:
 	GameTime() = default;
@@ -24,25 +28,43 @@ public:
 	GameTime(GameTime&& pOther) noexcept = delete;
 	GameTime& operator=(GameTime&& pOther) noexcept = delete;
 
-	static float DeltaTime;									//s
+	static float DeltaTime;								//s
 
-	static unsigned int ComputeDeltaTime() {
-		mFrameStart = SDL_GetTicks();
-		const unsigned int dt = mFrameStart - mLastFrame;
+	static void Init()
+	{
+		//mFrequency = SDL_GetPerformanceFrequency();
+		Log::Info(std::to_string(Frequency));
+		mLastFrame = SDL_GetPerformanceCounter();
+		mFrameStart = mLastFrame;
+	}
+
+	static Uint64 ComputeDeltaTime() {
+		mFrameStart = SDL_GetPerformanceCounter();
+		const Uint64 dt = mFrameStart - mLastFrame;
 		mLastFrame = mFrameStart;
-		DeltaTime = static_cast<float>(dt) / 1000.0f;
+		DeltaTime = static_cast<float>(dt) / static_cast<float>(Frequency);
+		mTotalTime += dt;
 		mFrameCount++;
 		return dt;
 	}
 
 	static void DelayTime() {
 		if constexpr (Cfg::FPS_LOCKED != Limited) return;
-		
-		mFrameTime = SDL_GetTicks() - mFrameStart;
-		if (mFrameTime < FrameDelay)
-			SDL_Delay(FrameDelay - mFrameTime);
+
+		const Uint64 elapsed = SDL_GetPerformanceCounter() - mFrameStart;
+
+		if (elapsed < TicksPerFrame) {
+			const Uint32 ms = static_cast<Uint32>((TicksPerFrame - elapsed) / Frequency * 1000);
+			
+			if (ms > 0) SDL_Delay(ms); // Wait in ms
+			while (SDL_GetPerformanceCounter() - mFrameStart < TicksPerFrame) {} // Wait precisely the rest (this function busy the core)
+		}
 	}
 
-	static float GetAvgFrameTime() { return static_cast<float>(mFrameStart) / static_cast<float>(mFrameCount);}
+	static double GetAvgFrameTime()
+	{
+		if (mFrameCount == 0) return 0.0;
+		return static_cast<double>(mTotalTime) / static_cast<double>(Frequency) / static_cast<double>(mFrameCount) * 1000.0;
+	}
 
 };

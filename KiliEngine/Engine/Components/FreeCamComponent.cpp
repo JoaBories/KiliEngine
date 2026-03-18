@@ -28,8 +28,8 @@ void FreeCamComponent::OnUpdate()
     {
         Vector3 currentEuler = mOwner->GetWorldTransform().GetRotation().AsMatrixRow().GetEulerRotation();
         
-        currentEuler.z += mouseDelta.x * mSensibility * GameTime::DeltaTime * MathUtils::DEG2RAD;
-        currentEuler.y += mouseDelta.y * mSensibility * GameTime::DeltaTime * MathUtils::DEG2RAD;
+        currentEuler.z += mouseDelta.x * mSensibility * MathUtils::DEG2RAD * 0.01f;
+        currentEuler.y += mouseDelta.y * mSensibility * MathUtils::DEG2RAD * 0.01f;
         
         currentEuler.y = MathUtils::Clamp(currentEuler.y * MathUtils::RAD2DEG, -89.0f, 89.0f) * MathUtils::DEG2RAD;
 
