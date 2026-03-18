@@ -11,10 +11,11 @@
 #include "Engine/GameEngine.h"
 #include "Engine/Scene/DefaultScene.h"
 #include "Game/Bowling/Bowling.h"
+#include "Game/Doom/Doom.h"
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new DefaultScene() });
+	SceneManager::SetScenes({ new Doom() });
 
 	GameEngine* kili = new GameEngine("KiliEngine");
 	kili->Init();

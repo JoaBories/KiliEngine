@@ -194,6 +194,8 @@
     </ClCompile>
     <ClCompile Include="Game\Bowling\BowlingPin.cpp">
     </ClCompile>
+    <ClCompile Include="Game\Doom\Components\FpsCameraComponent.cpp" />
+    <ClCompile Include="Game\Doom\Player.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="Libraries\imgui\imgui.cpp" />
@@ -249,7 +251,9 @@
     <ClInclude Include="Game\Bowling\BowlingBall.h" />
     <ClInclude Include="Game\Bowling\BowlingPin.h" />
     <ClInclude Include="Game\Bowling\Floor.h" />
+    <ClInclude Include="Game\Doom\Components\FpsCameraComponent.h" />
     <ClInclude Include="Game\Doom\Doom.h" />
+    <ClInclude Include="Game\Doom\Player.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_sdl2.h" />
