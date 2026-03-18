@@ -2,13 +2,13 @@
 
 #include <SDL_timer.h>
 #include "Log.h"
+#include "Engine/Config.h"
 
 class GameTime
 {
 
 private:
-	static constexpr unsigned int Fps = 144;
-	static constexpr unsigned int FrameDelay = 1000/Fps;	//ms
+	static constexpr unsigned int FrameDelay = 1000 / Cfg::FPS_MAX;	//ms
 
 	static unsigned int mFrameStart;						//ms
 	static unsigned int mFrameTime;							//ms
@@ -36,6 +36,8 @@ public:
 	}
 
 	static void DelayTime() {
+		if constexpr (Cfg::FPS_LOCKED != Limited) return;
+		
 		mFrameTime = SDL_GetTicks() - mFrameStart;
 		if (mFrameTime < FrameDelay)
 			SDL_Delay(FrameDelay - mFrameTime);

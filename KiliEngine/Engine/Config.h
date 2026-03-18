@@ -10,8 +10,18 @@ enum ScreenMode : Uint8
     Fullscreen,
 };
 
+enum FpsMode : Uint8
+{
+    Limited,
+    Unlimited,
+    Vsync
+};
+
 namespace Cfg
 {
+    constexpr FpsMode FPS_LOCKED = Limited;
+    constexpr int FPS_MAX = 144;
+    
     const std::string TEXTURE_PATH = "Resources/Textures/";
     const std::string SHADER_PATH = "Resources/Shaders/";
     const std::string MESH_PATH = "Resources/Meshes";
