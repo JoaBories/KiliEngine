@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir);$(ProjectDir)\Libraries\imgui;$(ProjectDir)\Libraries\imgui\backends</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GL\SDL\include;$(ProjectDir)Dependencies\glew-2.2.0-win32\glew-2.2.0\include\GL;$(ProjectDir);$(ProjectDir)\Libraries\imgui;$(ProjectDir)\Libraries\imgui\backends</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -167,6 +167,7 @@
     </ClCompile>
     <ClCompile Include="Engine\GameEngine.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Gui.cpp" />
     <ClCompile Include="Engine\main.cpp">
     </ClCompile>
     <ClCompile Include="Engine\PhysicManager.cpp">
@@ -193,6 +194,13 @@
     </ClCompile>
     <ClCompile Include="Game\Bowling\BowlingPin.cpp">
     </ClCompile>
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Utils\CollisionUtils.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\Matrix4Row.cpp" />
@@ -220,8 +228,10 @@
     <ClInclude Include="Engine\Components\SphereCollider.h" />
     <ClInclude Include="Engine\Components\SpriteComponent.h" />
     <ClInclude Include="Engine\Config.h" />
+    <ClInclude Include="Engine\EnviroActor.h" />
     <ClInclude Include="Engine\GameActor.h" />
     <ClInclude Include="Engine\GameEngine.h" />
+    <ClInclude Include="Engine\Gui.h" />
     <ClInclude Include="Engine\PhysicManager.h" />
     <ClInclude Include="Engine\Renderer\IRenderer.h" />
     <ClInclude Include="Engine\Renderer\OpenGlRenderer.h" />
@@ -229,7 +239,6 @@
     <ClInclude Include="Engine\Scene\DefaultScene.h" />
     <ClInclude Include="Engine\Scene\Scene.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
-    <ClInclude Include="Engine\tiny_obj_loader.h" />
     <ClInclude Include="Engine\Tools\GameTime.h" />
     <ClInclude Include="Engine\Tools\Inputs.h" />
     <ClInclude Include="Engine\Tools\Log.h" />
@@ -239,9 +248,18 @@
     <ClInclude Include="Game\Bowling\Bowling.h" />
     <ClInclude Include="Game\Bowling\BowlingBall.h" />
     <ClInclude Include="Game\Bowling\BowlingPin.h" />
-    <ClInclude Include="Game\Bowling\EnviroActor.h" />
     <ClInclude Include="Game\Bowling\Floor.h" />
     <ClInclude Include="Game\Doom\Doom.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_sdl2.h" />
+    <ClInclude Include="Libraries\imgui\imconfig.h" />
+    <ClInclude Include="Libraries\imgui\imgui.h" />
+    <ClInclude Include="Libraries\imgui\imgui_internal.h" />
+    <ClInclude Include="Libraries\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Libraries\imgui\imstb_textedit.h" />
+    <ClInclude Include="Libraries\imgui\imstb_truetype.h" />
+    <ClInclude Include="Libraries\tiny_obj_loader.h" />
     <ClInclude Include="Utils\CollisionUtils.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\Matrix4Row.h" />

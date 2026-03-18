@@ -59,6 +59,8 @@ public:
 	
 	RendererType GetType() override;
 
+	[[nodiscard]] SDL_GLContext GetContext() const {return mContext;}
+
 #ifdef _DEBUG
 
 private:

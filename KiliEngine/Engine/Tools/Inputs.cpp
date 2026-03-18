@@ -5,15 +5,20 @@
 std::vector<SDL_Keycode> Inputs::mCurrentPressedInputs = {};
 int Inputs::mLastMouseDeltaX = 0;
 int Inputs::mLastMouseDeltaY = 0;
+bool Inputs::mCapturingMouse = false;
 
 void Inputs::Init()
 {
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SetMouseTracking(Cfg::MOUSECAPTURE_DEFAULT);
+	mCapturingMouse = Cfg::MOUSECAPTURE_DEFAULT;
 }
 
 void Inputs::MouseUpdate()
 {
-	SDL_GetRelativeMouseState(&mLastMouseDeltaX, &mLastMouseDeltaY);
+	if (mCapturingMouse)
+	{
+		SDL_GetRelativeMouseState(&mLastMouseDeltaX, &mLastMouseDeltaY);
+	}
 }
 
 bool Inputs::InputUpdate(SDL_Event pEvent)
@@ -33,6 +38,22 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 		{
 			return true;
 		}
+
+		if (pEvent.key.keysym.sym == Cfg::MOUSECAPTURE_TOGGLE)
+		{
+			if (mCapturingMouse)
+			{
+				SetMouseTracking(false);
+				mCapturingMouse = false;
+				mLastMouseDeltaX = 0;
+				mLastMouseDeltaY = 0;
+			}
+			else
+			{
+				SetMouseTracking(true);
+				mCapturingMouse = true;
+			}
+		}
 		
 		if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_DEFAULT) GlRenderer::RenderMode = DefaultRender;
 		else if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_UV) GlRenderer::RenderMode = Uvs;
@@ -47,6 +68,11 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 	}
 
 	return false;
+}
+
+void Inputs::SetMouseTracking(const bool pIsTracking)
+{
+	SDL_SetRelativeMouseMode(pIsTracking ? SDL_TRUE : SDL_FALSE);
 }
 
 bool Inputs::IsKeyPressed(const SDL_Keycode pKey)

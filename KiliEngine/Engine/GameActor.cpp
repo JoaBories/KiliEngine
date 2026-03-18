@@ -12,8 +12,8 @@ void GameActor::UpdateComponentsTransform()
 	}
 }
 
-GameActor::GameActor(const Transform& pTransform, const ActorTags pTag) :
-	mActiveState(WaitingStart), mTransform(pTransform), mTag(pTag)
+GameActor::GameActor(const Transform& pTransform, const std::string& pName, const ActorTags pTag) :
+	mActiveState(WaitingStart), mTag(pTag), mName(pName), mTransform(pTransform)
 {
 };
 

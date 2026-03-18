@@ -5,7 +5,7 @@ class Floor : public GameActor
 {
 public:
     Floor(const Transform& pTransform) :
-        GameActor(pTransform)
+        GameActor(pTransform, "Floor")
     {
     }
     

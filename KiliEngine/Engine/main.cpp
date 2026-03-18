@@ -14,7 +14,7 @@
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new DefaultScene() });
+	SceneManager::SetScenes({ new Bowling() });
 
 	GameEngine* kili = new GameEngine("KiliEngine");
 	kili->Init();

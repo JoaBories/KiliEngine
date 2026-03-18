@@ -10,6 +10,7 @@ FollowCameraComponent::FollowCameraComponent(GameActor* pOwner, GameActor* pTarg
     mTargetActor(pTarget), 
     mPositionLock(pPositionLock)
 {
+    SetName("FollowCameraComponent");
 }
 
 void FollowCameraComponent::OnUpdate()

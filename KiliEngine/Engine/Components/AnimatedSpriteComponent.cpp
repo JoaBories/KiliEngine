@@ -6,6 +6,7 @@
 AnimatedSpriteComponent::AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder) :
 	SpriteComponent(pOwner, pTransform, pTexture[0], pDrawOrder), mCurrentFrame(0.0f), mAnimFps(pFps)
 {
+	SetName("AnimatedSpriteComponent");
 	SetAnimationTextures(pTexture);
 }
 

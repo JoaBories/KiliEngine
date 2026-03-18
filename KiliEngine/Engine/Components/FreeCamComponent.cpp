@@ -42,4 +42,5 @@ FreeCamComponent::FreeCamComponent(GameActor* pOwner, const float pSpeed, const 
     ActorComponent(pOwner, Transform::Origin),
     mSpeed(pSpeed), mSensibility(pSensibility)
 {
+    SetName("FreeCamComponent");
 }
