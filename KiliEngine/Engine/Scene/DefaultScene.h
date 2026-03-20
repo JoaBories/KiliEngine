@@ -6,6 +6,12 @@
 
 class DefaultScene : public Scene
 {
+	void CreateEnviroActor(const Transform& pTransform, const std::string& pMesh, const std::string& pTexture = "DefaultTexture", const std::string& pShader = "Basic")
+	{
+		EnviroActor* actor = new EnviroActor(pTransform);
+		actor->AddComponent(new MeshComponent(actor, Transform::Origin, AssetManager::GetMesh(pMesh), AssetManager::GetTexture(pTexture), pShader));
+		AddActor(actor);
+	}
 
 public :
 
@@ -20,21 +26,15 @@ public :
 		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 5.0f));
 		AddActor(camera);
 
-		EnviroActor* cube = new EnviroActor(Transform(Vector3(10, 0, 0), Quaternion(), Vector3::unit));
-		cube->AddComponent(new MeshComponent(cube, Transform::Origin, AssetManager::GetMesh("cube")));
-		AddActor(cube);
+		CreateEnviroActor(Transform(Vector3(10, 12, 0), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "BasicLight");
+		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");
+		CreateEnviroActor(Transform(Vector3(10, 6, 0), Quaternion(), Vector3::unit), "sphere", "DefaultTexture", "BasicLight");
+		CreateEnviroActor(Transform(Vector3(10, 9, 0), Quaternion(), Vector3::unit), "monkey", "DefaultTexture", "BasicLight");
 
-		EnviroActor* plane = new EnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit));
-		plane->AddComponent(new MeshComponent(plane, Transform::Origin, AssetManager::GetMesh("plane")));
-		AddActor(plane);
-
-		EnviroActor* sphere = new EnviroActor(Transform(Vector3(10, 6, 0), Quaternion(), Vector3::unit));
-		sphere->AddComponent(new MeshComponent(sphere, Transform::Origin, AssetManager::GetMesh("sphere")));
-		AddActor(sphere);
-
-		EnviroActor* monkey = new EnviroActor(Transform(Vector3(10, 9, 0), Quaternion(), Vector3::unit));
-		monkey->AddComponent(new MeshComponent(monkey, Transform::Origin, AssetManager::GetMesh("monkey")));
-		AddActor(monkey);
+		CreateEnviroActor(Transform(Vector3(0, 0, 0), Quaternion(), Vector3(100,2,1)), "plane", "Ground", "BasicTile");
+		CreateEnviroActor(Transform(Vector3(0, 2, 1.5f), Quaternion(Vector3::unitX, 90 * MathUtils::DEG2RAD), Vector3(100,2,1)), "plane", "Ground", "BasicTile");
+		CreateEnviroActor(Transform(Vector3(0, -2, 1.5f), Quaternion(Vector3::unitX, -90 * MathUtils::DEG2RAD), Vector3(100,2,1)), "plane", "Ground", "BasicTile");
+		CreateEnviroActor(Transform(Vector3(0, 0, 3), Quaternion(Vector3::unitX, 180 * MathUtils::DEG2RAD), Vector3(100,2,1)), "plane", "Ground", "BasicTile");
 	}
 
 	void OnUpdate() override {

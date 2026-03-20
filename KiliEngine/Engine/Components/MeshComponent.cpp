@@ -28,6 +28,7 @@ void MeshComponent::Draw(Camera* pCamera, ShaderProgram* pShader)
 	
 		pShader->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
 		pShader->SetMatrix4Row("uWorldTransform", worldTransform);
+		pShader->SetVec2("uTilling", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x);
 
 		if(const Texture* texture = GetTexture()) texture->SetActive();
 	

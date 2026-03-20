@@ -19,7 +19,7 @@ enum FpsMode : Uint8
 
 namespace Cfg
 {
-    constexpr FpsMode FPS_LOCKED = Limited;
+    constexpr FpsMode FPS_LOCKED = Unlimited;
     constexpr int FPS_MAX = 144;
     
     const std::string TEXTURE_PATH = "Resources/Textures/";

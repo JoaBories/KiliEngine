@@ -273,6 +273,8 @@
     <Content Include="Resources\Shaders\Engine\Basic.vert" />
     <Content Include="Resources\Shaders\Engine\BasicLight.frag" />
     <Content Include="Resources\Shaders\Engine\BasicLight.vert" />
+    <Content Include="Resources\Shaders\Engine\BasicTile.frag" />
+    <Content Include="Resources\Shaders\Engine\BasicTile.vert" />
     <Content Include="Resources\Shaders\Engine\Collider.frag" />
     <Content Include="Resources\Shaders\Engine\Collider.vert" />
     <Content Include="Resources\Shaders\Engine\Decals.frag" />
