@@ -20,8 +20,8 @@ bool GlRenderer::Initialize(Window& pWindow)
 
     //Setting OpenGL attributes
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 
     //8 bits color buffer
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -55,10 +55,16 @@ bool GlRenderer::Initialize(Window& pWindow)
     {
         SDL_GL_SetSwapInterval(0);
     }
-    
+
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+
+    const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+    Log::Info("OpenGL Version : " + glVersion);
+    const std::string glslVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+    Log::Info("Glsl Version : " + glslVersion);
     
     return true;
 }

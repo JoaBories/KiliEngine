@@ -20,7 +20,7 @@ Material::Material(std::vector<Shader*> pShaders) :
     if (!success)
     {
         glGetProgramInfoLog(mId, 512, nullptr, infoLog);
-        Log::Error(LogType::Render, "ERROR::SHADER::PROGRAM::LINKING_FAILED : " + static_cast<std::string>(infoLog));
+        Log::Info("Shader program failed linking : " + static_cast<std::string>(infoLog));
     }
 }
 

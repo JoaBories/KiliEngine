@@ -277,7 +277,9 @@
     <Content Include="Resources\Materials\Collider.mat" />
     <Content Include="Resources\Materials\Decals.mat" />
     <Content Include="Resources\Materials\Normal.mat" />
+    <Content Include="Resources\Materials\SimpleTess.mat" />
     <Content Include="Resources\Materials\Sprite.mat" />
+    <Content Include="Resources\Materials\TerrainTess.mat" />
     <Content Include="Resources\Materials\Uv.mat" />
     <Content Include="Resources\Shaders\Engine\Basic.frag" />
     <Content Include="Resources\Shaders\Engine\Basic.vert" />
@@ -291,8 +293,13 @@
     <Content Include="Resources\Shaders\Engine\Decals.vert" />
     <Content Include="Resources\Shaders\Engine\Normal.frag" />
     <Content Include="Resources\Shaders\Engine\Normal.vert" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.frag" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.tesc" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.tese" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.vert" />
     <Content Include="Resources\Shaders\Engine\Sprite.frag" />
     <Content Include="Resources\Shaders\Engine\Sprite.vert" />
+    <Content Include="Resources\Shaders\Engine\TerrainTessControl.tesc" />
     <Content Include="Resources\Shaders\Engine\Uv.frag" />
     <Content Include="Resources\Shaders\Engine\Uv.vert" />
   </ItemGroup>

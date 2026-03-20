@@ -31,7 +31,7 @@ public :
 		CreateEnviroActor(Transform(Vector3(10, 6, 0), Quaternion(), Vector3::unit), "sphere", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 9, 0), Quaternion(), Vector3::unit), "monkey", "DefaultTexture", "BasicLight");
 
-		CreateEnviroActor(Transform(Vector3(0, 0, -5), Quaternion(), Vector3(100,100,1)), "plane", "Ground", "BasicTile");
+		CreateEnviroActor(Transform(Vector3(0, 0, -5), Quaternion(), Vector3(100,100,1)), "plane", "Ground", "SimpleTess");
 	}
 
 	void OnUpdate() override {

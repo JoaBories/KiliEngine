@@ -33,8 +33,15 @@ void MeshComponent::Draw(Camera* pCamera, Material* pMaterial)
 		if(const Texture* texture = GetTexture()) texture->SetActive();
 	
 		mMesh->GetVertexArray()->SetActive();
-	
-		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount());
+
+		if (pMaterial->GetShaderByType(TessControlShader))
+		{
+			glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexArray()->GetVerticeCount());
+		}
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount());
+		}
 	}
 }
 

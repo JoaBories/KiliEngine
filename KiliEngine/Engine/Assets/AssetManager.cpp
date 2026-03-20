@@ -100,6 +100,7 @@ Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
 Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
 {
     std::vector<Shader*> shaders;
+    std::string shadersForLog;
     std::string line;
 
     //Open file of this name
@@ -113,11 +114,13 @@ Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
 
     while (std::getline(myFile, line)) {
         shaders.push_back(GetShader(line));
+        shadersForLog += line + ", ";
     }
 
     myFile.close();
 
     Material* loadedMaterial = new Material(shaders);
+    Log::Info("Material "+ pFilePath + " loaded with : " + shadersForLog);
     return loadedMaterial;
 }
 
@@ -127,7 +130,6 @@ void AssetManager::Init(IRenderer* pRenderer)
     
     FetchAll();
     LoadAll();
-    UnfetchAll();
 }
 
 void AssetManager::Close()
