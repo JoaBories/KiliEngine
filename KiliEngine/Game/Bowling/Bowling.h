@@ -1,17 +1,16 @@
 #pragma once
-#include "Engine/Scene/Scene.h"
-#include "Engine/Assets/AssetManager.h"
 #include "BowlingBall.h"
 #include "BowlingPin.h"
-#include "Engine/Components/BoxCollider.h"
-#include "Engine/Components/SpriteComponent.h"
-#include "Camera.h"
-#include "EnviroActor.h"
+#include "Engine/Camera.h"
+#include "Engine/EnviroActor.h"
 #include "Floor.h"
+#include "Engine/Assets/AssetManager.h"
+#include "Engine/Components/BoxCollider.h"
 #include "Engine/Components/FollowCameraComponent.h"
 #include "Engine/Components/FreeCamComponent.h"
 #include "Engine/Components/RigidBody.h"
 #include "Engine/Components/SphereCollider.h"
+#include "Engine/Scene/Scene.h"
 
 
 class Bowling : public Scene
@@ -67,12 +66,10 @@ private:
 
 public:
 
-	Bowling() : Scene("Test openGl") {}
+	Bowling() : Scene("Bowling") {}
 	~Bowling() override = default;
 
 	void AssetLoad() override {
-		AssetManager::LoadTexture("pokeball");
-		AssetManager::LoadTexture("rock");
 	}
 
 	void OnStart() override {

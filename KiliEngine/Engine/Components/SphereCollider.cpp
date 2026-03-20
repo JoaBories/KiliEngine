@@ -7,6 +7,7 @@ SphereCollider::SphereCollider(GameActor* pOwner, const Transform& pTransform, c
     ColliderComponent(pOwner, pTransform, pUpdateOrder),
     mRadius(pRadius)
 {
+    SetName("SphereCollider");
     PhysicManager::AddSphereCollider(this);
     
 #ifdef _DEBUG

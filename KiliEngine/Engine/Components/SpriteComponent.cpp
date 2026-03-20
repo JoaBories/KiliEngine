@@ -9,6 +9,7 @@ SpriteComponent::SpriteComponent(GameActor* pOwner, Transform pTransform, Textur
 	mTexture(pTexture), mDrawOrder(pDrawOrder),
 	mFlipX(false)
 {
+	SetName("SpriteComponent");
 	mTexture->UpdateInfo(mTexWidth, mTexHeight);
 	SceneManager::ActiveScene()->GetRenderer()->AddSprite(this);
 }

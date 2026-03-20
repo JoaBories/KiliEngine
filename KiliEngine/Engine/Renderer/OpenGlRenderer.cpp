@@ -1,5 +1,6 @@
 #include "OpenGlRenderer.h"
 
+#include "Engine/Config.h"
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Components/SpriteComponent.h"
 #include "Engine/Tools/Log.h"
@@ -46,7 +47,15 @@ bool GlRenderer::Initialize(Window& pWindow)
 
     mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
 
-    SDL_GL_SetSwapInterval(0);
+    if constexpr (Cfg::FPS_LOCKED == Vsync)
+    {
+        SDL_GL_SetSwapInterval(1);
+    }
+    else
+    {
+        SDL_GL_SetSwapInterval(0);
+    }
+    
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);

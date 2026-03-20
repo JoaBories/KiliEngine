@@ -32,6 +32,7 @@ BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const V
     ColliderComponent(pOwner, pTransform, pUpdateOrder),
     mHalfSize(pHalfSize), mRadius(0.0f)
 {
+    SetName("BoxCollider");
     PhysicManager::AddBoxCollider(this);
     
     mRadius = mHalfSize.Length();

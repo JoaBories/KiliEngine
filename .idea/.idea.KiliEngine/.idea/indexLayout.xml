@@ -3,6 +3,25 @@
   <component name="UserContentModel">
     <attachedFolders />
     <explicitIncludes />
-    <explicitExcludes />
+    <explicitExcludes>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_allegro5.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_android.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_dx10.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_dx11.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_dx12.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_dx9.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_glfw.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_glut.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_null.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_opengl2.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_opengl3.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_sdl3.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_sdlgpu3.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_sdlrenderer2.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_sdlrenderer3.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_vulkan.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_wgpu.cpp</Path>
+      <Path>KiliEngine/Libraries/imgui/backends/imgui_impl_win32.cpp</Path>
+    </explicitExcludes>
   </component>
 </project>

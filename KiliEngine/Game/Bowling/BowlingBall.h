@@ -25,7 +25,7 @@ private:
     
 public:
     BowlingBall(const Transform& pTransform) :
-        GameActor(pTransform)
+        GameActor(pTransform, "BowlingBall")
     {
     }
 

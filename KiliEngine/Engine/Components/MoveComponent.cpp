@@ -8,6 +8,7 @@ MoveComponent::MoveComponent(GameActor* pOwner, const short pUpdateOrder) :
 	ActorComponent(pOwner, Transform::Origin, pUpdateOrder),
 	mVelocity(Vector3::zero)
 {
+	SetName("MoveComponent");
 }
 
 void MoveComponent::SetVelocity(const Vector3& pVelocity)

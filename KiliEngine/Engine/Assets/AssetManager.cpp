@@ -1,7 +1,7 @@
 #include "AssetManager.h"
 #include "Engine/Tools/Log.h"
 #include "Engine/Config.h"
-#include "Engine/tiny_obj_loader.h"
+#include "Libraries/tiny_obj_loader.h"
 
 #include <chrono>
 using Clk = std::chrono::high_resolution_clock;

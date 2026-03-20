@@ -25,14 +25,14 @@ void Camera::OnLateUpdate()
 }
 
 Camera::Camera() :
-    GameActor(Transform::Origin),
+    GameActor(Transform::Origin, "Camera"),
     mProjNeedsUpdate(true),
     mFov(70.0f), mNearPane(0.1f), mFarPane(1000.0f)
 {
 }
 
 Camera::Camera(const Transform& pTransform, const float pFov, const float pNear, const float pFar):
-    GameActor(pTransform),
+    GameActor(pTransform, "Camera"),
     mProjNeedsUpdate(true),
     mFov(pFov), mNearPane(pNear), mFarPane(pFar)
 {
