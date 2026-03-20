@@ -9,7 +9,7 @@ void MeshComponent::OnUpdate()
 
 MeshComponent::MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, Texture* pTextureOverride, const std::string& pShaderOverride) :
 	ActorComponent(pOwner, pTransform),
-	mMesh(pMesh), mTextureOverride(pTextureOverride), mShaderOverride(pShaderOverride)
+	mMesh(pMesh), mTextureOverride(pTextureOverride), mMaterialOverride(pShaderOverride)
 {
 	SetName("MeshComponent");
 	SceneManager::ActiveScene()->GetRenderer()->AddMesh(this);
@@ -20,15 +20,15 @@ MeshComponent::~MeshComponent()
 	SceneManager::ActiveScene()->GetRenderer()->RemoveMesh(this);
 }
 
-void MeshComponent::Draw(Camera* pCamera, ShaderProgram* pShader)
+void MeshComponent::Draw(Camera* pCamera, Material* pMaterial)
 {
 	if (IsActive())
 	{
 		const Matrix4Row worldTransform = GetWorldTransform().GetWorldTransformMatrix();
 	
-		pShader->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
-		pShader->SetMatrix4Row("uWorldTransform", worldTransform);
-		pShader->SetVec2("uTilling", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x);
+		pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
+		pMaterial->SetMatrix4Row("uWorldTransform", worldTransform);
+		pMaterial->SetVec2("uTilling", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x);
 
 		if(const Texture* texture = GetTexture()) texture->SetActive();
 	
@@ -49,20 +49,20 @@ Texture* MeshComponent::GetTexture() const
 	return mMesh->GetTexture(0); 
 }
 
-std::string MeshComponent::GetShader() const
+std::string MeshComponent::GetMaterialName() const
 {
-	if (mShaderOverride != "Null") return mShaderOverride;
-	return mMesh->GetShaderName();
+	if (mMaterialOverride != "Null") return mMaterialOverride;
+	return mMesh->GetMaterialName();
 }
 
-ShaderProgram* MeshComponent::GetShaderProgram() const
+Material* MeshComponent::GetMaterial() const
 {
-	if (mShaderOverride != "Null") return AssetManager::GetShader(mShaderOverride);
-	return mMesh->GetShaderProgram();
+	if (mMaterialOverride != "Null") return AssetManager::GetMaterial(mMaterialOverride);
+	return mMesh->GetMaterial();
 }
 
-void MeshComponent::SetShaderOverride(const std::string& pShaderOverride)
+void MeshComponent::SetMaterialOverride(const std::string& pMaterialOverride)
 {
-	mShaderOverride = pShaderOverride;
+	mMaterialOverride = pMaterialOverride;
 	//todo change on renderer mesh vector
 }

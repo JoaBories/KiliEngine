@@ -26,13 +26,13 @@ private:
 	Window* mWindow;
 	VertexArray* mSpriteVao;
 	
-	ShaderProgram* mSpriteShader;
+	Material* mSpriteMaterial;
 	
 	Matrix4Row mSpriteViewProj;
 	
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
-	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by shader
+	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by material
 
 public:
 	

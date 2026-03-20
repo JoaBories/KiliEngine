@@ -4,7 +4,7 @@
 #include <vector>
 #include "Texture.h"
 #include "Engine/VertexArray.h"
-#include "Shader.h"
+#include "Material.h"
 #include "Utils/Vertex.h"
 
 class Mesh
@@ -13,7 +13,7 @@ private:
 	std::string mFilename;
 	VertexArray* mVao;
 	std::vector<Texture*> mTextures;
-	std::string mShaderName;
+	std::string mMaterialName;
 	
 	float* ToVerticeArray(const std::vector<Vertex>& pVertices);
 
@@ -31,8 +31,7 @@ public:
 	[[nodiscard]] VertexArray* GetVertexArray() const { return mVao; }
 	void SetVertexArray(VertexArray* pVao) { mVao = pVao; }
 
-	[[nodiscard]] std::string GetShaderName() const { return mShaderName; }
-	[[nodiscard]] ShaderProgram* GetShaderProgram() const;
-	void SetShader(const std::string& pShader) { mShaderName = pShader; }
+	[[nodiscard]] std::string GetMaterialName() const { return mMaterialName; }
+	[[nodiscard]] Material* GetMaterial() const;
+	void SetShader(const std::string& pShader) { mMaterialName = pShader; }
 };
-

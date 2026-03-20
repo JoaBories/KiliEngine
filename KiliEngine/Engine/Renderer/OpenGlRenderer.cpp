@@ -7,7 +7,7 @@
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
-    mSpriteVao(nullptr), mSpriteShader(nullptr),
+    mSpriteVao(nullptr), mSpriteMaterial(nullptr),
     mSpriteViewProj(Matrix4Row::Identity),
     mContext(nullptr)
 {
@@ -85,52 +85,49 @@ void GlRenderer::DrawMeshes() const
     glEnable(GL_DEPTH_TEST);
     
 #ifdef _DEBUG
-    ShaderProgram* shader = nullptr;
+    Material* material = nullptr;
     
     switch (RenderMode)
     {
     case Uvs:
-        shader = AssetManager::GetShader("Uv");
-        shader->Use();
+        material = AssetManager::GetMaterial("Uv");
+        material->Use();
         break;
     case Normals:
-        shader = AssetManager::GetShader("Normal");
-        shader->Use();
+        material = AssetManager::GetMaterial("Normal");
+        material->Use();
         break;
-    case Wireframe:
-        shader = AssetManager::GetShader("Basic");
-        shader->Use();
-        
+    case Wireframe:        
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         break;
     default:
         break;
     }
     
-    for (const auto& [shaderName, meshVector] : mMeshes)
+    for (const auto& [materialName, meshVector] : mMeshes)
     {
-        if (RenderMode == DefaultRender)
+        if (RenderMode == DefaultRender || RenderMode == Wireframe)
         {
-            shader = AssetManager::GetShader(shaderName);
-            shader->Use();
+            material = AssetManager::GetMaterial(materialName);
+            material->Use();
         }
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera, shader);
+            mesh->Draw(mCamera, material);
         }
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #else
-    for (const auto& [shaderName, meshVector] : mMeshes)
+    for (const auto& [materialName, meshVector] : mMeshes)
     {
-        ShaderProgram* shader = AssetManager::GetShader(shaderName);
-        shader->Use();
+        Material* material = AssetManager::GetMaterial(materialName);
+        material->Use();
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera, shader);
+            mesh->Draw(mCamera, material);
         }
     }
 #endif
@@ -143,10 +140,10 @@ void GlRenderer::DrawSprites()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     
-    if (!mSpriteShader) mSpriteShader = AssetManager::GetShader("Sprite");
-    mSpriteShader->Use();
+    if (!mSpriteMaterial) mSpriteMaterial = AssetManager::GetMaterial("Sprite");
+    mSpriteMaterial->Use();
     
-    mSpriteShader->SetMatrix4Row("uViewProj", mSpriteViewProj);
+    mSpriteMaterial->SetMatrix4Row("uViewProj", mSpriteViewProj);
     mSpriteVao->SetActive();
     
     for (SpriteComponent* sprite : mSprites)
@@ -174,8 +171,8 @@ void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const 
         0.0f);
     const Matrix4Row world = scaleMat * pTransform.GetWorldTransformMatrix();
     
-    mSpriteShader->Use();
-    mSpriteShader->SetMatrix4Row("uWorldTransform", world);
+    mSpriteMaterial->Use();
+    mSpriteMaterial->SetMatrix4Row("uWorldTransform", world);
     pTex.SetActive();
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
@@ -199,7 +196,7 @@ void GlRenderer::RemoveSprite(SpriteComponent* pSprite)
 
 void GlRenderer::AddMesh(MeshComponent* pMesh)
 {
-    const std::string shaderName = pMesh->GetShader();
+    const std::string shaderName = pMesh->GetMaterialName();
     if (mMeshes.find(shaderName) != mMeshes.end())
     {
         mMeshes.at(shaderName).push_back(pMesh);
@@ -212,7 +209,7 @@ void GlRenderer::AddMesh(MeshComponent* pMesh)
 
 void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
 {
-    const std::string shaderName = pMesh->GetShader();
+    const std::string shaderName = pMesh->GetMaterialName();
     if (mMeshes.find(shaderName) == mMeshes.end()) return;
 
     const auto it = std::find(mMeshes.at(shaderName).begin(), mMeshes.at(shaderName).end(), pMesh);
@@ -249,7 +246,7 @@ void GlRenderer::DrawColliders()
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glLineWidth(2.0f);
 
-    AssetManager::GetShader("Collider")->Use();
+    AssetManager::GetMaterial("Collider")->Use();
     
     for (ColliderComponent* collider : mColliders)
     {

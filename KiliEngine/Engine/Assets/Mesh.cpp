@@ -21,12 +21,12 @@ float* Mesh::ToVerticeArray(const std::vector<Vertex>& pVertices)
 }
 
 Mesh::Mesh() :
-	mVao(nullptr), mShaderName("Basic")
+	mVao(nullptr), mMaterialName("Basic")
 {
 }
 
 Mesh::Mesh(const std::vector<Vertex>& pVertices) :
-	mShaderName("Basic")
+	mMaterialName("Basic")
 {
 	float* verticeInfo = ToVerticeArray(pVertices);
 	mVao = new VertexArray(verticeInfo, pVertices.size());
@@ -54,7 +54,7 @@ Texture* Mesh::GetTexture(const size_t pIndex) const
 	return nullptr;
 }
 
-ShaderProgram* Mesh::GetShaderProgram() const
+Material* Mesh::GetMaterial() const
 {
-	return AssetManager::GetShader(mShaderName);
+	return AssetManager::GetMaterial(mMaterialName);
 }

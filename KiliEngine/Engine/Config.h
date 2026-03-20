@@ -25,6 +25,7 @@ namespace Cfg
     const std::string TEXTURE_PATH = "Resources/Textures/";
     const std::string SHADER_PATH = "Resources/Shaders/";
     const std::string MESH_PATH = "Resources/Meshes";
+    const std::string MATERIAL_PATH = "Resources/Materials";
 
     constexpr int WINDOW_WIDTH = 800;
     constexpr int WINDOW_HEIGHT = 600;

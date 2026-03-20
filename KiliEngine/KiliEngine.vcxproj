@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Assets\AssetManager.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Assets\Material.cpp" />
     <ClCompile Include="Engine\Assets\Mesh.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Assets\Shader.cpp">
@@ -212,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Assets\AssetManager.h" />
+    <ClInclude Include="Engine\Assets\Material.h" />
     <ClInclude Include="Engine\Assets\Mesh.h" />
     <ClInclude Include="Engine\Assets\Shader.h" />
     <ClInclude Include="Engine\Assets\Texture.h" />
@@ -269,6 +271,14 @@
     <ClInclude Include="Utils\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Materials\Basic.mat" />
+    <Content Include="Resources\Materials\BasicLight.mat" />
+    <Content Include="Resources\Materials\BasicTile.mat" />
+    <Content Include="Resources\Materials\Collider.mat" />
+    <Content Include="Resources\Materials\Decals.mat" />
+    <Content Include="Resources\Materials\Normal.mat" />
+    <Content Include="Resources\Materials\Sprite.mat" />
+    <Content Include="Resources\Materials\Uv.mat" />
     <Content Include="Resources\Shaders\Engine\Basic.frag" />
     <Content Include="Resources\Shaders\Engine\Basic.vert" />
     <Content Include="Resources\Shaders\Engine\BasicLight.frag" />

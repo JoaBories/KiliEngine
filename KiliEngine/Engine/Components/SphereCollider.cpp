@@ -25,11 +25,11 @@ void SphereCollider::Draw(const Matrix4Row& pViewProj)
 {
     const Matrix4Row worldTransform = Matrix4Row::CreateScale(mRadius) * Matrix4Row::CreateTranslation(GetWorldTransform().GetPosition());
 	
-    AssetManager::GetShader("Collider")->SetMatrix4Row("uViewProj", pViewProj);
-    AssetManager::GetShader("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
+    AssetManager::GetMaterial("Collider")->SetMatrix4Row("uViewProj", pViewProj);
+    AssetManager::GetMaterial("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
 
     const Vector4 color = mCollided ? Vector4(1,0,0,1) : Vector4(0,1,0,1);
-    AssetManager::GetShader("Collider")->SetVec4("color", color.x,color.y,color.z,color.w);
+    AssetManager::GetMaterial("Collider")->SetVec4("color", color.x,color.y,color.z,color.w);
     mCollided = false;
 
     mMesh->GetVertexArray()->SetActive();

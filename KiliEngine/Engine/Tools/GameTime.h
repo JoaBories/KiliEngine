@@ -4,7 +4,6 @@
 #include "Log.h"
 #include "Engine/Config.h"
 
-
 class GameTime
 {
 
@@ -32,8 +31,6 @@ public:
 
 	static void Init()
 	{
-		//mFrequency = SDL_GetPerformanceFrequency();
-		Log::Info(std::to_string(Frequency));
 		mLastFrame = SDL_GetPerformanceCounter();
 		mFrameStart = mLastFrame;
 	}
