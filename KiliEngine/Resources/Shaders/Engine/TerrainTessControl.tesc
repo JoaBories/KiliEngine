@@ -4,17 +4,15 @@
 layout(vertices = 3) out;
 
 in VertOut{
-    vec4 color;
     vec2 texCoord;
 } tescIn[];
 
 out TescOut{
-    vec4 color;
     vec2 texCoord;
 } tescOut[];
 
-float maxTessLevel = 128.0f;
-float tessLevel = 1024.0f;
+float maxTessLevel = 64.0f;
+float tessLevel = 256.0f;
 
 float DistanceTessLevel(vec4 v0, vec4 v1, vec4 v2)
 {
@@ -38,10 +36,9 @@ void main(void)
         gl_TessLevelOuter[2] = tessLevel;
 
         // inner = average of outer
-        gl_TessLevelInner[0] = tessLevel;
+        gl_TessLevelInner[0] = tessLevel * 2;
     }
     
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
-    tescOut[gl_InvocationID].color = tescIn[gl_InvocationID].color;
     tescOut[gl_InvocationID].texCoord = tescIn[gl_InvocationID].texCoord;
 }

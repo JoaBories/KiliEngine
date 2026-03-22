@@ -25,7 +25,7 @@ private:
 
 	static void SearchAFolderFor(const path& pFolderPath, AssetType pForWhat);
 	
-	static IRenderer* mRenderer;
+	static GlRenderer* mRenderer;
 	
 	static std::map<std::string, Texture*> mLoadedTextures;
 	static std::map<std::string, Shader*> mLoadedShaders;
@@ -42,7 +42,7 @@ private:
 	
 public:
 	
-	static void Init(IRenderer* pRenderer);
+	static void Init(GlRenderer* pRenderer);
 	static void Close();
 	
 	static void FetchAll();

@@ -38,7 +38,7 @@ void AssetManager::SearchAFolderFor(const path& pFolderPath, const AssetType pFo
     }
 }
 
-IRenderer* AssetManager::mRenderer = nullptr;
+GlRenderer* AssetManager::mRenderer = nullptr;
 
 std::map<std::string, Texture*> AssetManager::mLoadedTextures = {};
 std::map<std::string, Shader*> AssetManager::mLoadedShaders = {};
@@ -124,7 +124,7 @@ Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
     return loadedMaterial;
 }
 
-void AssetManager::Init(IRenderer* pRenderer)
+void AssetManager::Init(GlRenderer* pRenderer)
 {
     mRenderer = pRenderer;
     

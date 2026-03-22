@@ -11,6 +11,7 @@
 #include "Engine/GameEngine.h"
 #include "Engine/Scene/DefaultScene.h"
 #include "Game/Bowling/Bowling.h"
+#include "Engine/Scene/SceneManager.h"
 
 int main(int argc, char* argv[])
 {

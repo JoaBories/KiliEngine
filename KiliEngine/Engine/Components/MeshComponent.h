@@ -14,6 +14,7 @@ protected:
     void OnUpdate() override;
 	
 public:
+	MeshComponent() = delete;
     MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, Texture* pTextureOverride = nullptr, const std::string& pMaterialOverride = "Null");
     ~MeshComponent() override;
 	

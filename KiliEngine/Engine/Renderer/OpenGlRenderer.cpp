@@ -1,9 +1,15 @@
 #include "OpenGlRenderer.h"
 
+#include "SDL_image.h"
+
 #include "Engine/Config.h"
-#include "Engine/Assets/AssetManager.h"
-#include "Engine/Components/SpriteComponent.h"
 #include "Engine/Tools/Log.h"
+#include "Engine/Assets/AssetManager.h"
+
+#include "Engine/Components/SpriteComponent.h"
+#include "Engine/Components/MeshComponent.h"
+#include "Engine/Components/TerrainComponent.h"
+#include "Engine/Components/ColliderComponent.h"
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
@@ -60,7 +66,7 @@ bool GlRenderer::Initialize(Window& pWindow)
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-
+    
     const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     Log::Info("OpenGL Version : " + glVersion);
     const std::string glslVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
@@ -95,18 +101,21 @@ void GlRenderer::DrawMeshes() const
     
     switch (RenderMode)
     {
-    case Uvs:
+        case Uvs:
         material = AssetManager::GetMaterial("Uv");
         material->Use();
         break;
-    case Normals:
+        
+        case Normals:
         material = AssetManager::GetMaterial("Normal");
         material->Use();
         break;
-    case Wireframe:        
+        
+        case Wireframe:        
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         break;
-    default:
+        
+        case DefaultRender:
         break;
     }
     
@@ -141,10 +150,13 @@ void GlRenderer::DrawMeshes() const
 
 void GlRenderer::DrawSprites()
 {
+    if (mSprites.empty()) return;
+    
     glEnable(GL_BLEND);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     
     if (!mSpriteMaterial) mSpriteMaterial = AssetManager::GetMaterial("Sprite");
     mSpriteMaterial->Use();
@@ -156,6 +168,8 @@ void GlRenderer::DrawSprites()
     {
         sprite->Draw(this);
     }
+    
+    glEnable(GL_CULL_FACE);
 }
 
 void GlRenderer::EndDraw()
@@ -169,7 +183,7 @@ void GlRenderer::Close()
     delete mSpriteVao;
 }
 
-void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
+void GlRenderer::DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
 {
     const Matrix4Row scaleMat = Matrix4Row::CreateScale(
         static_cast<float>(pTex.GetWidth()),
@@ -179,6 +193,7 @@ void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const 
     
     mSpriteMaterial->Use();
     mSpriteMaterial->SetMatrix4Row("uWorldTransform", world);
+    
     pTex.SetActive();
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
@@ -223,9 +238,12 @@ void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
     if (mMeshes.at(shaderName).empty()) mMeshes.erase(shaderName);
 }
 
-RendererType GlRenderer::GetType()
+void GlRenderer::AddTerrain(TerrainComponent* pTerrain)
 {
-	return OpenGl;
+}
+
+void GlRenderer::RemoveTerrain(TerrainComponent* pTerrain)
+{
 }
 
 #ifdef _DEBUG
@@ -245,6 +263,8 @@ void GlRenderer::RemoveCollider(ColliderComponent* pCollider)
 
 void GlRenderer::DrawColliders()
 {
+    if (mColliders.empty()) return;
+    
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -260,6 +280,7 @@ void GlRenderer::DrawColliders()
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glLineWidth(1.0f);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }

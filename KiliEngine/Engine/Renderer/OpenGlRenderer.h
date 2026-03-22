@@ -1,12 +1,22 @@
 #pragma once
 #include <map>
 
-#include "IRenderer.h"
-#include "Engine/VertexArray.h"
-#include "Engine/Assets/Shader.h"
-#include "Utils/Matrix4Row.h"
-#include "Engine/Components/MeshComponent.h"
+#include "Engine/Camera.h"
+#include "Engine/Window.h"
 
+#include "Engine/VertexArray.h"
+
+#include "Engine/Transform.h"
+#include "Engine/Assets/Material.h"
+#include "Utils/Matrix4Row.h"
+#include "Utils/Struct.h"
+using Struct::Rectangle;
+
+class Texture;
+class SpriteComponent;
+class MeshComponent;
+class ColliderComponent;
+class TerrainComponent;
 
 #ifdef _DEBUG
 enum RenderMode : Uint8
@@ -18,15 +28,15 @@ enum RenderMode : Uint8
 };
 #endif
 
-class SpriteComponent;
-
-class GlRenderer : public IRenderer
+class GlRenderer
 {
 private:
 	Window* mWindow;
 	VertexArray* mSpriteVao;
 	
 	Material* mSpriteMaterial;
+	
+	Camera* mCamera = nullptr;
 	
 	Matrix4Row mSpriteViewProj;
 	
@@ -38,26 +48,29 @@ public:
 	
 	GlRenderer();
 
-	~GlRenderer() override = default;
+	~GlRenderer() = default;
 	GlRenderer(const GlRenderer&) = delete;
 	GlRenderer& operator=(const GlRenderer&) = delete;
 
-	bool Initialize(Window& pWindow) override;
-	void BeginDraw() override;
-	void Draw() override;
+	bool Initialize(Window& pWindow);
+	void BeginDraw();
+	void Draw();
 	void DrawMeshes() const;
 	void DrawSprites();
-	void EndDraw() override;
-	void Close() override;
-
-	void DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const override;
-	void AddSprite(SpriteComponent* pSprite) override;
-	void RemoveSprite(SpriteComponent* pSprite) override;
-
-	void AddMesh(MeshComponent* pMesh) override;
-	void RemoveMesh(const MeshComponent* pMesh) override;
+	void EndDraw();
+	void Close();
 	
-	RendererType GetType() override;
+	void SetCamera(Camera* pCamera) {mCamera = pCamera;}
+
+	void DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const;
+	void AddSprite(SpriteComponent* pSprite);
+	void RemoveSprite(SpriteComponent* pSprite);
+
+	void AddMesh(MeshComponent* pMesh);
+	void RemoveMesh(const MeshComponent* pMesh);
+	
+	void AddTerrain(TerrainComponent* pTerrain);
+	void RemoveTerrain(TerrainComponent* pTerrain);
 
 	[[nodiscard]] SDL_GLContext GetContext() const {return mContext;}
 
@@ -69,8 +82,8 @@ private:
 public:
 	static RenderMode RenderMode;
 	
-	void AddCollider(ColliderComponent* pCollider) override;
-	void RemoveCollider(ColliderComponent* pCollider) override;
+	void AddCollider(ColliderComponent* pCollider);
+	void RemoveCollider(ColliderComponent* pCollider);
 
 	void DrawColliders();
 	

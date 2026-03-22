@@ -1,7 +1,6 @@
 #version 450
 
 in TeseOut{
-    vec4 color;
     vec2 texCoord;
 } fragIn;
 
@@ -11,5 +10,5 @@ uniform sampler2D uTexture;
 
 void main()
 {
-    FragColor = fragIn.color * texture(uTexture, fragIn.texCoord);
+    FragColor = texture(uTexture, fragIn.texCoord);
 }

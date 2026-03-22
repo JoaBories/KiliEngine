@@ -2,7 +2,7 @@
 #include "Engine/GameActor.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/Log.h"
-#include "SDL_image.h"
+#include "Engine/Renderer/OpenGlRenderer.h"
 
 SpriteComponent::SpriteComponent(GameActor* pOwner, Transform pTransform, Texture* pTexture, int pDrawOrder) :
 	ActorComponent(pOwner, pTransform),
@@ -25,10 +25,10 @@ void SpriteComponent::SetTexture(Texture* pTexture)
 	mTexture->UpdateInfo(mTexWidth, mTexHeight);
 }
 
-void SpriteComponent::Draw(IRenderer* pRenderer)
+void SpriteComponent::Draw(GlRenderer* pRenderer)
 {
 	Vector2 origin{ mTexWidth / 2.0f, mTexHeight / 2.0f };
-	pRenderer->DrawSprite(GetOwner(), GetWorldTransform(), *mTexture, Rectangle(), origin, (mFlipX) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+	pRenderer->DrawSprite(GetOwner(), GetWorldTransform(), *mTexture, Rectangle(), origin, mFlipX ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
 
 void SpriteComponent::OnUpdate()

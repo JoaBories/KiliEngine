@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
-#include "Engine/Renderer/IRenderer.h"
+#include "Engine/Renderer/OpenGlRenderer.h"
 #include "Engine/GameActor.h"
 
 class Scene
 {
 protected:
 	std::string mTitle;
-	IRenderer* mRenderer;
+	GlRenderer* mRenderer;
 
 	std::vector<GameActor*> mActors;
 	std::vector<GameActor*> mPendingActors;
@@ -27,7 +27,7 @@ public :
 
 	static Scene* ActiveScene;
 
-	[[nodiscard]] IRenderer* GetRenderer() const { return mRenderer; }
+	[[nodiscard]] GlRenderer* GetRenderer() const { return mRenderer; }
 
 	void UpdateAllActors();
 	void RemoveActor(const GameActor* pActor);
@@ -38,7 +38,7 @@ public :
 	void Close();
 	void Start();
 
-	void SetRenderer(IRenderer* pRenderer);
+	void SetRenderer(GlRenderer* pRenderer);
 
 	[[nodiscard]] bool IsUpdatingActors() const { return mIsUpdatingActors; }
 
