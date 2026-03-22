@@ -1,4 +1,4 @@
 SimpleTess.vert
-TerrainTessControl.tesc
-SimpleTess.tese
+TerrainTess.tesc
+TerrainTess.tese
 SimpleTess.frag

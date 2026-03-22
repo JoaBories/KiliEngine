@@ -14,8 +14,6 @@ private:
 	VertexArray* mVao;
 	std::vector<Texture*> mTextures;
 	std::string mMaterialName;
-	
-	float* ToVerticeArray(const std::vector<Vertex>& pVertices);
 
 public:
 	Mesh();

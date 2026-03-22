@@ -19,6 +19,7 @@ void main(void)
         gl_TessLevelOuter[1] = 5.0f;
         gl_TessLevelOuter[2] = 5.0f;
     }
+    
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
     tescOut[gl_InvocationID].texCoord = tescIn[gl_InvocationID].texCoord;
 }

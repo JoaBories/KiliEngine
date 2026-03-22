@@ -14,6 +14,11 @@ private:
     Texture* mHeightMap;
     std::string mMaterialName;
 
+    static VertexArray* CreateTerrainVao(int pSquareNumber, float pSquareSize);
+    
+protected:
+    void OnUpdate() override {}
+
 public:
     TerrainComponent() = delete;
     TerrainComponent(GameActor* pOwner, const Transform& pTransform, Texture* pTexture, Texture* pHeightMap, float pSquareSize = 5, int pSquareNumber = 4, const std::string& pMaterialOverride = "Null");

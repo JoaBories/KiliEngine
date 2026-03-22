@@ -66,6 +66,7 @@ bool GlRenderer::Initialize(Window& pWindow)
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+    glDisable(GL_CULL_FACE);
     
     const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     Log::Info("OpenGL Version : " + glVersion);
@@ -84,6 +85,7 @@ void GlRenderer::BeginDraw()
 void GlRenderer::Draw()
 {
     DrawMeshes();
+    DrawTerrains();
     DrawSprites();
 
 #ifdef _DEBUG
@@ -172,6 +174,53 @@ void GlRenderer::DrawSprites()
     glEnable(GL_CULL_FACE);
 }
 
+void GlRenderer::DrawTerrains()
+{
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
+    
+#ifdef _DEBUG
+    Material* material = nullptr;
+
+    if (RenderMode == Wireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    
+    
+    for (const auto& [materialName, meshVector] : mTerrains)
+    {
+        // if (RenderMode == DefaultRender || RenderMode == Wireframe)
+        // {
+        // }
+        
+        material = AssetManager::GetMaterial(materialName);
+        material->Use();
+        
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera, material);
+        }
+    }
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#else
+    for (const auto& [materialName, meshVector] : mTerrains)
+    {
+        Material* material = AssetManager::GetMaterial(materialName);
+        material->Use();
+        
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera, material);
+        }
+    }
+#endif
+    
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
+}
+
 void GlRenderer::EndDraw()
 {
     SDL_GL_SwapWindow(mWindow->GetSdlWindow());
@@ -240,10 +289,25 @@ void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
 
 void GlRenderer::AddTerrain(TerrainComponent* pTerrain)
 {
+    const std::string shaderName = pTerrain->GetMaterialName();
+    if (mTerrains.find(shaderName) != mTerrains.end())
+    {
+        mTerrains.at(shaderName).push_back(pTerrain);
+    }
+    else
+    {
+        mTerrains[shaderName] = {pTerrain};
+    }
 }
 
-void GlRenderer::RemoveTerrain(TerrainComponent* pTerrain)
+void GlRenderer::RemoveTerrain(const TerrainComponent* pTerrain)
 {
+    const std::string shaderName = pTerrain->GetMaterialName();
+    if (mTerrains.find(shaderName) == mTerrains.end()) return;
+
+    const auto it = std::find(mTerrains.at(shaderName).begin(), mTerrains.at(shaderName).end(), pTerrain);
+    if (it != mTerrains.at(shaderName).end()) mTerrains.at(shaderName).erase(it);
+    if (mTerrains.at(shaderName).empty()) mTerrains.erase(shaderName);
 }
 
 #ifdef _DEBUG

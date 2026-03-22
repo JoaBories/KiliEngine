@@ -208,7 +208,6 @@
     <ClCompile Include="Utils\Struct.cpp" />
     <ClCompile Include="Utils\Vector3.cpp" />
     <ClCompile Include="Utils\Vector4.cpp" />
-    <ClCompile Include="Utils\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Assets\AssetManager.h" />
@@ -278,6 +277,7 @@
     <Content Include="Resources\Materials\SimpleTess.mat" />
     <Content Include="Resources\Materials\Sprite.mat" />
     <Content Include="Resources\Materials\TerrainTess.mat" />
+    <Content Include="Resources\Materials\TerrainTessTriangle.mat" />
     <Content Include="Resources\Materials\Uv.mat" />
     <Content Include="Resources\Shaders\Engine\Basic.frag" />
     <Content Include="Resources\Shaders\Engine\Basic.vert" />
@@ -297,7 +297,10 @@
     <Content Include="Resources\Shaders\Engine\SimpleTess.vert" />
     <Content Include="Resources\Shaders\Engine\Sprite.frag" />
     <Content Include="Resources\Shaders\Engine\Sprite.vert" />
-    <Content Include="Resources\Shaders\Engine\TerrainTessControl.tesc" />
+    <Content Include="Resources\Shaders\Engine\DistanceTessTriangle.tesc" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.tesc" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.tese" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.vert" />
     <Content Include="Resources\Shaders\Engine\Uv.frag" />
     <Content Include="Resources\Shaders\Engine\Uv.vert" />
   </ItemGroup>

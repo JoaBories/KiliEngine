@@ -42,7 +42,8 @@ private:
 	
 	SDL_GLContext mContext;
 	std::vector<SpriteComponent*> mSprites;
-	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Mesh sorted by material
+	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Meshes sorted by material
+	std::map<std::string, std::vector<TerrainComponent*>> mTerrains; //Terrains sorted by material
 
 public:
 	
@@ -57,6 +58,7 @@ public:
 	void Draw();
 	void DrawMeshes() const;
 	void DrawSprites();
+	void DrawTerrains();
 	void EndDraw();
 	void Close();
 	
@@ -70,7 +72,7 @@ public:
 	void RemoveMesh(const MeshComponent* pMesh);
 	
 	void AddTerrain(TerrainComponent* pTerrain);
-	void RemoveTerrain(TerrainComponent* pTerrain);
+	void RemoveTerrain(const TerrainComponent* pTerrain);
 
 	[[nodiscard]] SDL_GLContext GetContext() const {return mContext;}
 

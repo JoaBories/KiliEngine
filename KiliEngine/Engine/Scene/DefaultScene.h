@@ -5,6 +5,7 @@
 #include "Engine/Components/FreeCamComponent.h"
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/SpriteComponent.h"
+#include "Engine/Components/TerrainComponent.h"
 
 class DefaultScene : public Scene
 {
@@ -28,16 +29,16 @@ public :
 		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 5.0f));
 		AddActor(camera);
 		
-		EnviroActor* sprite = new EnviroActor(Transform::Origin);
-		sprite->AddComponent(new SpriteComponent(sprite, Transform::Origin, AssetManager::GetTexture("DefaultTexture")));
-		AddActor(sprite);
+		EnviroActor* terrain = new EnviroActor(Transform::Origin);
+		terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, AssetManager::GetTexture("Ground"), AssetManager::GetTexture("DefaultTexture")));
+		AddActor(terrain);
 
 		CreateEnviroActor(Transform(Vector3(10, 12, 0), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 6, 0), Quaternion(), Vector3::unit), "sphere", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 9, 0), Quaternion(), Vector3::unit), "monkey", "DefaultTexture", "BasicLight");
 
-		CreateEnviroActor(Transform(Vector3(0, 0, -5), Quaternion(), Vector3(20,20,1)), "planeBig", "Ground", "TerrainTess");
+		//CreateEnviroActor(Transform(Vector3(0, 0, -5), Quaternion(), Vector3(20,20,1)), "planeBig", "Ground", "TerrainTessTriangle");
 	}
 
 	void OnUpdate() override {
