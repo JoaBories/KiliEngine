@@ -1,6 +1,8 @@
 #version 450 core
 
-layout(quads, fractional_even_spacing, ccw) in;
+layout(quads, equal_spacing, ccw) in;
+
+uniform sampler2D uTexture;
 
 in TescOut{
     vec2 texCoord;
@@ -22,17 +24,24 @@ void main(void)
     float u = gl_TessCoord.x;
     float v = gl_TessCoord.y;
 
-    vec3 p0 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, u).xyz;   // bottom edge
-    vec3 p1 = mix(gl_in[3].gl_Position, gl_in[2].gl_Position, u).xyz;   // top edge
-    vec3 worldPos = mix(p0, p1, v);                             // blend bottom→top
-
-    //teTexCoord = worldPos.xz / 64.0;   // scale to UV
-    //float height = texture(uHeightmap, teTexCoord).r * 8.0; // scale height
-    //worldPos.z += height;
+    vec4 p0 = gl_in[0].gl_Position;
+    vec4 p1 = gl_in[1].gl_Position;
+    vec4 p2 = gl_in[2].gl_Position;
+    vec4 p3 = gl_in[3].gl_Position;
     
-    gl_Position = vec4(worldPos, 1.0);
+    vec4 p = p0 * (1.0 - u) * (1.0 - v) +
+             p1 * u * (1.0 - v) +
+             p3 * v * (1.0 - u) +
+             p2 * u * v;
     
-    teseOut.texCoord = interpolate2D(
+    vec2 texCoord = interpolate2D(
         teseIn[0].texCoord, teseIn[1].texCoord, teseIn[2].texCoord, teseIn[3].texCoord
     );
+
+    float zDisplacement = texture(uTexture, texCoord).r * 4.0;
+    p.z += zDisplacement;
+    
+    gl_Position = p;
+    
+    teseOut.texCoord = texCoord;
 }

@@ -30,7 +30,8 @@ public :
 		AddActor(camera);
 		
 		EnviroActor* terrain = new EnviroActor(Transform::Origin);
-		terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, AssetManager::GetTexture("Ground"), AssetManager::GetTexture("DefaultTexture")));
+		terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, 
+			AssetManager::GetTexture("Ground"), AssetManager::GetTexture("DefaultTexture"), 10, 8));
 		AddActor(terrain);
 
 		CreateEnviroActor(Transform(Vector3(10, 12, 0), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "BasicLight");

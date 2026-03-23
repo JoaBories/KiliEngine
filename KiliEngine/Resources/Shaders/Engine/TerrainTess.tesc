@@ -32,10 +32,10 @@ void main(void)
 {
     if (gl_InvocationID == 0)
     {
-        gl_TessLevelOuter[0] = 5.0f; //tessLevel(edgeDist(0, 3)); // left edge
-        gl_TessLevelOuter[1] = 5.0f; //tessLevel(edgeDist(0, 1)); // bottom edge
-        gl_TessLevelOuter[2] = 5.0f; //tessLevel(edgeDist(1, 2)); // right edge
-        gl_TessLevelOuter[3] = 5.0f; //tessLevel(edgeDist(2, 3)); // top edge
+        gl_TessLevelOuter[0] = tessLevel(edgeDist(0, 3)); // left edge
+        gl_TessLevelOuter[1] = tessLevel(edgeDist(0, 1)); // bottom edge
+        gl_TessLevelOuter[2] = tessLevel(edgeDist(1, 2)); // right edge
+        gl_TessLevelOuter[3] = tessLevel(edgeDist(2, 3)); // top edge
 
         // Inner levels control the interior subdivision.
         // Average the opposite outer edges so the interior is consistent.
