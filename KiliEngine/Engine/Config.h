@@ -19,12 +19,13 @@ enum FpsMode : Uint8
 
 namespace Cfg
 {
-    constexpr FpsMode FPS_LOCKED = Limited;
+    constexpr FpsMode FPS_LOCKED = Unlimited;
     constexpr int FPS_MAX = 144;
     
     const std::string TEXTURE_PATH = "Resources/Textures/";
     const std::string SHADER_PATH = "Resources/Shaders/";
     const std::string MESH_PATH = "Resources/Meshes";
+    const std::string MATERIAL_PATH = "Resources/Materials";
 
     constexpr int WINDOW_WIDTH = 800;
     constexpr int WINDOW_HEIGHT = 600;
@@ -41,7 +42,7 @@ namespace Cfg
     constexpr float CORRECTION_STRENGTH = 0.9f;
     constexpr float ALLOWED_PENETRATION = 0.01f;
 
-    constexpr bool MOUSECAPTURE_DEFAULT= false;
+    constexpr bool MOUSECAPTURE_DEFAULT= true;
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;

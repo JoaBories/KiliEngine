@@ -3,8 +3,6 @@
 #include "SDL.h"
 #include <string>
 
-class IRenderer;
-class SdlRenderer;
 class GlRenderer;
 
 class Texture
@@ -12,10 +10,8 @@ class Texture
 
 private:
 	std::string mFileName;
-	SDL_Texture* mSdlTexture;
 	int	  mWidth, mHeight;
 	unsigned int mTextureId;
-	bool LoadSdl(SdlRenderer* pRenderer, SDL_Surface* pSurface);
 	bool LoadGl(GlRenderer* pRenderer, SDL_Surface* pSurface);
 
 public:
@@ -23,11 +19,10 @@ public:
 	~Texture();
 
 	bool Unload();
-	bool Load(IRenderer* pRenderer, const std::string& pFilename);
+	bool Load(GlRenderer* pRenderer, const std::string& pFilename);
 	void SetActive() const;
 
 	const std::string& GetFileName() const { return mFileName; }
-	SDL_Texture* GetTexture() const { return mSdlTexture; }
 	int GetWidth() const { return mWidth; }
 	int GetHeight() const { return mHeight; }
 

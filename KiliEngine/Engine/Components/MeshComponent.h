@@ -6,29 +6,30 @@
 class MeshComponent : public ActorComponent
 {
 protected:
-	Mesh* mMesh;
+    Mesh* mMesh;
 
-	Texture* mTextureOverride;
-	std::string mShaderOverride;
+    Texture* mTextureOverride;
+    std::string mMaterialOverride;
 	
-	void OnUpdate() override;
+    void OnUpdate() override;
 	
 public:
-	MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, Texture* pTextureOverride = nullptr, const std::string& pShaderOverride = "Null");
-	~MeshComponent() override;
+	MeshComponent() = delete;
+    MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, Texture* pTextureOverride = nullptr, const std::string& pMaterialOverride = "Null");
+    ~MeshComponent() override;
 	
-	virtual void Draw(Camera* pCamera, ShaderProgram* pShader);
-	virtual void SetMesh(Mesh& pMesh); // todo doesn't support shader change after loading
-	Mesh* GetMesh() const { return mMesh; }
+    virtual void Draw(Camera* pCamera, Material* pMaterial);
+    virtual void SetMesh(Mesh& pMesh); // todo doesn't support shader change after loading
+    Mesh* GetMesh() const { return mMesh; }
 
-	Texture* GetTexture() const;
-	std::string GetShader() const;
-	ShaderProgram* GetShaderProgram() const;
+    Texture* GetTexture() const;
+    std::string GetMaterialName() const;
+    Material* GetMaterial() const;
 	
-	void SetTextureOverride(Texture* pTextureOverride) { mTextureOverride = pTextureOverride; }
-	Texture* GetTextureOverride() const { return mTextureOverride; }
+    void SetTextureOverride(Texture* pTextureOverride) { mTextureOverride = pTextureOverride; }
+    Texture* GetTextureOverride() const { return mTextureOverride; }
 
-	void SetShaderOverride(const std::string& pShaderOverride);
-	std::string GetShaderOverride() const { return mShaderOverride; }
+    void SetMaterialOverride(const std::string& pMaterialOverride);
+    std::string GetShaderOverride() const { return mMaterialOverride; }
 
 };

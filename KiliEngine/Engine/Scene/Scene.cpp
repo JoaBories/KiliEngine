@@ -73,7 +73,7 @@ void Scene::RemoveActor(const GameActor* pActor)
     }
 }
 
-void Scene::SetRenderer(IRenderer* pRenderer)
+void Scene::SetRenderer(GlRenderer* pRenderer)
 {
     mRenderer = pRenderer;
 }

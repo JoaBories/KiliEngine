@@ -13,7 +13,7 @@ public :
 	static bool PendingReload;
 
 	static void UnloadScene();
-	static void LoadScene(IRenderer* renderer);
+	static void LoadScene(GlRenderer* renderer);
 	static void ReloadScene();
 
 	static void UpdateScene();

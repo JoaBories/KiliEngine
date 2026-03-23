@@ -1,12 +1,12 @@
 #include "GameEngine.h"
-#include <iostream>
 
+#include "Scene/SceneManager.h"
+#include "PhysicManager.h"
 #include "Assets/AssetManager.h"
+
 #include "Tools/Log.h"
 #include "Tools/GameTime.h"
 #include "Tools/Inputs.h"
-#include "Config.h"
-#include "PhysicManager.h"
 
 #ifdef _DEBUG
 #include "Gui.h"
@@ -134,5 +134,5 @@ void GameEngine::Close()
 	delete mRenderer;
 	mWindow = nullptr;
 
-	//_CrtDumpMemoryLeaks();
+	//_CrtDumpMemoryLeaks(); // uncomment to see memory leaks
 }

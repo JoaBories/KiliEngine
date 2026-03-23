@@ -30,19 +30,25 @@ void AssetManager::SearchAFolderFor(const path& pFolderPath, const AssetType pFo
         case AssetMesh:
             FetchMesh(entry.path());
             break;
+
+        case AssetMaterial:
+            FetchMaterial(entry.path());
+            break;
         }
     }
 }
 
-IRenderer* AssetManager::mRenderer = nullptr;
+GlRenderer* AssetManager::mRenderer = nullptr;
 
 std::map<std::string, Texture*> AssetManager::mLoadedTextures = {};
-std::map<std::string, ShaderProgram*> AssetManager::mLoadedShaders = {};
+std::map<std::string, Shader*> AssetManager::mLoadedShaders = {};
 std::map<std::string, Mesh*> AssetManager::mLoadedMeshes = {};
+std::map<std::string, Material*> AssetManager::mLoadedMaterials = {};
 
 std::map<std::string, path> AssetManager::mUnloadedTextures = {};
 std::map<std::string, path> AssetManager::mUnloadedShaders = {};
 std::map<std::string, path> AssetManager::mUnloadedMeshes = {};
+std::map<std::string, path> AssetManager::mUnloadedMaterials = {};
 
 Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
 {
@@ -55,7 +61,8 @@ Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
     {
         Log::Error(LogType::Application, "Mesh "+ pFilePath + " does not exist or is not .obj");
         return nullptr;
-    }else
+    }
+    else
     {
         Log::Info("Mesh "+ pFilePath +" successfully loaded");
     }
@@ -90,16 +97,38 @@ Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
     return loadedMesh;
 }
 
-void AssetManager::Init(IRenderer* pRenderer)
+Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
+{
+    std::vector<Shader*> shaders;
+    std::string shadersForLog;
+    std::string line;
+
+    //Open file of this name
+    std::ifstream myFile;
+    myFile.open(pFilePath);
+
+    //Check for errors
+    if (myFile.fail()) {
+        Log::Error(LogType::Render, "Failed to open shader : " + pFilePath);
+    }
+
+    while (std::getline(myFile, line)) {
+        shaders.push_back(GetShader(line));
+        shadersForLog += line + ", ";
+    }
+
+    myFile.close();
+
+    Material* loadedMaterial = new Material(shaders);
+    Log::Info("Material "+ pFilePath + " loaded with : " + shadersForLog);
+    return loadedMaterial;
+}
+
+void AssetManager::Init(GlRenderer* pRenderer)
 {
     mRenderer = pRenderer;
     
     FetchAll();
-    
-    LoadShader("Basic");
-    LoadShader("Sprite");
-    LoadShader("Normal");
-    LoadShader("Uv");
 }
 
 void AssetManager::Close()
@@ -118,6 +147,7 @@ void AssetManager::FetchAll()
     SearchAFolderFor(path(Cfg::TEXTURE_PATH), AssetTexture);
     SearchAFolderFor(path(Cfg::SHADER_PATH), AssetShader);
     SearchAFolderFor(path(Cfg::MESH_PATH), AssetMesh);
+    SearchAFolderFor(path(Cfg::MATERIAL_PATH), AssetMaterial);
 
     const auto endTime = Clk::now();
     const std::string time = std::to_string(std::chrono::duration<double>(endTime - startTime).count());
@@ -129,6 +159,7 @@ void AssetManager::UnfetchAll()
     mUnloadedTextures.clear();
     mUnloadedShaders.clear();
     mUnloadedMeshes.clear();
+    mUnloadedMaterials.clear();
 }
 
 void AssetManager::LoadAll()
@@ -146,6 +177,11 @@ void AssetManager::LoadAll()
     for (auto& unloadedPath : mUnloadedShaders)
     {
         LoadShader(unloadedPath.first);
+    }
+    
+    for (auto& unloadedPath : mUnloadedMaterials)
+    {
+        LoadMaterial(unloadedPath.first);
     }
     
     for (auto& unloadedPath : mUnloadedMeshes)
@@ -222,9 +258,9 @@ Texture* AssetManager::GetTexture(const std::string& pName)
 
 void AssetManager::FetchShader(const path& pShaderPath)
 {
-    if (pShaderPath.extension() == ".vert") // todo perhaps handling this with a txt file .shader
+    if (Shader::IsSupported(pShaderPath.extension().string()))
     {
-        const std::string name = pShaderPath.filename().replace_extension("").string();
+        const std::string name = pShaderPath.filename().string();
         if (mLoadedShaders.find(name) == mLoadedShaders.end())
         {
             mUnloadedShaders[name] = pShaderPath;
@@ -232,14 +268,14 @@ void AssetManager::FetchShader(const path& pShaderPath)
     }
 }
 
-ShaderProgram* AssetManager::LoadShader(const std::string& pName)
+Shader* AssetManager::LoadShader(const std::string& pName)
 {
-    const std::string shaderPath = mUnloadedShaders.at(pName).replace_extension("").string();
-    mLoadedShaders[pName] = new ShaderProgram(shaderPath + ".vert", shaderPath + ".frag");
+    const std::string shaderPath = mUnloadedShaders.at(pName).string();
+    mLoadedShaders[pName] = new Shader(shaderPath, Shader::GetShaderType(mUnloadedShaders.at(pName).extension().string()));
     return mLoadedShaders.at(pName);
 }
 
-ShaderProgram* AssetManager::GetShader(const std::string& pName)
+Shader* AssetManager::GetShader(const std::string& pName)
 {
     if (mLoadedShaders.find(pName) == mLoadedShaders.end())
     {
@@ -286,4 +322,38 @@ Mesh* AssetManager::GetMesh(const std::string& pName)
         return LoadMesh(pName);
     }
     return mLoadedMeshes.at(pName);
+}
+
+void AssetManager::FetchMaterial(const path& pMaterialPath)
+{
+    if (pMaterialPath.extension() == ".mat")
+    {
+        const std::string name = pMaterialPath.filename().replace_extension("").string();
+        if (mLoadedMaterials.find(name) == mLoadedMaterials.end())
+        {
+            mUnloadedMaterials[name] = pMaterialPath;
+        }
+    }
+}
+
+Material* AssetManager::LoadMaterial(const std::string& pName)
+{
+    const std::string materialPath = mUnloadedMaterials.at(pName).string();
+    mLoadedMaterials[pName] = LoadMaterialFromFile(materialPath);
+    return mLoadedMaterials.at(pName);
+}
+
+Material* AssetManager::GetMaterial(const std::string& pName)
+{
+    if (mLoadedMaterials.find(pName) == mLoadedMaterials.end())
+    {
+        if (mUnloadedMaterials.find(pName) == mUnloadedMaterials.end())
+        {
+            Log::Error(LogType::Application,"Material " + pName + " does not exist in assets manager");
+            return nullptr;
+        }
+        
+        return LoadMaterial(pName);
+    }
+    return mLoadedMaterials.at(pName);
 }

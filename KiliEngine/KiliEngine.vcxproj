@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Assets\AssetManager.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Assets\Material.cpp" />
     <ClCompile Include="Engine\Assets\Mesh.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Assets\Shader.cpp">
@@ -157,12 +158,14 @@
     </ClCompile>
     <ClCompile Include="Engine\Components\MoveComponent.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Components\PlaneCollider.cpp" />
     <ClCompile Include="Engine\Components\RigidBody.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\SphereCollider.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\SpriteComponent.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Components\TerrainComponent.cpp" />
     <ClCompile Include="Engine\GameActor.cpp">
     </ClCompile>
     <ClCompile Include="Engine\GameEngine.cpp">
@@ -173,8 +176,6 @@
     <ClCompile Include="Engine\PhysicManager.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Renderer\OpenGlRenderer.cpp">
-    </ClCompile>
-    <ClCompile Include="Engine\Renderer\SdlRenderer.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Scene\Scene.cpp">
     </ClCompile>
@@ -208,10 +209,10 @@
     <ClCompile Include="Utils\Struct.cpp" />
     <ClCompile Include="Utils\Vector3.cpp" />
     <ClCompile Include="Utils\Vector4.cpp" />
-    <ClCompile Include="Utils\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Assets\AssetManager.h" />
+    <ClInclude Include="Engine\Assets\Material.h" />
     <ClInclude Include="Engine\Assets\Mesh.h" />
     <ClInclude Include="Engine\Assets\Shader.h" />
     <ClInclude Include="Engine\Assets\Texture.h" />
@@ -224,18 +225,18 @@
     <ClInclude Include="Engine\Components\FreeCamComponent.h" />
     <ClInclude Include="Engine\Components\MeshComponent.h" />
     <ClInclude Include="Engine\Components\MoveComponent.h" />
+    <ClInclude Include="Engine\Components\PlaneCollider.h" />
     <ClInclude Include="Engine\Components\RigidBody.h" />
     <ClInclude Include="Engine\Components\SphereCollider.h" />
     <ClInclude Include="Engine\Components\SpriteComponent.h" />
+    <ClInclude Include="Engine\Components\TerrainComponent.h" />
     <ClInclude Include="Engine\Config.h" />
     <ClInclude Include="Engine\EnviroActor.h" />
     <ClInclude Include="Engine\GameActor.h" />
     <ClInclude Include="Engine\GameEngine.h" />
     <ClInclude Include="Engine\Gui.h" />
     <ClInclude Include="Engine\PhysicManager.h" />
-    <ClInclude Include="Engine\Renderer\IRenderer.h" />
     <ClInclude Include="Engine\Renderer\OpenGlRenderer.h" />
-    <ClInclude Include="Engine\Renderer\SdlRenderer.h" />
     <ClInclude Include="Engine\Scene\DefaultScene.h" />
     <ClInclude Include="Engine\Scene\Scene.h" />
     <ClInclude Include="Engine\Scene\SceneManager.h" />
@@ -269,18 +270,39 @@
     <ClInclude Include="Utils\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Materials\Basic.mat" />
+    <Content Include="Resources\Materials\BasicLight.mat" />
+    <Content Include="Resources\Materials\BasicTile.mat" />
+    <Content Include="Resources\Materials\Collider.mat" />
+    <Content Include="Resources\Materials\Decals.mat" />
+    <Content Include="Resources\Materials\Normal.mat" />
+    <Content Include="Resources\Materials\SimpleTess.mat" />
+    <Content Include="Resources\Materials\Sprite.mat" />
+    <Content Include="Resources\Materials\TerrainTess.mat" />
+    <Content Include="Resources\Materials\TerrainTessTriangle.mat" />
+    <Content Include="Resources\Materials\Uv.mat" />
     <Content Include="Resources\Shaders\Engine\Basic.frag" />
     <Content Include="Resources\Shaders\Engine\Basic.vert" />
     <Content Include="Resources\Shaders\Engine\BasicLight.frag" />
     <Content Include="Resources\Shaders\Engine\BasicLight.vert" />
+    <Content Include="Resources\Shaders\Engine\BasicTile.frag" />
+    <Content Include="Resources\Shaders\Engine\BasicTile.vert" />
     <Content Include="Resources\Shaders\Engine\Collider.frag" />
     <Content Include="Resources\Shaders\Engine\Collider.vert" />
     <Content Include="Resources\Shaders\Engine\Decals.frag" />
     <Content Include="Resources\Shaders\Engine\Decals.vert" />
     <Content Include="Resources\Shaders\Engine\Normal.frag" />
     <Content Include="Resources\Shaders\Engine\Normal.vert" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.frag" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.tesc" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.tese" />
+    <Content Include="Resources\Shaders\Engine\SimpleTess.vert" />
     <Content Include="Resources\Shaders\Engine\Sprite.frag" />
     <Content Include="Resources\Shaders\Engine\Sprite.vert" />
+    <Content Include="Resources\Shaders\Engine\DistanceTessTriangle.tesc" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.tesc" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.tese" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.vert" />
     <Content Include="Resources\Shaders\Engine\Uv.frag" />
     <Content Include="Resources\Shaders\Engine\Uv.vert" />
   </ItemGroup>

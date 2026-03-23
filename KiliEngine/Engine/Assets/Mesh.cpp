@@ -1,32 +1,13 @@
 #include "Mesh.h"
 #include "AssetManager.h"
 
-float* Mesh::ToVerticeArray(const std::vector<Vertex>& pVertices)
-{
-	const auto array = new float[pVertices.size() * 8];
-	int counter = 0;
-	for (auto& [Position, Normal, Uv] : pVertices)
-	{
-		array[counter+0] = Position.x;
-		array[counter+1] = Position.y;
-		array[counter+2] = Position.z;
-		array[counter+3] = Normal.x;
-		array[counter+4] = Normal.y;
-		array[counter+5] = Normal.z;
-		array[counter+6] = Uv.x;
-		array[counter+7] = Uv.y;
-		counter += 8;
-	}
-	return array;
-}
-
 Mesh::Mesh() :
-	mVao(nullptr), mShaderName("Basic")
+	mVao(nullptr), mMaterialName("Basic")
 {
 }
 
 Mesh::Mesh(const std::vector<Vertex>& pVertices) :
-	mShaderName("Basic")
+	mMaterialName("Basic")
 {
 	float* verticeInfo = ToVerticeArray(pVertices);
 	mVao = new VertexArray(verticeInfo, pVertices.size());
@@ -54,7 +35,7 @@ Texture* Mesh::GetTexture(const size_t pIndex) const
 	return nullptr;
 }
 
-ShaderProgram* Mesh::GetShaderProgram() const
+Material* Mesh::GetMaterial() const
 {
-	return AssetManager::GetShader(mShaderName);
+	return AssetManager::GetMaterial(mMaterialName);
 }

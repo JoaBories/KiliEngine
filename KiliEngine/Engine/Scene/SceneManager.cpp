@@ -11,7 +11,7 @@ void SceneManager::UnloadScene()
 	Scenes[CurrentScene]->Close();
 }
 
-void SceneManager::LoadScene(IRenderer* renderer)
+void SceneManager::LoadScene(GlRenderer* renderer)
 {
 	Scenes[CurrentScene]->SetRenderer(renderer);
 	Scenes[CurrentScene]->AssetLoad();
@@ -26,7 +26,7 @@ void SceneManager::ReloadScene()
 	}
 	else
 	{
-		IRenderer* renderer = Scenes[CurrentScene]->GetRenderer();
+		GlRenderer* renderer = Scenes[CurrentScene]->GetRenderer();
 		UnloadScene();
 
 		LoadScene(renderer);
@@ -60,7 +60,7 @@ void SceneManager::ChangeScene(int newScene)
 	{
 		if (Scenes[newScene])
 		{
-			IRenderer* renderer = Scenes[CurrentScene]->GetRenderer();
+			GlRenderer* renderer = Scenes[CurrentScene]->GetRenderer();
 			UnloadScene();
 
 			CurrentScene = newScene;

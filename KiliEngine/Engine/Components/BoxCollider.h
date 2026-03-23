@@ -6,7 +6,7 @@
 
 class BoxCollider : public ColliderComponent
 {
-private:
+protected:
     Vector3 mHalfSize;
     float mRadius;
 

@@ -2,7 +2,6 @@
 
 #include "Gui.h"
 #include "Renderer/OpenGlRenderer.h"
-#include "Renderer/SdlRenderer.h"
 #include "Scene/SceneManager.h"
 #include "Tools/GameTime.h"
 
@@ -55,33 +54,21 @@ void Gui::Scene()
     ImGui::End();
 }
 
-bool Gui::Init(Window* pWindow, IRenderer* pRenderer)
+bool Gui::Init(Window* pWindow, GlRenderer* pRenderer)
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 
     // Setup Platform/Renderer backends
-
-    if (const GlRenderer* renderer = dynamic_cast<GlRenderer*>(pRenderer))
-    {
-        ImGui_ImplSDL2_InitForOpenGL(pWindow->GetSdlWindow(), renderer->GetContext());
-        ImGui_ImplOpenGL3_Init();
+    
+    ImGui_ImplSDL2_InitForOpenGL(pWindow->GetSdlWindow(), pRenderer->GetContext());
+    ImGui_ImplOpenGL3_Init();
         
-        return true;
-    }
-    if (const SdlRenderer* renderer = dynamic_cast<SdlRenderer*>(pRenderer))
-    {
-        ImGui_ImplSDL2_InitForSDLRenderer(pWindow->GetSdlWindow(), renderer->GetSdlRenderer());
-
-        return true;
-    }
-
-    return false;
+    return true;
 }
 
 void Gui::Input(const SDL_Event& pEvent)

@@ -1,13 +1,19 @@
 #include "OpenGlRenderer.h"
 
+#include "SDL_image.h"
+
 #include "Engine/Config.h"
-#include "Engine/Assets/AssetManager.h"
-#include "Engine/Components/SpriteComponent.h"
 #include "Engine/Tools/Log.h"
+#include "Engine/Assets/AssetManager.h"
+
+#include "Engine/Components/SpriteComponent.h"
+#include "Engine/Components/MeshComponent.h"
+#include "Engine/Components/TerrainComponent.h"
+#include "Engine/Components/ColliderComponent.h"
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
-    mSpriteVao(nullptr), mSpriteShader(nullptr),
+    mSpriteVao(nullptr), mSpriteMaterial(nullptr),
     mSpriteViewProj(Matrix4Row::Identity),
     mContext(nullptr)
 {
@@ -20,8 +26,8 @@ bool GlRenderer::Initialize(Window& pWindow)
 
     //Setting OpenGL attributes
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 
     //8 bits color buffer
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -55,10 +61,17 @@ bool GlRenderer::Initialize(Window& pWindow)
     {
         SDL_GL_SetSwapInterval(0);
     }
-    
+
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
     
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
+    glDisable(GL_CULL_FACE);
+    
+    const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+    Log::Info("OpenGL Version : " + glVersion);
+    const std::string glslVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+    Log::Info("Glsl Version : " + glslVersion);
     
     return true;
 }
@@ -72,6 +85,7 @@ void GlRenderer::BeginDraw()
 void GlRenderer::Draw()
 {
     DrawMeshes();
+    DrawTerrains();
     DrawSprites();
 
 #ifdef _DEBUG
@@ -85,52 +99,52 @@ void GlRenderer::DrawMeshes() const
     glEnable(GL_DEPTH_TEST);
     
 #ifdef _DEBUG
-    ShaderProgram* shader = nullptr;
+    Material* material = nullptr;
     
     switch (RenderMode)
     {
-    case Uvs:
-        shader = AssetManager::GetShader("Uv");
-        shader->Use();
+        case Uvs:
+        material = AssetManager::GetMaterial("Uv");
+        material->Use();
         break;
-    case Normals:
-        shader = AssetManager::GetShader("Normal");
-        shader->Use();
-        break;
-    case Wireframe:
-        shader = AssetManager::GetShader("Basic");
-        shader->Use();
         
+        case Normals:
+        material = AssetManager::GetMaterial("Normal");
+        material->Use();
+        break;
+        
+        case Wireframe:        
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         break;
-    default:
+        
+        case DefaultRender:
         break;
     }
     
-    for (const auto& [shaderName, meshVector] : mMeshes)
+    for (const auto& [materialName, meshVector] : mMeshes)
     {
-        if (RenderMode == DefaultRender)
+        if (RenderMode == DefaultRender || RenderMode == Wireframe)
         {
-            shader = AssetManager::GetShader(shaderName);
-            shader->Use();
+            material = AssetManager::GetMaterial(materialName);
+            material->Use();
         }
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera, shader);
+            mesh->Draw(mCamera, material);
         }
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #else
-    for (const auto& [shaderName, meshVector] : mMeshes)
+    for (const auto& [materialName, meshVector] : mMeshes)
     {
-        ShaderProgram* shader = AssetManager::GetShader(shaderName);
-        shader->Use();
+        Material* material = AssetManager::GetMaterial(materialName);
+        material->Use();
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera, shader);
+            mesh->Draw(mCamera, material);
         }
     }
 #endif
@@ -138,21 +152,72 @@ void GlRenderer::DrawMeshes() const
 
 void GlRenderer::DrawSprites()
 {
+    if (mSprites.empty()) return;
+    
     glEnable(GL_BLEND);
     glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     
-    if (!mSpriteShader) mSpriteShader = AssetManager::GetShader("Sprite");
-    mSpriteShader->Use();
+    if (!mSpriteMaterial) mSpriteMaterial = AssetManager::GetMaterial("Sprite");
+    mSpriteMaterial->Use();
     
-    mSpriteShader->SetMatrix4Row("uViewProj", mSpriteViewProj);
+    mSpriteMaterial->SetMatrix4Row("uViewProj", mSpriteViewProj);
     mSpriteVao->SetActive();
     
     for (SpriteComponent* sprite : mSprites)
     {
         sprite->Draw(this);
     }
+    
+    glEnable(GL_CULL_FACE);
+}
+
+void GlRenderer::DrawTerrains()
+{
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
+    
+#ifdef _DEBUG
+    Material* material = nullptr;
+
+    if (RenderMode == Wireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    
+    for (const auto& [materialName, meshVector] : mTerrains)
+    {
+        // if (RenderMode == DefaultRender || RenderMode == Wireframe)
+        // {
+        // }
+        
+        material = AssetManager::GetMaterial(materialName);
+        material->Use();
+        
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera, material);
+        }
+    }
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#else
+    for (const auto& [materialName, meshVector] : mTerrains)
+    {
+        Material* material = AssetManager::GetMaterial(materialName);
+        material->Use();
+        
+        for (auto& mesh : meshVector)
+        {
+            mesh->Draw(mCamera, material);
+        }
+    }
+#endif
+    
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
 }
 
 void GlRenderer::EndDraw()
@@ -166,7 +231,7 @@ void GlRenderer::Close()
     delete mSpriteVao;
 }
 
-void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
+void GlRenderer::DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
 {
     const Matrix4Row scaleMat = Matrix4Row::CreateScale(
         static_cast<float>(pTex.GetWidth()),
@@ -174,8 +239,9 @@ void GlRenderer::DrawSprite(GameActor* pActor, WorldTransform pTransform, const 
         0.0f);
     const Matrix4Row world = scaleMat * pTransform.GetWorldTransformMatrix();
     
-    mSpriteShader->Use();
-    mSpriteShader->SetMatrix4Row("uWorldTransform", world);
+    mSpriteMaterial->Use();
+    mSpriteMaterial->SetMatrix4Row("uWorldTransform", world);
+    
     pTex.SetActive();
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
@@ -199,7 +265,7 @@ void GlRenderer::RemoveSprite(SpriteComponent* pSprite)
 
 void GlRenderer::AddMesh(MeshComponent* pMesh)
 {
-    const std::string shaderName = pMesh->GetShader();
+    const std::string shaderName = pMesh->GetMaterialName();
     if (mMeshes.find(shaderName) != mMeshes.end())
     {
         mMeshes.at(shaderName).push_back(pMesh);
@@ -212,7 +278,7 @@ void GlRenderer::AddMesh(MeshComponent* pMesh)
 
 void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
 {
-    const std::string shaderName = pMesh->GetShader();
+    const std::string shaderName = pMesh->GetMaterialName();
     if (mMeshes.find(shaderName) == mMeshes.end()) return;
 
     const auto it = std::find(mMeshes.at(shaderName).begin(), mMeshes.at(shaderName).end(), pMesh);
@@ -220,9 +286,27 @@ void GlRenderer::RemoveMesh(const MeshComponent* pMesh)
     if (mMeshes.at(shaderName).empty()) mMeshes.erase(shaderName);
 }
 
-RendererType GlRenderer::GetType()
+void GlRenderer::AddTerrain(TerrainComponent* pTerrain)
 {
-	return OpenGl;
+    const std::string shaderName = pTerrain->GetMaterialName();
+    if (mTerrains.find(shaderName) != mTerrains.end())
+    {
+        mTerrains.at(shaderName).push_back(pTerrain);
+    }
+    else
+    {
+        mTerrains[shaderName] = {pTerrain};
+    }
+}
+
+void GlRenderer::RemoveTerrain(const TerrainComponent* pTerrain)
+{
+    const std::string shaderName = pTerrain->GetMaterialName();
+    if (mTerrains.find(shaderName) == mTerrains.end()) return;
+
+    const auto it = std::find(mTerrains.at(shaderName).begin(), mTerrains.at(shaderName).end(), pTerrain);
+    if (it != mTerrains.at(shaderName).end()) mTerrains.at(shaderName).erase(it);
+    if (mTerrains.at(shaderName).empty()) mTerrains.erase(shaderName);
 }
 
 #ifdef _DEBUG
@@ -242,6 +326,8 @@ void GlRenderer::RemoveCollider(ColliderComponent* pCollider)
 
 void GlRenderer::DrawColliders()
 {
+    if (mColliders.empty()) return;
+    
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -249,7 +335,7 @@ void GlRenderer::DrawColliders()
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glLineWidth(2.0f);
 
-    AssetManager::GetShader("Collider")->Use();
+    AssetManager::GetMaterial("Collider")->Use();
     
     for (ColliderComponent* collider : mColliders)
     {
@@ -257,6 +343,7 @@ void GlRenderer::DrawColliders()
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glLineWidth(1.0f);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }

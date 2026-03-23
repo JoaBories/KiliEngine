@@ -12,14 +12,22 @@ class VertexArray
 {
 private:
 	unsigned int mVerticeCount;
+	unsigned int mIndiceCount;
 
 	unsigned int mVaoId;
 	unsigned int mVboId;
+	unsigned int mEboId;
+	
+	void SetupAttributes();
 
 public:
 	VertexArray(const float* pVertices, unsigned int pVerticeCount);
+	VertexArray(const float* pVertices, unsigned int pVerticeCount, const unsigned int* pIndices, unsigned int pIndicesCount);
 	~VertexArray();
 
 	void SetActive();
-	unsigned int GetVerticeCount() const { return mVerticeCount; }
+	[[nodiscard]] unsigned int GetVerticeCount() const { return mVerticeCount; }
+	[[nodiscard]] unsigned int GetIndiceCount() const { return mIndiceCount; }
+
+	[[nodiscard]] bool HasIndice() const { return mIndiceCount != 0; }
 };
