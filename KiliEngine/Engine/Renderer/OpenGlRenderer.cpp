@@ -188,7 +188,6 @@ void GlRenderer::DrawTerrains()
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     
-    
     for (const auto& [materialName, meshVector] : mTerrains)
     {
         // if (RenderMode == DefaultRender || RenderMode == Wireframe)

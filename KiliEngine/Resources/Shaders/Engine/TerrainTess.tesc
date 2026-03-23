@@ -5,27 +5,31 @@ layout(vertices = 4) out;
 
 in VertOut{
     vec2 texCoord;
+    vec3 worldPos;
+    vec3 normal;
 } tescIn[];
 
 out TescOut{
     vec2 texCoord;
+    vec3 worldPos;
+    vec3 normal;
 } tescOut[];
 
-float uMinDist = 4.0;      // distance at which max tessellation kicks in  (e.g. 4.0)
-float uMaxDist = 100.0;      // distance at which min tessellation kicks in  (e.g. 40.0)
-float uMinTess = 1.0;      // minimum tessellation level (e.g. 1.0)
-float uMaxTess = 16.0;      // maximum tessellation level (e.g. 16.0)
+uniform vec3 uCamPos;
+
+float MinTess = 1.0;        // minimum tessellation level
+float MaxTess = 64.0;      // maximum tessellation level 
+float MinDist = 25.0;        // distance at which max tessellation kicks in
+float MaxDist = 150.0;       // distance at which min tessellation kicks in 
 
 float tessLevel(float dist) {
-    float t = 1.0 - smoothstep(uMinDist, uMaxDist, dist);
-    return max(1.0, mix(uMinTess, uMaxTess, t));
+    float t = 1.0 - smoothstep(MinDist, MaxDist, dist);
+    return max(1.0, mix(MinTess, MaxTess, t));
 }
 
-// Distance from the camera to the midpoint of an edge defined by
-// two control point indices.
-float edgeDist(int i0, int i1) {
-    vec3 mid = (gl_in[i0].gl_Position + gl_in[i1].gl_Position).xyz * 0.5;
-    return length(mid);
+float edgeDist(int index1, int index2) {
+    vec3 mid = (gl_in[index1].gl_Position + gl_in[index2].gl_Position).xyz * 0.5;
+    return distance(mid, uCamPos);
 }
 
 void main(void)
@@ -45,4 +49,6 @@ void main(void)
 
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
     tescOut[gl_InvocationID].texCoord = tescIn[gl_InvocationID].texCoord;
+    tescOut[gl_InvocationID].worldPos = tescIn[gl_InvocationID].worldPos;
+    tescOut[gl_InvocationID].normal = tescIn[gl_InvocationID].normal;
 }

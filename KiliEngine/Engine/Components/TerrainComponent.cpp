@@ -56,10 +56,10 @@ VertexArray* TerrainComponent::CreateTerrainVao(const int pSquareNumber, const f
     return vao;
 }
 
-TerrainComponent::TerrainComponent(GameActor* pOwner, const Transform& pTransform, Texture* pTexture, Texture* pHeightMap, 
-                                   float pSquareSize, int pSquareNumber, const std::string& pMaterialOverride) :
+TerrainComponent::TerrainComponent(GameActor* pOwner, const Transform& pTransform, Texture* pTexture, 
+                                   float pHeightScale, float pSquareSize, int pSquareNumber, const std::string& pMaterialOverride) :
     ActorComponent(pOwner, pTransform),
-    mTexture(pTexture), mHeightMap(pHeightMap)
+    mTexture(pTexture), mHeightScale(pHeightScale)
 {
     if (pMaterialOverride != "Null") mMaterialName = pMaterialOverride;
     else mMaterialName = "TerrainTess";
@@ -80,7 +80,9 @@ void TerrainComponent::Draw(Camera* pCamera, Material* pMaterial)
     {
         pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
         pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
+        pMaterial->SetVec3("uCamPos", pCamera->GetWorldTransform().GetPosition());
         pMaterial->SetVec2("uTilling", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x);
+        pMaterial->SetFloat("uHeightScale", mHeightScale);
         
         mTexture->SetActive();
         mVao->SetActive();

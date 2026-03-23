@@ -158,6 +158,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Components\MoveComponent.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Components\PlaneCollider.cpp" />
     <ClCompile Include="Engine\Components\RigidBody.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\SphereCollider.cpp">
@@ -224,6 +225,7 @@
     <ClInclude Include="Engine\Components\FreeCamComponent.h" />
     <ClInclude Include="Engine\Components\MeshComponent.h" />
     <ClInclude Include="Engine\Components\MoveComponent.h" />
+    <ClInclude Include="Engine\Components\PlaneCollider.h" />
     <ClInclude Include="Engine\Components\RigidBody.h" />
     <ClInclude Include="Engine\Components\SphereCollider.h" />
     <ClInclude Include="Engine\Components\SpriteComponent.h" />

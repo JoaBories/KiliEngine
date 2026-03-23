@@ -129,7 +129,6 @@ void AssetManager::Init(GlRenderer* pRenderer)
     mRenderer = pRenderer;
     
     FetchAll();
-    LoadAll();
 }
 
 void AssetManager::Close()
@@ -180,14 +179,14 @@ void AssetManager::LoadAll()
         LoadShader(unloadedPath.first);
     }
     
-    for (auto& unloadedPath : mUnloadedMeshes)
-    {
-        LoadMesh(unloadedPath.first);
-    }
-
     for (auto& unloadedPath : mUnloadedMaterials)
     {
         LoadMaterial(unloadedPath.first);
+    }
+    
+    for (auto& unloadedPath : mUnloadedMeshes)
+    {
+        LoadMesh(unloadedPath.first);
     }
     
     const auto endTime = Clk::now();

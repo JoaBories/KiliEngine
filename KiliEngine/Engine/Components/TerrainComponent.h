@@ -11,8 +11,8 @@ class TerrainComponent : public ActorComponent
 private:
     VertexArray* mVao;
     Texture* mTexture;
-    Texture* mHeightMap;
     std::string mMaterialName;
+    float mHeightScale;
 
     static VertexArray* CreateTerrainVao(int pSquareNumber, float pSquareSize);
     
@@ -21,7 +21,7 @@ protected:
 
 public:
     TerrainComponent() = delete;
-    TerrainComponent(GameActor* pOwner, const Transform& pTransform, Texture* pTexture, Texture* pHeightMap, float pSquareSize = 5, int pSquareNumber = 4, const std::string& pMaterialOverride = "Null");
+    TerrainComponent(GameActor* pOwner, const Transform& pTransform, Texture* pTexture, float pHeightScale = 0.5f, float pSquareSize = 5.0f, int pSquareNumber = 4, const std::string& pMaterialOverride = "Null");
     ~TerrainComponent() override;
     
     virtual void Draw(Camera* pCamera, Material* pMaterial);
@@ -29,7 +29,6 @@ public:
     VertexArray* GetVao() const     { return mVao; }
     
     Texture* GetTexture() const     { return mTexture; }
-    Texture* GetHeightMap() const   { return mHeightMap; }
     
     std::string GetMaterialName() const  { return mMaterialName; }
     Material* GetMaterial() const    { return AssetManager::GetMaterial(mMaterialName); }
