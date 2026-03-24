@@ -1,5 +1,7 @@
 #include "CollisionUtils.h"
 
+#include <filesystem>
+
 Vector3 CollisionUtils::Obb::ObbOnObb(const Obb& pA, const Obb& pB) // project corners on each axis
 {
     if (const Vector3 firstTest = Sphere::SphereOnSphere(pA.AsSphere(),pB.AsSphere()); firstTest == Vector3::zero) 
@@ -110,6 +112,13 @@ Vector3 CollisionUtils::Sphere::PointOnSphere(const Sphere& pSphere,const Vector
     }
 
     return Vector3::zero;
+}
+
+CollisionUtils::LineTrace::LineTrace(const Vector3& pStart, const Vector3& pEnd):
+    Start(pStart), End(pEnd)
+{
+    Direction = (End - Start).Normalized();
+    Length = (End - Start).Length();
 }
 
 float CollisionUtils::OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis)

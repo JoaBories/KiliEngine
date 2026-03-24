@@ -3,6 +3,7 @@
 #include "SDL_image.h"
 
 #include "Engine/Config.h"
+#include "Engine/PhysicManager.h"
 #include "Engine/Tools/Log.h"
 #include "Engine/Assets/AssetManager.h"
 
@@ -341,6 +342,8 @@ void GlRenderer::DrawColliders()
     {
         collider->Draw(mCamera->GetViewProjMatrix());
     }
+
+    PhysicManager::DrawDebug(mCamera);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glLineWidth(1.0f);

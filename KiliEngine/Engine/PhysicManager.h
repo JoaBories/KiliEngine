@@ -4,6 +4,8 @@
 #include "Components/BoxCollider.h"
 #include "Components/RigidBody.h"
 
+class Camera;
+
 class PhysicManager
 {
 private:
@@ -25,5 +27,24 @@ public:
 
     static void AddSphereCollider(SphereCollider* pCollider);
     static void RemoveSphereCollider(SphereCollider* pCollider);
+
+    static void Linetrace(Vector3 pStart, Vector3 pEnd);
+
+#ifdef _DEBUG
+
+struct LineTraceWrap
+{
+    LineTrace Trace;
+    float TimeRemaining;
+    bool Collided;
+};
+
+private :
+    static std::vector<LineTraceWrap> mLineTraceWraps;
+
+public :
+    static void DrawDebug(const Camera* pCam);
+    
+#endif
     
 };

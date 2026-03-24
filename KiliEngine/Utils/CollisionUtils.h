@@ -44,6 +44,16 @@ namespace CollisionUtils
         [[nodiscard]] static Vector3 SphereOnSphere(const Sphere& pA, const Sphere& pB); // return the overlap
         [[nodiscard]] static Vector3 PointOnSphere(const Sphere& pSphere,const Vector3& pPoint);
     };
+
+    struct LineTrace
+    {
+        Vector3 Start = Vector3(0, 0, 0);
+        Vector3 End = Vector3(0, 0, 1);
+        Vector3 Direction = Vector3(0, 0, 1);
+        float Length = 0;
+
+        LineTrace(const Vector3& pStart, const Vector3& pEnd);
+    };
     
     float OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis);
     

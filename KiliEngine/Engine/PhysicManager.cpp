@@ -1,4 +1,7 @@
 #include "PhysicManager.h"
+#include "Camera.h"
+#include "Assets/AssetManager.h"
+#include "Tools/GameTime.h"
 
 std::vector<BoxCollider*> PhysicManager::mBoxColliders = {};
 std::vector<SphereCollider*> PhysicManager::mSphereColliders = {};
@@ -147,4 +150,45 @@ void PhysicManager::RemoveSphereCollider(SphereCollider* pCollider)
     }
 }
 
+void PhysicManager::Linetrace(Vector3 pStart, Vector3 pEnd)
+{
+    LineTrace lineTrace = LineTrace(pStart, pEnd);
+    mLineTraceWraps.push_back({lineTrace, 10.0f, false});
+}
+
 #pragma endregion
+
+#ifdef _DEBUG
+
+std::vector<PhysicManager::LineTraceWrap> PhysicManager::mLineTraceWraps = {};
+
+void PhysicManager::DrawDebug(const Camera* pCam)
+{
+    for (auto& [Trace, TimeRemaining, Collided] : mLineTraceWraps)
+    {
+        if (TimeRemaining <= 0.0f)
+        {
+            continue;
+        }
+        
+        Matrix4Row worldTransform = Matrix4Row::CreateScale(0.01f, 0.01f, Trace.Length / 2);
+
+        worldTransform *= Matrix4Row::CreateFromQuaternion(Quaternion::QuaternionFromDirection(Trace.Direction));
+        
+        worldTransform *= Matrix4Row::CreateTranslation((Trace.End + Trace.Start) * 0.5f);
+	
+        AssetManager::GetMaterial("Collider")->SetMatrix4Row("uViewProj", pCam->GetViewProjMatrix());
+        AssetManager::GetMaterial("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
+
+        const Vector4 color = Collided ? Vector4(1,0,0,1) : Vector4(0,1,0,1);
+        AssetManager::GetMaterial("Collider")->SetVec4("color", color.x,color.y,color.z,color.w);
+	
+        AssetManager::GetMesh("cube")->GetVertexArray()->SetActive();
+	
+        glDrawArrays(GL_TRIANGLES, 0, AssetManager::GetMesh("cube")->GetVertexArray()->GetVerticeCount());
+
+        TimeRemaining -= GameTime::DeltaTime;
+    }
+}
+
+#endif

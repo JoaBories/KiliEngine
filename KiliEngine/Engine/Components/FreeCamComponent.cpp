@@ -3,6 +3,7 @@
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
 #include "Engine/GameActor.h"
+#include "Engine/PhysicManager.h"
 
 void FreeCamComponent::OnUpdate()
 {
@@ -35,6 +36,12 @@ void FreeCamComponent::OnUpdate()
 
         const Quaternion newRotation = Quaternion(Vector3::unitZ, currentEuler.z) * Quaternion(Vector3::unitY, currentEuler.y) * Quaternion(Vector3::unitX, currentEuler.x); 
         mOwner->SetRotation(newRotation);
+    }
+
+    if (Inputs::IsKeyPressed(SDLK_SPACE))
+    {
+        Vector3 position = GetWorldTransform().GetPosition();
+        PhysicManager::Linetrace(position, position + GetWorldTransform().GetTransform().GetForwardVector() * 10.0f);
     }
 }
 
