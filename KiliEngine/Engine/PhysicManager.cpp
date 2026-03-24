@@ -60,6 +60,47 @@ Collision PhysicManager::Collide(SphereCollider* pSphere1, SphereCollider* pSphe
     return result;
 }
 
+Collision PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
+{
+    Collision result;
+
+    const Sphere sp = SphereToSphere(pSphere);
+
+    const float distance = Line::LineOnSphere(pLine, sp);
+    if (distance >= 0)
+    {
+        result.Collided = true;
+        result.OverlapLength = distance;
+        result.OverlapDir = pLine.Direction;
+    }
+
+    return result;
+}
+
+Collision PhysicManager::Collide(Line pLine, BoxCollider* pBox)
+{
+    Collision result;
+
+    const Obb obb = BoxToObb(pBox);
+    Line line = pLine;
+
+    Quaternion inverse = pBox->GetWorldTransform().GetRotation().Conjugated();
+
+    pLine.Start = Vector3::Transform(pLine.Start  - obb.Center, inverse);
+    pLine.Direction = Vector3::Transform(pLine.Direction, inverse);
+    pLine.End = pLine.Start + pLine.Direction * pLine.Length;
+
+    const float distance = Line::LineOnAABB(line, obb);
+    if (distance >= 0)
+    {
+        result.Collided = true;
+        result.OverlapLength = distance;
+        result.OverlapDir = pLine.Direction;
+    }
+
+    return result;
+}
+
 Obb PhysicManager::BoxToObb(BoxCollider* pBox)
 {
     const Transform boxTransform = pBox->GetWorldTransform().GetTransform();
@@ -150,13 +191,41 @@ void PhysicManager::RemoveSphereCollider(SphereCollider* pCollider)
     }
 }
 
-void PhysicManager::Linetrace(Vector3 pStart, Vector3 pEnd)
-{
-    LineTrace lineTrace = LineTrace(pStart, pEnd);
-    mLineTraceWraps.push_back({lineTrace, 10.0f, false});
-}
-
 #pragma endregion
+
+Hit PhysicManager::Linetrace(const Vector3& pStart, const Vector3& pEnd)
+{
+    Line lineTrace = Line(pStart, pEnd);
+
+    Collision bestColl;
+    bestColl.OverlapLength = MathUtils::INFINITY_POS;
+
+    for (size_t sphere = 0; sphere < mSphereColliders.size(); sphere++)
+    {
+        if (Collision coll = Collide(lineTrace, mSphereColliders[sphere]))
+        {
+            if (coll.OverlapLength < bestColl.OverlapLength) bestColl = coll;
+        }
+    }
+
+    for (size_t box = 0; box < mBoxColliders.size(); box++)
+    {
+        if (Collision coll = Collide(lineTrace, mBoxColliders[box]))
+        {
+            if (coll.OverlapLength < bestColl.OverlapLength) bestColl = coll;
+        }
+    }
+
+    Hit hit;
+    hit.Collided = bestColl.Collided;
+    hit.Distance = bestColl.OverlapLength;
+    hit.LineDirection = bestColl.OverlapDir;
+    hit.Point = pStart + bestColl.Overlap();
+    
+    mLineTraceWraps.push_back({lineTrace, 10.0f, hit.Collided});
+
+    return hit;
+}
 
 #ifdef _DEBUG
 

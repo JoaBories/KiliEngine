@@ -216,6 +216,12 @@ void AssetManager::UnloadAll()
         delete mesh;
     }
     mLoadedMeshes.clear();
+
+    for (const auto& [name, material] : mLoadedMaterials)
+    {
+        delete material;
+    }
+    mLoadedMaterials.clear();
 }
 
 void AssetManager::FetchTexture(const path& pTexturePath)

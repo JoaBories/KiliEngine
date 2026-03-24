@@ -15,6 +15,9 @@ private:
     static Collision Collide(BoxCollider* pBox1, BoxCollider* pBox2);
     static Collision Collide(BoxCollider* pBox, SphereCollider* pSphere);
     static Collision Collide(SphereCollider* pSphere1, SphereCollider* pSphere2);
+
+    static Collision Collide(Line pLine, SphereCollider* pSphere);
+    static Collision Collide(Line pLine, BoxCollider* pBox);
     
     static Obb BoxToObb(BoxCollider* pBox);
     static Sphere SphereToSphere(SphereCollider* pSphere);
@@ -28,13 +31,13 @@ public:
     static void AddSphereCollider(SphereCollider* pCollider);
     static void RemoveSphereCollider(SphereCollider* pCollider);
 
-    static void Linetrace(Vector3 pStart, Vector3 pEnd);
+    static Hit Linetrace(const Vector3& pStart, const Vector3& pEnd);
 
 #ifdef _DEBUG
 
 struct LineTraceWrap
 {
-    LineTrace Trace;
+    Line Trace;
     float TimeRemaining;
     bool Collided;
 };

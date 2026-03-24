@@ -7,6 +7,16 @@ namespace CollisionUtils
 {
 
     struct Sphere;
+
+    struct Hit
+    {
+        bool Collided = false;
+        Vector3 Point = Vector3(0, 0, 0);
+        Vector3 LineDirection = Vector3(0, 0, 0);
+        float Distance = 0.0f;
+
+        explicit operator bool() const { return Collided; }
+    };
     
     struct Collision
     {
@@ -45,14 +55,17 @@ namespace CollisionUtils
         [[nodiscard]] static Vector3 PointOnSphere(const Sphere& pSphere,const Vector3& pPoint);
     };
 
-    struct LineTrace
+    struct Line
     {
         Vector3 Start = Vector3(0, 0, 0);
         Vector3 End = Vector3(0, 0, 1);
         Vector3 Direction = Vector3(0, 0, 1);
         float Length = 0;
 
-        LineTrace(const Vector3& pStart, const Vector3& pEnd);
+        Line(const Vector3& pStart, const Vector3& pEnd);
+
+        [[nodiscard]] static float LineOnSphere(const Line& pLine, const Sphere& pSphere); // return length on the Line
+        [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb);
     };
     
     float OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis);

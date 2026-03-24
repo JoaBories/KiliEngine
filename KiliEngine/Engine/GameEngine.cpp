@@ -121,6 +121,7 @@ void GameEngine::Close()
 	Log::Info("Close Game");
 
 	SceneManager::UnloadScene();
+	AssetManager::Close();
 
 #ifdef _DEBUG
 	Gui::Close();	

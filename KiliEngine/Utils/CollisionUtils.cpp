@@ -114,11 +114,69 @@ Vector3 CollisionUtils::Sphere::PointOnSphere(const Sphere& pSphere,const Vector
     return Vector3::zero;
 }
 
-CollisionUtils::LineTrace::LineTrace(const Vector3& pStart, const Vector3& pEnd):
+CollisionUtils::Line::Line(const Vector3& pStart, const Vector3& pEnd):
     Start(pStart), End(pEnd)
 {
     Direction = (End - Start).Normalized();
     Length = (End - Start).Length();
+}
+
+float CollisionUtils::Line::LineOnSphere(const Line& pLine, const Sphere& pSphere)
+{
+    const Vector3 distance = pSphere.Center - pLine.Start;
+
+    const float t = Vector3::Dot(distance, pLine.Direction); // project sphere center onto line
+    const float squareDistance = distance.LengthSq() - t*t;
+    const float squareRad = pSphere.Radius * pSphere.Radius;
+
+    if (squareDistance > squareRad) return -1.0f;
+
+    const float halfChord = sqrtf(squareRad - squareDistance);    // half-chord length
+    const float tIn  = t - halfChord;
+
+    const float result = tIn >= 0.0f ? tIn : t + halfChord;
+
+    if (result <= 0.0f || result >= pLine.Length) return -1.0f;
+
+    return result;
+}
+
+float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb)
+{
+    float tMin = 0.0f;
+    float tMax = pLine.Length;
+
+    std::vector<float> localOrigin {pLine.Start.x, pLine.Start.y, pLine.Start.z};
+    std::vector<float> localDir {pLine.Direction.x, pLine.Direction.y, pLine.Direction.z};
+    std::vector<float> halfExtents {pObb.HalfSize.x, pObb.HalfSize.y, pObb.HalfSize.z};
+
+    // --- slab test on each axis ---
+    for (int i = 0; i < 3; ++i)
+    {
+        const float origin = localOrigin[i];
+        const float dir    = localDir[i];
+        const float half   = halfExtents[i];
+
+        if (fabsf(dir) < 1e-8f)
+        {
+            if (origin < -half || origin > half) return -1.0f;
+        }
+        else
+        {
+            float invD = 1.0f / dir;
+            float t0   = (-half - origin) * invD;   // entry
+            float t1   = ( half - origin) * invD;   // exit
+
+            if (t0 > t1) std::swap(t0, t1);
+
+            tMin = std::max(tMin, t0);
+            tMax = std::min(tMax, t1);
+
+            if (tMin > tMax) return -1.0f;           // slabs don't overlap
+        }
+    }
+
+    return tMin;
 }
 
 float CollisionUtils::OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis)
