@@ -300,6 +300,7 @@
     <Content Include="Resources\Shaders\Engine\Sprite.frag" />
     <Content Include="Resources\Shaders\Engine\Sprite.vert" />
     <Content Include="Resources\Shaders\Engine\DistanceTessTriangle.tesc" />
+    <Content Include="Resources\Shaders\Engine\TerrainTess.frag" />
     <Content Include="Resources\Shaders\Engine\TerrainTess.tesc" />
     <Content Include="Resources\Shaders\Engine\TerrainTess.tese" />
     <Content Include="Resources\Shaders\Engine\TerrainTess.vert" />
