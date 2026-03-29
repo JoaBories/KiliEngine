@@ -1,7 +1,7 @@
 #pragma once
-#include "GameActor.h"
+#include "Components/ActorComponent.h"
 
-class Camera : public GameActor
+class Camera : public ActorComponent
 {
 private:
     Matrix4Row mViewMatrix;
@@ -14,12 +14,11 @@ private:
     
 protected:
     void OnStart() override;
-    void OnEarlyUpdate() override;
-    void OnLateUpdate() override;
+    void OnUpdate() override;
 
 public:
-    Camera();
-    explicit Camera(const Transform& pTransform, float pFov = 70.0f, float pNear = 0.1f, float pFar = 1000.0f);
+    Camera() = delete;
+    explicit Camera(GameActor* pOwner, const Transform& pTransform, float pFov = 70.0f, float pNear = 0.1f, float pFar = 1000.0f);
 
     Matrix4Row GetViewMatrix() const { return mViewMatrix; }
     Matrix4Row GetProjMatrix() const { return mProjMatrix; }
@@ -29,9 +28,9 @@ public:
     float GetNearPane() const { return mNearPane; }
     float GetFarPane() const { return mFarPane; }
 
-    void SetFov(float pFov) { mFov = pFov; mProjNeedsUpdate = true; }
-    void SetNearPane(float pNear) { mNearPane = pNear; mProjNeedsUpdate = true; }
-    void SetFarPane(float pFar) { mFarPane = pFar; mProjNeedsUpdate = true; }
+    void SetFov(const float pFov) { mFov = pFov; mProjNeedsUpdate = true; }
+    void SetNearPane(const float pNear) { mNearPane = pNear; mProjNeedsUpdate = true; }
+    void SetFarPane(const float pFar) { mFarPane = pFar; mProjNeedsUpdate = true; }
 
     void UseCamera();
 };

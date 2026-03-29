@@ -74,7 +74,7 @@ public:
 
 	void OnStart() override {
 
-		Camera* camera = new Camera(Transform(Vector3(0, 0, 5.0f), Quaternion(), Vector3::zero), 70.0f, 0.1f, 1000.0f);
+		CameraActor* camera = new CameraActor(Transform(Vector3(0, 0, 5.0f), Quaternion(), Vector3::zero), 70.0f, 0.1f, 1000.0f);
 		//camera->AddComponent(new FreeCamComponent(camera, 20.0f, 10.0f));
 		camera->AddComponent(new FollowCameraComponent(camera, nullptr, {false, true, true}, Vector3(-10,0,0)));
 		AddActor(camera);

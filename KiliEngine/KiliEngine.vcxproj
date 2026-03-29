@@ -142,6 +142,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Camera.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\CameraActor.cpp" />
     <ClCompile Include="Engine\Components\ActorComponent.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\AnimatedSpriteComponent.cpp">
@@ -217,6 +218,7 @@
     <ClInclude Include="Engine\Assets\Shader.h" />
     <ClInclude Include="Engine\Assets\Texture.h" />
     <ClInclude Include="Engine\Camera.h" />
+    <ClInclude Include="Engine\CameraActor.h" />
     <ClInclude Include="Engine\Components\ActorComponent.h" />
     <ClInclude Include="Engine\Components\AnimatedSpriteComponent.h" />
     <ClInclude Include="Engine\Components\BoxCollider.h" />

@@ -1,8 +1,8 @@
 #pragma once
 #include "Scene.h"
+#include "Engine/CameraActor.h"
 #include "Engine/EnviroActor.h"
 #include "Engine/Assets/AssetManager.h"
-#include "Engine/Components/BoxCollider.h"
 #include "Engine/Components/FreeCamComponent.h"
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/PlaneCollider.h"
@@ -29,7 +29,7 @@ public :
 	}
 
 	void OnStart() override {
-		Camera* camera = new Camera(Transform(Vector3(0, 0, 10), Quaternion(), Vector3::unit), 70.0f, 0.1f, 1000.0f);
+		CameraActor* camera = new CameraActor(Transform(Vector3(0, 0, 10), Quaternion(), Vector3::unit), 70.0f, 0.1f, 1000.0f);
 		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 5.0f));
 		AddActor(camera);
 		
