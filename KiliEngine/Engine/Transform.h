@@ -35,7 +35,7 @@ public:
 	void SetScale(const Vector3& pNewScale) { mScale = pNewScale; }
 };
 
-class WorldTransform //todo remove parenting
+class WorldTransform
 {
 private :
 	Transform mTransform;

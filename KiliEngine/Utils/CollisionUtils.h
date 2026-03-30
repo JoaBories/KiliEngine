@@ -3,6 +3,9 @@
 #include "Vector3.h"
 #include <vector>
 
+class ColliderComponent;
+class GameActor;
+
 namespace CollisionUtils
 {
 
@@ -14,6 +17,8 @@ namespace CollisionUtils
         Vector3 Point = Vector3(0, 0, 0);
         Vector3 LineDirection = Vector3(0, 0, 0);
         float Distance = 0.0f;
+        GameActor* OtherActor = nullptr;
+        ColliderComponent* OtherCollider = nullptr;
 
         explicit operator bool() const { return Collided; }
     };
@@ -66,6 +71,8 @@ namespace CollisionUtils
 
         [[nodiscard]] static float LineOnSphere(const Line& pLine, const Sphere& pSphere); // return length on the Line
         [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb);
+
+        bool operator==(const Line& pLine) const { return Start == pLine.Start && End == pLine.End; }
     };
     
     float OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis);

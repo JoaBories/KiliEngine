@@ -15,7 +15,10 @@ void RigidBody::OnUpdate()
     Vector3 velocity = GetVelocity();
     
     velocity += Cfg::GRAVITY_DIR * Cfg::GRAVITY_FORCE * mGravityScale * GameTime::DeltaTime;  //Gravity
-    velocity *= (1.0f - mLinearDamping * GameTime::DeltaTime);                      //Linear Damping
+
+    //Linear Damping
+    const Vector3 downVelocity = Vector3::Dot(velocity, Cfg::GRAVITY_DIR) * Cfg::GRAVITY_DIR;
+    velocity = (velocity - downVelocity) * (1.0f - mLinearDamping * GameTime::DeltaTime) + downVelocity;
 
     SetVelocity(velocity);
     

@@ -19,7 +19,7 @@ enum FpsMode : Uint8
 
 namespace Cfg
 {
-    constexpr FpsMode FPS_LOCKED = Unlimited;
+    constexpr FpsMode FPS_LOCKED = Limited;
     constexpr int FPS_MAX = 144;
     
     const std::string TEXTURE_PATH = "Resources/Textures/";
@@ -37,7 +37,7 @@ namespace Cfg
     const std::string WINDOW_TITLE = "Kili Engine";
 
     constexpr float GRAVITY_FORCE = 9.8f;
-    const Vector3 GRAVITY_DIR = Vector3(0, 0, -1);
+    const Vector3 GRAVITY_DIR = Vector3(0, 0, -1).Normalized();
 
     constexpr float CORRECTION_STRENGTH = 0.9f;
     constexpr float ALLOWED_PENETRATION = 0.01f;

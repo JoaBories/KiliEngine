@@ -254,7 +254,7 @@ Texture* AssetManager::GetTexture(const std::string& pName)
         if (mUnloadedTextures.find(pName) == mUnloadedTextures.end())
         {
             Log::Error(LogType::Application, "Texture " + pName + " does not exist in fetched textures");
-            return nullptr;
+            return GetTexture("DefaultTexture");
         }
         
         return LoadTexture(pName);

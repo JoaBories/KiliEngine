@@ -16,8 +16,8 @@ private:
     static Collision Collide(BoxCollider* pBox, SphereCollider* pSphere);
     static Collision Collide(SphereCollider* pSphere1, SphereCollider* pSphere2);
 
-    static Collision Collide(Line pLine, SphereCollider* pSphere);
-    static Collision Collide(Line pLine, BoxCollider* pBox);
+    static Hit Collide(Line pLine, SphereCollider* pSphere);
+    static Hit Collide(Line pLine, BoxCollider* pBox);
     
     static Obb BoxToObb(BoxCollider* pBox);
     static Sphere SphereToSphere(SphereCollider* pSphere);
@@ -31,7 +31,7 @@ public:
     static void AddSphereCollider(SphereCollider* pCollider);
     static void RemoveSphereCollider(SphereCollider* pCollider);
 
-    static Hit Linetrace(const Vector3& pStart, const Vector3& pEnd);
+    static Hit Linetrace(const Vector3& pStart, const Vector3& pEnd, const GameActor* pSelf, float pDebugTime = 0.0f);
 
 #ifdef _DEBUG
 
@@ -40,6 +40,10 @@ struct LineTraceWrap
     Line Trace;
     float TimeRemaining;
     bool Collided;
+
+    bool operator==(const LineTraceWrap& pOther) const {
+        return Trace == pOther.Trace && MathUtils::NearlyEqual(TimeRemaining, pOther.TimeRemaining) && Collided == pOther.Collided;
+    }
 };
 
 private :

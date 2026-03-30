@@ -287,6 +287,17 @@
     <Content Include="Resources\Materials\TerrainTess.mat" />
     <Content Include="Resources\Materials\TerrainTessTriangle.mat" />
     <Content Include="Resources\Materials\Uv.mat" />
+    <Content Include="Resources\Meshes\Bowling\Board.obj" />
+    <Content Include="Resources\Meshes\Bowling\Decals.obj" />
+    <Content Include="Resources\Meshes\Bowling\Enviro1.obj" />
+    <Content Include="Resources\Meshes\Bowling\Enviro2.obj" />
+    <Content Include="Resources\Meshes\Bowling\Gutters.obj" />
+    <Content Include="Resources\Meshes\Bowling\Pin.obj" />
+    <Content Include="Resources\Meshes\cube.obj" />
+    <Content Include="Resources\Meshes\monkey.obj" />
+    <Content Include="Resources\Meshes\plane.obj" />
+    <Content Include="Resources\Meshes\planeBig.obj" />
+    <Content Include="Resources\Meshes\sphere.obj" />
     <Content Include="Resources\Shaders\Engine\Basic.frag" />
     <Content Include="Resources\Shaders\Engine\Basic.vert" />
     <Content Include="Resources\Shaders\Engine\BasicLight.frag" />
@@ -311,6 +322,16 @@
     <Content Include="Resources\Shaders\Engine\TerrainTess.vert" />
     <Content Include="Resources\Shaders\Engine\Uv.frag" />
     <Content Include="Resources\Shaders\Engine\Uv.vert" />
+    <Content Include="Resources\Textures\Bowling\arrow.png" />
+    <Content Include="Resources\Textures\Bowling\board.png" />
+    <Content Include="Resources\Textures\Bowling\bowling.png" />
+    <Content Include="Resources\Textures\Bowling\decals.png" />
+    <Content Include="Resources\Textures\Bowling\floor.png" />
+    <Content Include="Resources\Textures\Bowling\gutters.png" />
+    <Content Include="Resources\Textures\Bowling\pin.jpg" />
+    <Content Include="Resources\Textures\Bowling\return.png" />
+    <Content Include="Resources\Textures\DefaultTexture.png" />
+    <Content Include="Resources\Textures\Ground.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

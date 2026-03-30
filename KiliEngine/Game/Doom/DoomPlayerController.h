@@ -2,13 +2,19 @@
 #include "Engine/Camera.h"
 #include "Engine/CameraActor.h"
 #include "Engine/Components/ActorComponent.h"
+#include "Engine/Components/RigidBody.h"
 
 class DoomPlayerController : public ActorComponent
 {
 private:
-    Camera* mCamera;
     float mSpeed;
+    float mJumpForce;
     Vector2 mSensibility;
+    
+    bool mCanJump;
+    
+    Camera* mCamera;
+    RigidBody* mRigidBody;
     
 protected:
     void OnStart() override;
@@ -16,7 +22,7 @@ protected:
     
 public:
     DoomPlayerController() = delete;
-    DoomPlayerController(GameActor* pOwner, float pSpeed, Vector2 pSensibility);
+    DoomPlayerController(GameActor* pOwner, float pSpeed, float pJumpForce, Vector2 pSensibility);
 
 
 };
