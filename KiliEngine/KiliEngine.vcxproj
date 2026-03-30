@@ -167,6 +167,7 @@
     <ClCompile Include="Engine\Components\SpriteComponent.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\TerrainComponent.cpp" />
+    <ClCompile Include="Engine\EmptyActor.cpp" />
     <ClCompile Include="Engine\GameActor.cpp">
     </ClCompile>
     <ClCompile Include="Engine\GameEngine.cpp">
@@ -196,6 +197,7 @@
     </ClCompile>
     <ClCompile Include="Game\Bowling\BowlingPin.cpp">
     </ClCompile>
+    <ClCompile Include="Game\Doom\DoomPlayerController.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="Libraries\imgui\imgui.cpp" />
@@ -233,6 +235,7 @@
     <ClInclude Include="Engine\Components\SpriteComponent.h" />
     <ClInclude Include="Engine\Components\TerrainComponent.h" />
     <ClInclude Include="Engine\Config.h" />
+    <ClInclude Include="Engine\EmptyActor.h" />
     <ClInclude Include="Engine\EnviroActor.h" />
     <ClInclude Include="Engine\GameActor.h" />
     <ClInclude Include="Engine\GameEngine.h" />
@@ -253,6 +256,7 @@
     <ClInclude Include="Game\Bowling\BowlingPin.h" />
     <ClInclude Include="Game\Bowling\Floor.h" />
     <ClInclude Include="Game\Doom\Doom.h" />
+    <ClInclude Include="Game\Doom\DoomPlayerController.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_sdl2.h" />
