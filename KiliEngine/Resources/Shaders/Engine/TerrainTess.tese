@@ -127,7 +127,7 @@ void main(void)
     teseOut.texCoord = texCoord;
     teseOut.perlin = perlinNoiseOctave(texCoord, 8, 0.75, 1.8);
         
-    p += teseOut.perlin * uHeightScale * teseIn[0].normal;
+    p += (teseOut.perlin + texture(uTexture, texCoord).r) * uHeightScale * teseIn[0].normal;
     
     gl_Position = vec4(p , 1.0) * uViewProj;
 }

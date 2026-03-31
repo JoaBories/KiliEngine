@@ -17,7 +17,7 @@ private:
         float size = static_cast<float>(pSquareNumber) * pSquareSize / 2.0f;
         
         EnviroActor* terrain = new EnviroActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit));
-        if (terrain) terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, AssetManager::GetTexture("Ground"), 2.0f, pSquareSize, pSquareNumber));
+        if (terrain) terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, AssetManager::GetTexture("Ground"), 1.0f, pSquareSize, pSquareNumber));
         else terrain->AddComponent(new MeshComponent(terrain, Transform(Vector3::zero, Quaternion(), Vector3(size, size, 1.0f)), AssetManager::GetMesh("plane"), AssetManager::GetTexture("Ground"), "BasicTile"));
         terrain->AddComponent(new PlaneCollider(terrain, Transform::Origin, Vector2(size, size)));
         AddActor(terrain);

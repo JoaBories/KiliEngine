@@ -20,7 +20,7 @@ uniform vec3 uCamPos;
 float MinTess = 1.0;        // minimum tessellation level
 float MaxTess = 64.0;      // maximum tessellation level 
 float MinDist = 25.0;        // distance at which max tessellation kicks in
-float MaxDist = 150.0;       // distance at which min tessellation kicks in 
+float MaxDist = 100.0;       // distance at which min tessellation kicks in 
 
 float tessLevel(float dist) {
     float t = 1.0 - smoothstep(MinDist, MaxDist, dist);

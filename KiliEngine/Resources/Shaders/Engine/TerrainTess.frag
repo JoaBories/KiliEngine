@@ -11,5 +11,6 @@ uniform sampler2D uTexture;
 
 void main()
 {
-    FragColor = vec4(vec3(fragIn.perlin), 1.0); //texture(uTexture, fragIn.texCoord);
+    FragColor = texture(uTexture, fragIn.texCoord) * (1-fragIn.perlin);
+    FragColor = vec4(clamp(fragIn.perlin + 1, 0, 1));
 }
