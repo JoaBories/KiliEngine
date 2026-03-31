@@ -12,9 +12,9 @@
 class Doom : public Scene
 {
 private:
-    void SpawnTerrain(int pSquareNumber, float pSquareSize, bool pTerrain)
+    void SpawnTerrain(const int pSquareNumber, const float pSquareSize, bool pTerrain)
     {
-        float size = static_cast<float>(pSquareNumber) * pSquareSize / 2.0f;
+        const float size = static_cast<float>(pSquareNumber) * pSquareSize / 2.0f;
         
         EnviroActor* terrain = new EnviroActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit));
         if (terrain) terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, AssetManager::GetTexture("Ground"), 1.0f, pSquareSize, pSquareNumber));
@@ -32,19 +32,30 @@ private:
         player->AddComponent(new DoomPlayerController(player, 150.0f, 2.0f, Vector2(1.0f,1.0f)));
         AddActor(player);
     }
+
+    void SpawnWall(const Transform& pTransform, Texture* pTexture)
+    {
+        EnviroActor* wall = new EnviroActor(pTransform);
+        wall->AddComponent(new MeshComponent(wall, Transform::Origin, AssetManager::GetMesh("plane"), pTexture));
+    }
     
 public :
     Doom() : Scene("Doom") {}
 
     void AssetLoad() override {
+        AssetManager::LoadMap("Map1");
     }
     
 
     void OnStart() override {
-
         SpawnPlayer(Vector3(0, 0, 10));
         SpawnTerrain(20, 15.0f, true);
-    
+
+        Map* mMap = AssetManager::GetMap("Map1");
+        for (MapWall wall : mMap->GetWalls())
+        {
+            SpawnWall(wall.Transform, mMap->GetTexture(wall.TextureIndex));
+        }
     }
 
     void OnUpdate() override {

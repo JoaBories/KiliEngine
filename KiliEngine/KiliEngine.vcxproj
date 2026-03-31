@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Assets\AssetManager.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Assets\Map.cpp" />
     <ClCompile Include="Engine\Assets\Material.cpp" />
     <ClCompile Include="Engine\Assets\Mesh.cpp">
     </ClCompile>
@@ -215,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Assets\AssetManager.h" />
+    <ClInclude Include="Engine\Assets\Map.h" />
     <ClInclude Include="Engine\Assets\Material.h" />
     <ClInclude Include="Engine\Assets\Mesh.h" />
     <ClInclude Include="Engine\Assets\Shader.h" />
@@ -333,6 +335,9 @@
     <Content Include="Resources\Textures\Bowling\return.png" />
     <Content Include="Resources\Textures\DefaultTexture.png" />
     <Content Include="Resources\Textures\Ground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Maps\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

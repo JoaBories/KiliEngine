@@ -22,10 +22,11 @@ namespace Cfg
     constexpr FpsMode FPS_LOCKED = Limited;
     constexpr int FPS_MAX = 144;
     
-    const std::string TEXTURE_PATH = "Resources/Textures/";
-    const std::string SHADER_PATH = "Resources/Shaders/";
+    const std::string TEXTURE_PATH = "Resources/Textures";
+    const std::string SHADER_PATH = "Resources/Shaders";
     const std::string MESH_PATH = "Resources/Meshes";
     const std::string MATERIAL_PATH = "Resources/Materials";
+    const std::string MAP_PATH = "Resources/Maps";
 
     constexpr int WINDOW_WIDTH = 800;
     constexpr int WINDOW_HEIGHT = 600;
