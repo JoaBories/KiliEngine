@@ -35,8 +35,8 @@ public :
 		
 		EnviroActor* terrain = new EnviroActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit));
 		terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, 
-			AssetManager::GetTexture("Ground"), 1.0f, 10, 5));
-		terrain->AddComponent(new PlaneCollider(terrain, Transform::Origin, Vector2(25, 25)));
+			AssetManager::GetTexture("Ground"), 2.0f, 10, 25));
+		//terrain->AddComponent(new PlaneCollider(terrain, Transform::Origin, Vector2(25, 25)));
 		AddActor(terrain);
 
 		EnviroActor* ball  = new EnviroActor(Transform(Vector3(0,0,10), Quaternion(), Vector3(0.55f, 0.55f, 0.55f)));
