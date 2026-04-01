@@ -284,6 +284,7 @@
     <Content Include="Resources\Materials\Collider.mat" />
     <Content Include="Resources\Materials\Decals.mat" />
     <Content Include="Resources\Materials\Normal.mat" />
+    <Content Include="Resources\Materials\NormalGeom.mat" />
     <Content Include="Resources\Materials\SimpleTess.mat" />
     <Content Include="Resources\Materials\Sprite.mat" />
     <Content Include="Resources\Materials\TerrainTess.mat" />
@@ -324,6 +325,7 @@
     <Content Include="Resources\Shaders\Engine\TerrainTess.tese" />
     <Content Include="Resources\Shaders\Engine\TerrainTess.vert" />
     <Content Include="Resources\Shaders\Engine\Uv.frag" />
+    <Content Include="Resources\Shaders\Engine\Normal.geom" />
     <Content Include="Resources\Shaders\Engine\Uv.vert" />
     <Content Include="Resources\Textures\Bowling\arrow.png" />
     <Content Include="Resources\Textures\Bowling\board.png" />

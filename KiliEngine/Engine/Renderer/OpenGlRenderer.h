@@ -75,6 +75,7 @@ public:
 	void RemoveTerrain(const TerrainComponent* pTerrain);
 
 	[[nodiscard]] SDL_GLContext GetContext() const {return mContext;}
+	[[nodiscard]] Window* GetWindow() const {return mWindow;}
 
 #ifdef _DEBUG
 

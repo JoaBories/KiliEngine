@@ -31,9 +31,9 @@ private:
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
 	std::string mName;
+	WorldTransform mTransform;
 
 protected:
-	WorldTransform mTransform;
 	
 	// only called by the base class in Start() and Update()
 	virtual void OnStart() {}

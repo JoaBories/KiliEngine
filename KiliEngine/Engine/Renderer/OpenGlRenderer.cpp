@@ -111,8 +111,6 @@ void GlRenderer::DrawMeshes() const
         break;
         
         case Normals:
-        material = AssetManager::GetMaterial("Normal");
-        material->Use();
         break;
         
         case Wireframe:        
@@ -133,7 +131,19 @@ void GlRenderer::DrawMeshes() const
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera, material);
+            if (RenderMode == Normals)
+            {
+                material = AssetManager::GetMaterial("NormalGeom");
+                material->Use();
+                mesh->Draw(mCamera, material);
+                material = AssetManager::GetMaterial("Normal");
+                material->Use();
+                mesh->Draw(mCamera, material);
+            }
+            else
+            {
+                mesh->Draw(mCamera, material);
+            }
         }
     }
 

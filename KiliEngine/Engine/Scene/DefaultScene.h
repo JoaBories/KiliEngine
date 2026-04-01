@@ -33,11 +33,11 @@ public :
 		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 5.0f));
 		AddActor(camera);
 		
-		EnviroActor* terrain = new EnviroActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit));
-		terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, 
-			AssetManager::GetTexture("Ground"), 2.0f, 10, 25));
-		//terrain->AddComponent(new PlaneCollider(terrain, Transform::Origin, Vector2(25, 25)));
-		AddActor(terrain);
+		//EnviroActor* terrain = new EnviroActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit));
+		//terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, 
+		//	AssetManager::GetTexture("Ground"), 2.0f, 10, 25));
+		////terrain->AddComponent(new PlaneCollider(terrain, Transform::Origin, Vector2(25, 25)));
+		//AddActor(terrain);
 
 		EnviroActor* ball  = new EnviroActor(Transform(Vector3(0,0,10), Quaternion(), Vector3(0.55f, 0.55f, 0.55f)));
 		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling"), "BasicLight"));

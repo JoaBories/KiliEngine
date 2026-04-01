@@ -6,7 +6,6 @@ class Camera : public ActorComponent
 private:
     Matrix4Row mViewMatrix;
     Matrix4Row mProjMatrix;
-    bool mProjNeedsUpdate;
 
     float mFov;
     float mNearPane;
@@ -28,9 +27,9 @@ public:
     float GetNearPane() const { return mNearPane; }
     float GetFarPane() const { return mFarPane; }
 
-    void SetFov(const float pFov) { mFov = pFov; mProjNeedsUpdate = true; }
-    void SetNearPane(const float pNear) { mNearPane = pNear; mProjNeedsUpdate = true; }
-    void SetFarPane(const float pFar) { mFarPane = pFar; mProjNeedsUpdate = true; }
+    void SetFov(const float pFov) { mFov = pFov; }
+    void SetNearPane(const float pNear) { mNearPane = pNear; }
+    void SetFarPane(const float pFar) { mFarPane = pFar; }
 
     void UseCamera();
 };

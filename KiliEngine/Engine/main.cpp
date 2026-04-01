@@ -17,7 +17,7 @@
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new Doom() });
+	SceneManager::SetScenes({ new DefaultScene() });
 
 	GameEngine* kili = new GameEngine("KiliEngine");
 	kili->Init();
