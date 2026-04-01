@@ -3,6 +3,7 @@
 #include "Engine/EmptyActor.h"
 #include "Engine/EnviroActor.h"
 #include "Engine/Assets/AssetManager.h"
+#include "Engine/Components/FreeCamComponent.h"
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/PlaneCollider.h"
 #include "Engine/Components/RigidBody.h"
@@ -33,22 +34,29 @@ private:
         AddActor(player);
     }
 
+    void SpawnFlyingCamera(const Vector3& pPosition)
+    {
+        CameraActor* cam = new CameraActor(Transform(pPosition, Quaternion(), Vector3::unit), 70.0f, 0.1f, 2000.0f);
+        cam->AddComponent(new FreeCamComponent(cam, 20.0f, 5.0f));
+        AddActor(cam);
+    }
+
     void SpawnWall(const Transform& pTransform, Texture* pTexture)
     {
         EnviroActor* wall = new EnviroActor(pTransform);
-        wall->AddComponent(new MeshComponent(wall, Transform::Origin, AssetManager::GetMesh("plane"), pTexture));
+        wall->AddComponent(new MeshComponent(wall, Transform::Origin, AssetManager::GetMesh("Wall"), pTexture, "BasicTile"));
+        AddActor(wall);
     }
     
 public :
     Doom() : Scene("Doom") {}
 
     void AssetLoad() override {
-        AssetManager::LoadMap("Map1");
     }
-    
 
     void OnStart() override {
-        SpawnPlayer(Vector3(0, 0, 10));
+        //SpawnPlayer(Vector3(0, 0, 10));
+        SpawnFlyingCamera(Vector3::zero);
         SpawnTerrain(20, 15.0f, true);
 
         Map* mMap = AssetManager::GetMap("Map1");

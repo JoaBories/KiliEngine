@@ -9,6 +9,7 @@ public:
     EnviroActor(const Transform& pTransform) :
         GameActor(pTransform, "EnviroActor")
     {
+        Log::Info(mTransform.GetPosition().ToString());
     }
     
 };

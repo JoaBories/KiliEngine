@@ -98,6 +98,7 @@ void GlRenderer::DrawMeshes() const
 {
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     
 #ifdef _DEBUG
     Material* material = nullptr;
@@ -137,6 +138,7 @@ void GlRenderer::DrawMeshes() const
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_CULL_FACE);
 #else
     for (const auto& [materialName, meshVector] : mMeshes)
     {
