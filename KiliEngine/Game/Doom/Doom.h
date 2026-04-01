@@ -4,6 +4,7 @@
 #include "Engine/EnviroActor.h"
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Components/FreeCamComponent.h"
+#include "Engine/Components/InstanceComponent.h"
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/PlaneCollider.h"
 #include "Engine/Components/RigidBody.h"
@@ -58,6 +59,10 @@ public :
         //SpawnPlayer(Vector3(0, 0, 10));
         SpawnFlyingCamera(Vector3::zero);
         SpawnTerrain(20, 15.0f, true);
+
+        EnviroActor* blades = new EnviroActor(Transform::Origin);
+        blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(10.0f,10.0f)));
+        AddActor(blades);
 
         Map* mMap = AssetManager::GetMap("Map1");
         for (MapWall wall : mMap->GetWalls())

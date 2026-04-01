@@ -156,6 +156,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Components\FreeCamComponent.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Components\InstanceComponent.cpp" />
     <ClCompile Include="Engine\Components\MeshComponent.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\MoveComponent.cpp">
@@ -229,6 +230,7 @@
     <ClInclude Include="Engine\Components\ColliderComponent.h" />
     <ClInclude Include="Engine\Components\FollowCameraComponent.h" />
     <ClInclude Include="Engine\Components\FreeCamComponent.h" />
+    <ClInclude Include="Engine\Components\InstanceComponent.h" />
     <ClInclude Include="Engine\Components\MeshComponent.h" />
     <ClInclude Include="Engine\Components\MoveComponent.h" />
     <ClInclude Include="Engine\Components\PlaneCollider.h" />
@@ -237,7 +239,6 @@
     <ClInclude Include="Engine\Components\SpriteComponent.h" />
     <ClInclude Include="Engine\Components\TerrainComponent.h" />
     <ClInclude Include="Engine\Config.h" />
-    <ClInclude Include="Engine\EmptyActor.h" />
     <ClInclude Include="Engine\EnviroActor.h" />
     <ClInclude Include="Engine\GameActor.h" />
     <ClInclude Include="Engine\GameEngine.h" />
@@ -283,6 +284,7 @@
     <Content Include="Resources\Materials\BasicTile.mat" />
     <Content Include="Resources\Materials\Collider.mat" />
     <Content Include="Resources\Materials\Decals.mat" />
+    <Content Include="Resources\Materials\InstancedGrass.mat" />
     <Content Include="Resources\Materials\Normal.mat" />
     <Content Include="Resources\Materials\NormalGeom.mat" />
     <Content Include="Resources\Materials\SimpleTess.mat" />
@@ -311,6 +313,8 @@
     <Content Include="Resources\Shaders\Engine\Collider.vert" />
     <Content Include="Resources\Shaders\Engine\Decals.frag" />
     <Content Include="Resources\Shaders\Engine\Decals.vert" />
+    <Content Include="Resources\Shaders\Engine\InstancedGrass.frag" />
+    <Content Include="Resources\Shaders\Engine\InstancedGrass.vert" />
     <Content Include="Resources\Shaders\Engine\Normal.frag" />
     <Content Include="Resources\Shaders\Engine\Normal.vert" />
     <Content Include="Resources\Shaders\Engine\SimpleTess.frag" />
