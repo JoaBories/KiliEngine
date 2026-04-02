@@ -2,9 +2,13 @@
 
 #include "Engine/Tools/GameTime.h"
 
-InstanceComponent::InstanceComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, const Vector2& pSize, Texture* pTextureOverride) :
+void InstanceComponent::OnUpdate()
+{
+}
+
+InstanceComponent::InstanceComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, const Vector2& pSize, int pCount, Texture* pTextureOverride) :
     MeshComponent(pOwner, pTransform, pMesh, pTextureOverride, "InstancedGrass"),
-    mSize(pSize)
+    mSize(pSize), mCount(pCount)
 {
     SetName("InstanceComponent");
 }
@@ -16,13 +20,13 @@ void InstanceComponent::Draw(Camera* pCamera, Material* pMaterial)
         pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
         pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
         pMaterial->SetVec3("uSize", mSize.x * GetWorldTransform().GetScale().x, mSize.y * GetWorldTransform().GetScale().y, 0.0f);
-        pMaterial->SetInt("uInstanceCount", 100000);
+        pMaterial->SetInt("uInstanceCount", mCount);
         pMaterial->SetFloat("uTime", GameTime::GetTime());
 
         if(const Texture* texture = GetTexture()) texture->SetActive();
 	
         mMesh->GetVertexArray()->SetActive();
 
-        glDrawArraysInstanced(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount(), 100000);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount(), mCount);
     }
 }

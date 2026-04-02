@@ -61,7 +61,7 @@ public :
         SpawnTerrain(20, 15.0f, true);
 
         EnviroActor* blades = new EnviroActor(Transform::Origin);
-        blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,100.0f), AssetManager::GetTexture("grass")));
+        blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,100.0f), 10000, AssetManager::GetTexture("grass")));
         AddActor(blades);
 
         Map* mMap = AssetManager::GetMap("Test_Map");
