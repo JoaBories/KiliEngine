@@ -64,4 +64,9 @@ public:
 		return static_cast<double>(mTotalTime) / static_cast<double>(Frequency) / static_cast<double>(mFrameCount) * 1000.0;
 	}
 
+	static double GetTime()
+	{
+		return static_cast<double>(mTotalTime) / static_cast<double>(Frequency);
+	}
+
 };

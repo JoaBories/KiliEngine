@@ -65,9 +65,12 @@ bool GlRenderer::Initialize(Window& pWindow)
 
     glPatchParameteri(GL_PATCH_VERTICES, 3);
     
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    glDisable(GL_CULL_FACE);
+
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     Log::Info("OpenGL Version : " + glVersion);
@@ -85,9 +88,9 @@ void GlRenderer::BeginDraw()
 
 void GlRenderer::Draw()
 {
-    DrawMeshes();
-    DrawTerrains();
-    DrawSprites();
+    if (!mMeshes.empty()) DrawMeshes();
+    if (!mTerrains.empty()) DrawTerrains();
+    if (!mSprites.empty()) DrawSprites();
 
 #ifdef _DEBUG
     DrawColliders();
@@ -96,11 +99,9 @@ void GlRenderer::Draw()
 
 void GlRenderer::DrawMeshes() const
 {
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+#ifdef _DEBUG
     glDisable(GL_CULL_FACE);
     
-#ifdef _DEBUG
     Material* material = nullptr;
     
     switch (RenderMode)
@@ -127,6 +128,7 @@ void GlRenderer::DrawMeshes() const
         {
             material = AssetManager::GetMaterial(materialName);
             material->Use();
+            material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
         }
         
         for (auto& mesh : meshVector)
@@ -154,6 +156,7 @@ void GlRenderer::DrawMeshes() const
     {
         Material* material = AssetManager::GetMaterial(materialName);
         material->Use();
+        material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
         
         for (auto& mesh : meshVector)
         {
@@ -165,11 +168,7 @@ void GlRenderer::DrawMeshes() const
 
 void GlRenderer::DrawSprites()
 {
-    if (mSprites.empty()) return;
-    
     glEnable(GL_BLEND);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     
@@ -185,12 +184,12 @@ void GlRenderer::DrawSprites()
     }
     
     glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
 }
 
 void GlRenderer::DrawTerrains()
 {
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
     glPatchParameteri(GL_PATCH_VERTICES, 4);
     
 #ifdef _DEBUG
@@ -203,9 +202,6 @@ void GlRenderer::DrawTerrains()
     
     for (const auto& [materialName, meshVector] : mTerrains)
     {
-        // if (RenderMode == DefaultRender || RenderMode == Wireframe)
-        // {
-        // }
         
         material = AssetManager::GetMaterial(materialName);
         material->Use();

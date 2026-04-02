@@ -34,7 +34,6 @@ vec2 rand2dTo2d(vec2 p)
         return normalize(result);
     }
     else return result;
-        
 }
 
 float rand2dTo1d(vec2 p)

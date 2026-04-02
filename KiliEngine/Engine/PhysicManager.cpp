@@ -222,7 +222,9 @@ Hit PhysicManager::Linetrace(const Vector3& pStart, const Vector3& pEnd, const G
         }
     }
 
+#ifdef _DEBUG
     if (pDebugTime > 0.0f) mLineTraceWraps.push_back({lineTrace, pDebugTime, bestHit.Collided});
+#endif
 
     return bestHit;
 }
