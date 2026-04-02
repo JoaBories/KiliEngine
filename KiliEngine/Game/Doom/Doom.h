@@ -61,10 +61,10 @@ public :
         SpawnTerrain(20, 15.0f, true);
 
         EnviroActor* blades = new EnviroActor(Transform::Origin);
-        blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(10.0f,10.0f)));
+        blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,100.0f), AssetManager::GetTexture("grass")));
         AddActor(blades);
 
-        Map* mMap = AssetManager::GetMap("Map1");
+        Map* mMap = AssetManager::GetMap("Test_Map");
         for (MapWall wall : mMap->GetWalls())
         {
             SpawnWall(wall.Transform, mMap->GetTexture(wall.TextureIndex));

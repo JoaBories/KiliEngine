@@ -369,7 +369,7 @@ Material* AssetManager::GetMaterial(const std::string& pName)
 
 void AssetManager::FetchMap(const path& pMapPath)
 {
-    if (pMapPath.extension() == ".txt")
+    if (pMapPath.extension() == ".map")
     {
         const std::string name = pMapPath.filename().replace_extension("").string();
         if (mLoadedMaps.find(name) == mLoadedMaps.end())

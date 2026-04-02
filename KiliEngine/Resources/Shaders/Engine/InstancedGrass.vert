@@ -17,8 +17,7 @@ void main() {
     int sqrInstance = int(sqrt(float(uInstanceCount)));
     
     vec4 offset = vec4(float(gl_InstanceID / sqrInstance), float(gl_InstanceID % sqrInstance), 0.0f, 0.0f);
-    //offset /= instance / 2.0f;
-    //offset -= vec4(uSize) / 2;
+    offset = (offset / sqrInstance) * vec4(uSize, 0.0f, 0.0f) - vec4(uSize, 0.0f, 0.0f) / 2.0f;
     gl_Position = (vec4(pos, 1.0f) + offset) * uWorldTransform * uViewProj;
     vert_out.texCoord = texCoord;
 }
