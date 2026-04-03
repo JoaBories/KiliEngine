@@ -38,6 +38,9 @@ bool GlRenderer::Initialize(Window& pWindow)
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+
     mContext = SDL_GL_CreateContext(mWindow->GetSdlWindow());
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
@@ -64,6 +67,8 @@ bool GlRenderer::Initialize(Window& pWindow)
     }
 
     glPatchParameteri(GL_PATCH_VERTICES, 3);
+
+    glEnable(GL_MULTISAMPLE);
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);

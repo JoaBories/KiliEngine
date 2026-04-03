@@ -32,18 +32,11 @@ public :
 		CameraActor* camera = new CameraActor(Transform(Vector3(0, 0, 10), Quaternion(), Vector3::unit), 70.0f, 0.1f, 1000.0f);
 		camera->AddComponent(new FreeCamComponent(camera, 20.0f, 5.0f));
 		AddActor(camera);
-		
-		//EnviroActor* terrain = new EnviroActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit));
-		//terrain->AddComponent(new TerrainComponent(terrain, Transform::Origin, 
-		//	AssetManager::GetTexture("Ground"), 2.0f, 10, 25));
-		////terrain->AddComponent(new PlaneCollider(terrain, Transform::Origin, Vector2(25, 25)));
-		//AddActor(terrain);
 
-		EnviroActor* ball  = new EnviroActor(Transform(Vector3(0,0,10), Quaternion(), Vector3(0.55f, 0.55f, 0.55f)));
-		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling"), "BasicLight"));
-		ball->AddComponent(new SphereCollider(ball, Transform::Origin, true, 0.55f));
-		ball->AddComponent(new RigidBody(ball, 0.01f,1,7,0.1f));
-		AddActor(ball);
+		EnviroActor* blades = new EnviroActor(Transform(Vector3(100.0f, 0.0f, 0.0f), Quaternion(), Vector3::unit));
+		blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,50.0f), 10000, AssetManager::GetTexture("grass")));
+		blades->AddComponent(new MeshComponent(blades, Transform(Vector3(0,0,0), Quaternion(), Vector3(10.0f, 10.0f, 1.0f)), AssetManager::GetMesh("planeBig"), AssetManager::GetTexture("grassSoil")));
+		AddActor(blades);
 
 		CreateEnviroActor(Transform(Vector3(10, 12, 0), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");

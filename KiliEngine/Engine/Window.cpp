@@ -16,6 +16,9 @@ Vector2 Window::GetDimensions() const
 
 bool Window::Open()
 {
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		Log::Error(LogType::Video, "Unable to initialize video");
