@@ -46,7 +46,7 @@ public:
 	}
 
 	static void DelayTime() {
-		if constexpr (Cfg::FPS_LOCKED != Limited) return;
+		if constexpr (Cfg::FPS_LOCKED != FpsMode::Limited) return;
 
 		const Uint64 elapsed = SDL_GetPerformanceCounter() - mFrameStart;
 

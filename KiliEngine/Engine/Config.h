@@ -4,13 +4,13 @@
 #include "SDL_keycode.h"
 #include "Utils/Vector3.h"
 
-enum ScreenMode : Uint8
+enum class ScreenMode : Uint8
 {
     Windowed,
     Fullscreen,
 };
 
-enum FpsMode : Uint8
+enum class FpsMode : Uint8
 {
     Limited,
     Unlimited,
@@ -19,7 +19,7 @@ enum FpsMode : Uint8
 
 namespace Cfg
 {
-    constexpr FpsMode FPS_LOCKED = Unlimited;
+    constexpr FpsMode FPS_LOCKED = FpsMode::Unlimited;
     constexpr int FPS_MAX = 144;
     
     const std::string TEXTURE_PATH = "Resources/Textures";

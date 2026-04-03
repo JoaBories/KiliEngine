@@ -1,6 +1,7 @@
 #include "TerrainComponent.h"
 
 #include "Engine/Scene/SceneManager.h"
+#include "Engine/Tools/GameTime.h"
 #include "Utils/Vertex.h"
 
 // squareNumber : number of quads along each axis (8x8 → pass 8)
@@ -83,6 +84,7 @@ void TerrainComponent::Draw(Camera* pCamera, Material* pMaterial)
         pMaterial->SetVec3("uCamPos", pCamera->GetWorldTransform().GetPosition());
         pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
         pMaterial->SetFloat("uHeightScale", mHeightScale);
+        pMaterial->SetFloat("uTime", GameTime::GetTime());
         
         mTexture->SetActive();
         mVao->SetActive();

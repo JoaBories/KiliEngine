@@ -34,9 +34,11 @@ public :
 		AddActor(camera);
 
 		EnviroActor* blades = new EnviroActor(Transform(Vector3(100.0f, 0.0f, 0.0f), Quaternion(), Vector3::unit));
-		blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,50.0f), 10000, AssetManager::GetTexture("grass")));
+		blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,100.0f), 10000, AssetManager::GetTexture("grass")));
 		blades->AddComponent(new MeshComponent(blades, Transform(Vector3(0,0,0), Quaternion(), Vector3(10.0f, 10.0f, 1.0f)), AssetManager::GetMesh("planeBig"), AssetManager::GetTexture("grassSoil")));
 		AddActor(blades);
+		
+		CreateEnviroActor(Transform(Vector3(0, 0, 1), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "Planet");
 
 		CreateEnviroActor(Transform(Vector3(10, 12, 0), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");

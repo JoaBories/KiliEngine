@@ -2,6 +2,7 @@
 
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Scene/SceneManager.h"
+#include "Engine/Tools/GameTime.h"
 
 void MeshComponent::OnUpdate()
 {
@@ -27,6 +28,7 @@ void MeshComponent::Draw(Camera* pCamera, Material* pMaterial)
 		pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
 		pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
 		pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
+		pMaterial->SetFloat("uTime", GameTime::GetTime());
 
 		if(const Texture* texture = GetTexture()) texture->SetActive();
 	

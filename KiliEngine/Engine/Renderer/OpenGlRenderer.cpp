@@ -57,7 +57,7 @@ bool GlRenderer::Initialize(Window& pWindow)
 
     mSpriteVao = new VertexArray(PLANE_VERTICES, 4);
 
-    if constexpr (Cfg::FPS_LOCKED == Vsync)
+    if constexpr (Cfg::FPS_LOCKED == FpsMode::Vsync)
     {
         SDL_GL_SetSwapInterval(1);
     }

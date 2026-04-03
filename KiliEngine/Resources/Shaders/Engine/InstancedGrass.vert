@@ -35,16 +35,14 @@ float rand1(float p) //between 0-1
     return fract(sin(p * 127.1) * 43758.5453123);
 }
 
-mat4 rotZ(float angle) {
+vec3 rotateZ(vec3 v, float angle)
+{
     float c = cos(angle);
     float s = sin(angle);
     
-    return mat4(
-        c,    s,    0.0,  0.0,
-        -s,   c,    0.0,  0.0,
-        0.0,  0.0,  1.0,  0.0,
-        0.0,  0.0,  0.0,  1.0
-    );
+    return vec3( v.x * c + v.y * s,
+                 v.x * -s + v.y * c,
+                 v.z );
 }
 
 void main() {
@@ -62,13 +60,13 @@ void main() {
     vec3 offset = fract(coord + randomOffset) * uSize - uSize / 2.0f;
     
     vec3 randomScale = vec3(rand1(random2.x) * pRandomScale + 1.0f);
-    mat4 randomRotation = rotZ(rand1(random2.y) * 6.2831853);
+    float randomRotation = rand1(random2.y) * 6.2831853; // 0 - 2pi
     
-    vec3 localPos = (vec4(pos * randomScale, 1.0f) * randomRotation).xyz + offset + windOffset * pWindOffsetScale;
+    vec3 localPos = rotateZ(pos * randomScale, randomRotation) + offset + windOffset * pWindOffsetScale;
     
     gl_Position = (vec4(localPos, 1.0f)) * uWorldTransform * uViewProj;
     
     vert_out.brightness = rand1(gl_InstanceID) / 4.0f + 0.75f;
-    vert_out.normal = (vec4(normal.xzy, 0.0f) * randomRotation * uWorldTransform).xyz;
+    vert_out.normal = rotateZ(normal.xzy, randomRotation).xzy;
     vert_out.texCoord = texCoord;
 }
