@@ -12,6 +12,7 @@ private:
     Vector2 mSensibility;
     
     bool mCanJump;
+    float mJumpCooldown;
     
     Camera* mCamera;
     RigidBody* mRigidBody;

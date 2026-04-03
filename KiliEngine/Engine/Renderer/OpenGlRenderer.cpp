@@ -93,7 +93,7 @@ void GlRenderer::Draw()
     if (!mSprites.empty()) DrawSprites();
 
 #ifdef _DEBUG
-    DrawColliders();
+    if (!mColliders.empty() && Cfg::DEBUG_COLLISIONS) DrawColliders();
 #endif
 }
 

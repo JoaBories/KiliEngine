@@ -28,8 +28,8 @@ std::vector<Vector3> BoxCollider::GetCorners()
     return corners;
 }
 
-BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const Vector3& pHalfSize, const short pUpdateOrder) :
-    ColliderComponent(pOwner, pTransform, pUpdateOrder),
+BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const bool pQuery, const Vector3& pHalfSize, const short pUpdateOrder) :
+    ColliderComponent(pOwner, pTransform, pQuery, pUpdateOrder),
     mHalfSize(pHalfSize), mRadius(0.0f)
 {
     SetName("BoxCollider");

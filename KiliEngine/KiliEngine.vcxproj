@@ -292,6 +292,7 @@
     <Content Include="Resources\Materials\TerrainTess.mat" />
     <Content Include="Resources\Materials\TerrainTessTriangle.mat" />
     <Content Include="Resources\Materials\Uv.mat" />
+    <Content Include="Resources\Materials\Wall.mat" />
     <Content Include="Resources\Meshes\Bowling\Board.obj" />
     <Content Include="Resources\Meshes\Bowling\Decals.obj" />
     <Content Include="Resources\Meshes\Bowling\Enviro1.obj" />
@@ -331,6 +332,7 @@
     <Content Include="Resources\Shaders\Engine\Uv.frag" />
     <Content Include="Resources\Shaders\Engine\Normal.geom" />
     <Content Include="Resources\Shaders\Engine\Uv.vert" />
+    <Content Include="Resources\Shaders\Engine\Wall.vert" />
     <Content Include="Resources\Textures\Bowling\arrow.png" />
     <Content Include="Resources\Textures\Bowling\board.png" />
     <Content Include="Resources\Textures\Bowling\bowling.png" />

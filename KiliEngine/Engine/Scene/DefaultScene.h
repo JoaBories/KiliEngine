@@ -41,7 +41,7 @@ public :
 
 		EnviroActor* ball  = new EnviroActor(Transform(Vector3(0,0,10), Quaternion(), Vector3(0.55f, 0.55f, 0.55f)));
 		ball->AddComponent(new MeshComponent(ball, Transform::Origin, AssetManager::GetMesh("sphere"), AssetManager::GetTexture("bowling"), "BasicLight"));
-		ball->AddComponent(new SphereCollider(ball, Transform::Origin, 0.55f));
+		ball->AddComponent(new SphereCollider(ball, Transform::Origin, true, 0.55f));
 		ball->AddComponent(new RigidBody(ball, 0.01f,1,7,0.1f));
 		AddActor(ball);
 

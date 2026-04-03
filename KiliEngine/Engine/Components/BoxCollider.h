@@ -13,7 +13,7 @@ protected:
     std::vector<Vector3> GetCorners();
     
 public:
-    BoxCollider(GameActor* pOwner, const Transform& pTransform, const Vector3& pHalfSize, short pUpdateOrder = 50);
+    BoxCollider(GameActor* pOwner, const Transform& pTransform, bool pQuery, const Vector3& pHalfSize, short pUpdateOrder = 50);
     ~BoxCollider() override;
     
     Vector3 GetHalfSize() const {return mHalfSize;}

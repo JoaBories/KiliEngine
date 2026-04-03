@@ -125,35 +125,39 @@ Sphere PhysicManager::SphereToSphere(SphereCollider* pSphere)
 
 void PhysicManager::Update()
 {
-    for (size_t b1 = 0; b1 < mBoxColliders.size(); b1++)
+    for (const auto& boxCollider1 : mBoxColliders)
     {
-        for (size_t b2 = b1 + 1; b2 < mBoxColliders.size(); b2++)
+        if (!boxCollider1->IsQuery()) continue;
+        
+        for (const auto& boxCollider2 : mBoxColliders)
         {
-            if (const Collision coll = Collide(mBoxColliders[b1], mBoxColliders[b2]))
+            if (const Collision coll = Collide(boxCollider1, boxCollider2))
             {
-                mBoxColliders[b1]->OnCollide(coll, mBoxColliders[b2]);
-                mBoxColliders[b2]->OnCollide(coll.Inverse(), mBoxColliders[b1]);
+                boxCollider1->OnCollide(coll, boxCollider2);
+                boxCollider2->OnCollide(coll.Inverse(), boxCollider1);
             }
         }
 
-        for (size_t s1 = 0; s1 < mSphereColliders.size(); s1++)
+        for (const auto& sphereCollider : mSphereColliders)
         {
-            if (const Collision coll = Collide(mBoxColliders[b1], mSphereColliders[s1]))
+            if (const Collision coll = Collide(boxCollider1, sphereCollider))
             {
-                mBoxColliders[b1]->OnCollide(coll, mSphereColliders[s1]);
-                mSphereColliders[s1]->OnCollide(coll.Inverse(), mBoxColliders[b1]);
+                boxCollider1->OnCollide(coll, sphereCollider);
+                sphereCollider->OnCollide(coll.Inverse(), boxCollider1);
             }
         }
     }
 
-    for (size_t s1 = 0; s1 < mSphereColliders.size(); s1++)
+    for (const auto& sphereCollider1 : mSphereColliders)
     {
-        for (size_t s2 = s1+1; s2 < mSphereColliders.size(); s2++)
+        if (!sphereCollider1->IsQuery()) continue;
+        
+        for (const auto& sphereCollider2 : mSphereColliders)
         {
-            if (const Collision coll = Collide(mSphereColliders[s1], mSphereColliders[s2]))
+            if (const Collision coll = Collide(sphereCollider1, sphereCollider2))
             {
-                mSphereColliders[s1]->OnCollide(coll, mSphereColliders[s2]);
-                mSphereColliders[s2]->OnCollide(coll.Inverse(), mSphereColliders[s1]);
+                sphereCollider1->OnCollide(coll, sphereCollider2);
+                sphereCollider2->OnCollide(coll.Inverse(), sphereCollider1);
             }
         }
     }
@@ -235,16 +239,14 @@ std::vector<PhysicManager::LineTraceWrap> PhysicManager::mLineTraceWraps = {};
 
 void PhysicManager::DrawDebug(const Camera* pCam)
 {
-    for (auto& lineTrace : mLineTraceWraps)
+    for (size_t i = 0; i < mLineTraceWraps.size(); )
     {
+        auto& lineTrace = mLineTraceWraps[i];
+        
         if (lineTrace.TimeRemaining <= 0.0f)
         {
-            auto it = std::find(mLineTraceWraps.begin(), mLineTraceWraps.end(), lineTrace);
-            if (it != mLineTraceWraps.end())
-            {
-                std::iter_swap(it, mLineTraceWraps.end() - 1);
-                mLineTraceWraps.pop_back();
-            }
+            std::swap(lineTrace, mLineTraceWraps.back());
+            mLineTraceWraps.pop_back();
             continue;
         }
         
@@ -265,6 +267,8 @@ void PhysicManager::DrawDebug(const Camera* pCam)
         glDrawArrays(GL_TRIANGLES, 0, AssetManager::GetMesh("cube")->GetVertexArray()->GetVerticeCount());
 
         lineTrace.TimeRemaining -= GameTime::DeltaTime;
+
+        ++i;
     }
 }
 

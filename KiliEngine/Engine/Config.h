@@ -40,8 +40,8 @@ namespace Cfg
     constexpr float GRAVITY_FORCE = 9.8f;
     const Vector3 GRAVITY_DIR = Vector3(0, 0, -1).Normalized();
 
-    constexpr float CORRECTION_STRENGTH = 0.9f;
-    constexpr float ALLOWED_PENETRATION = 0.01f;
+    constexpr float CORRECTION_STRENGTH = 1.0f;
+    constexpr float ALLOWED_PENETRATION = 0.0f;
 
     constexpr bool MOUSECAPTURE_DEFAULT= true;
 
@@ -56,5 +56,7 @@ namespace Cfg
     constexpr SDL_Keycode RENDER_MODE_WIREFRAME = SDLK_F4;
 
     constexpr SDL_Keycode MOUSECAPTURE_TOGGLE = SDLK_F5;
+
+    constexpr bool DEBUG_COLLISIONS = true;
     #endif
 }

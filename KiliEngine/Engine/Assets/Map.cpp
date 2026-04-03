@@ -87,8 +87,8 @@ void Map::ResolveWall(const std::string& pLine)
     auto brokeRot = BreakString(brokeLine[5], ':');
     auto brokeScale = BreakString(brokeLine[6], ':');
 
-    Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2]) + 2.0f) * 0.2f;
-    Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2])) * 0.5f * 0.2f;
+    Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2])) * 0.2f;
+    Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 10.0f) * 0.5f * 0.2f;
 
     MapWall wall = {texture, Transform(pos, Quaternion(), scale)};
     float rotation = (stof(brokeRot[2]) + 90.0f) * MathUtils::DEG2RAD;

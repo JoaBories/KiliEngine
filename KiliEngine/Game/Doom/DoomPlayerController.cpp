@@ -50,24 +50,33 @@ void DoomPlayerController::OnUpdate()
         mRigidBody->AddVelocity(right * movementInput.x + forward * movementInput.y);
     }
 
-    const Vector3 hitStart = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.0f);
-    const Vector3 hitEnd = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.1f);
-
-    if (Hit hit = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner(), 1.0f))
+    if (mJumpCooldown < 0.0f)
     {
-        mCanJump = true;
+        const Vector3 hitStart = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.0f);
+        const Vector3 hitEnd = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.05f);
+        
+        if (Hit hit = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner(), 1.0f))
+        {
+            mCanJump = true;
+        }
+
+        if (Inputs::IsKeyPressed(SDLK_SPACE) && mCanJump && mJumpCooldown <= 0.0f)
+        {
+            mCanJump = false;
+            mRigidBody->AddVelocity(Vector3::unitZ * mJumpForce);
+            mJumpCooldown = 0.05f;
+        }
     }
-
-    if (Inputs::IsKeyPressed(SDLK_SPACE) && mCanJump)
+    else
     {
-        mCanJump = false;
-        mRigidBody->AddVelocity(Vector3::unitZ * mJumpForce);
+        mJumpCooldown -= GameTime::DeltaTime;
     }
 }
 
 DoomPlayerController::DoomPlayerController(GameActor* pOwner, const float pSpeed, float pJumpForce, const Vector2 pSensibility) :
     ActorComponent(pOwner, Transform::Origin), mSpeed(pSpeed), mJumpForce(pJumpForce), mSensibility(pSensibility),
-    mCamera(nullptr), mRigidBody(nullptr)
+    mCamera(nullptr), mRigidBody(nullptr),
+    mCanJump(false), mJumpCooldown(0.0f)
 {
     SetName("DoomController");
 }
