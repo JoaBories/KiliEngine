@@ -36,10 +36,10 @@ private:
         AddActor(player);
     }
 
-    void SpawnFlyingCamera(const Vector3& pPosition)
+    void SpawnFlyingCamera(const Vector3& pPosition, const float pSpeed)
     {
         CameraActor* cam = new CameraActor(Transform(pPosition, Quaternion(), Vector3::unit), 90.0f, 0.1f, 10000.0f);
-        cam->AddComponent(new FreeCamComponent(cam, 20.0f, 5.0f));
+        cam->AddComponent(new FreeCamComponent(cam, pSpeed, 5.0f));
         AddActor(cam);
     }
 
@@ -59,14 +59,14 @@ public :
 
     void OnStart() override {
         //SpawnPlayer(Vector3(0, 0, 10));
-        SpawnFlyingCamera(Vector3::zero);
+        SpawnFlyingCamera(Vector3::zero, 20.0f);
         SpawnTerrain(20, 15.0f, true);
         
         EmptyActor* skybox = new EmptyActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit * 50.0f), "Skybox");
         skybox->AddComponent(new MeshComponent(skybox, Transform::Origin, AssetManager::GetMesh("Skybox"), AssetManager::GetTexture("DarkSky"), "Basic"));
         AddActor(skybox);
 
-        Map* mMap = AssetManager::GetMap("MapTest");
+        Map* mMap = AssetManager::GetMap("Map1");
         for (MapWall wall : mMap->GetWalls())
         {
             SpawnWall(wall.Transform, mMap->GetTexture(wall.TextureIndex));
