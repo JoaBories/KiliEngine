@@ -58,6 +58,8 @@ public:
 	static void FetchTexture(const path& pTexturePath);
 	static Texture* LoadTexture(const std::string& pName);
 	static Texture* GetTexture(const std::string& pName);
+	static Animation GetAnimation(const std::vector<std::string>& pNames, float pFps = 60.0f);
+	static Animation GetAnimation(const std::string& pName, int pStartFrame, int pEndFrame, float pFps = 60.0f);
 
 	static void FetchShader(const path& pShaderPath);
 	static Shader* LoadShader(const std::string& pName);

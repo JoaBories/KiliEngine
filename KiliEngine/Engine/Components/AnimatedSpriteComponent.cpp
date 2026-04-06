@@ -1,43 +1,40 @@
 #include "AnimatedSpriteComponent.h"
 
+#include "Engine/GameActor.h"
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Log.h"
 
-AnimatedSpriteComponent::AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder) :
-	SpriteComponent(pOwner, pTransform, pTexture[0], pDrawOrder), mCurrentFrame(0.0f), mAnimFps(pFps)
+AnimatedSpriteComponent::AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const Animation& pAnim, int pDrawOrder) :
+	SpriteComponent(pOwner, pTransform, pAnim.Textures[0], pDrawOrder), mCurrentFrame(0.0f)
 {
 	SetName("AnimatedSpriteComponent");
-	SetAnimationTextures(pTexture);
-}
-
-AnimatedSpriteComponent::~AnimatedSpriteComponent()
-{
+	mAnimation = pAnim;
 }
 
 void AnimatedSpriteComponent::SetAnimationTextures(const std::vector<Texture*>& pTextures)
 {
-	mAnimationTextures = pTextures;
-	if (mAnimationTextures.size() > 0) {
-		SetTexture(mAnimationTextures[0]);
+	mAnimation.Textures = pTextures;
+	if (!mAnimation.Textures.empty()) {
+		SetTexture(mAnimation.Textures[0]);
 	}
 }
 
-void AnimatedSpriteComponent::SetAnimationFps(float pFps)
+void AnimatedSpriteComponent::SetAnimationFps(const float pFps)
 {
-	mAnimFps = pFps;
+	mAnimation.Fps = pFps;
 }
 
 void AnimatedSpriteComponent::OnUpdate()
 {
-	SpriteComponent::Update();
-
-	if (mAnimationTextures.size() == 0) return; // do nothing if there is no anim
-
-	mCurrentFrame += mAnimFps * GameTime::DeltaTime;
-	while (mCurrentFrame >= mAnimationTextures.size()) // time modulo frame number
+	if (mAnimation.Textures.empty()) return; // do nothing if there is no anim
+	
+	mCurrentFrame += mAnimation.Fps * GameTime::DeltaTime;
+	
+	const float size = static_cast<float>(mAnimation.Textures.size());
+	while (mCurrentFrame >= size) // time modulo frame number
 	{
-		mCurrentFrame -= mAnimationTextures.size();
+		mCurrentFrame -= size;
 	}
 
-	SetTexture(mAnimationTextures[static_cast<int>(mCurrentFrame)]); // change texture from sprite component
+	SetTexture(mAnimation.Textures[static_cast<int>(mCurrentFrame)]); // change texture from sprite component
 }

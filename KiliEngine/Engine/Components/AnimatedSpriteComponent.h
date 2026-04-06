@@ -4,19 +4,21 @@
 class AnimatedSpriteComponent : public SpriteComponent
 {
 private:
-	std::vector<Texture*> mAnimationTextures;
+	Animation mAnimation;
 	float mCurrentFrame;
-	float mAnimFps;
 
 public:
-	AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const std::vector<Texture*>& pTexture, float pFps, int pDrawOrder = 100);
-	virtual ~AnimatedSpriteComponent();
+	AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const Animation& pAnim, int pDrawOrder = 100);
+	~AnimatedSpriteComponent() override = default;
 
 	AnimatedSpriteComponent() = delete;
 	AnimatedSpriteComponent(const AnimatedSpriteComponent&) = delete;
 	AnimatedSpriteComponent& operator=(const AnimatedSpriteComponent&) = delete;
 
-	float GetAnimationFps() const { return mAnimFps; }
+	float GetAnimationFps() const { return mAnimation.Fps; }
+	
+	void SetAnimation(const Animation& pAnimation) { mAnimation = pAnimation; }
+	
 	void SetAnimationTextures(const std::vector<Texture*>& pTextures);
 	void SetAnimationFps(float pFps);
 

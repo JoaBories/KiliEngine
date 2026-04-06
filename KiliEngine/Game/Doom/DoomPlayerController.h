@@ -2,6 +2,7 @@
 #include "Engine/Camera.h"
 #include "Engine/CameraActor.h"
 #include "Engine/Components/ActorComponent.h"
+#include "Engine/Components/AnimatedSpriteComponent.h"
 #include "Engine/Components/RigidBody.h"
 
 class DoomPlayerController : public ActorComponent
@@ -16,6 +17,7 @@ private:
     
     Camera* mCamera;
     RigidBody* mRigidBody;
+    AnimatedSpriteComponent* mSprite;
     
 protected:
     void OnStart() override;

@@ -9,6 +9,7 @@ void DoomPlayerController::OnStart()
 {
     mCamera = mOwner->GetComponent<Camera>();
     mRigidBody = mOwner->GetComponent<RigidBody>();
+    mSprite = mOwner->GetComponent<AnimatedSpriteComponent>();
 }
 
 void DoomPlayerController::OnUpdate()

@@ -39,10 +39,11 @@ bool GlRenderer::Initialize(Window& pWindow)
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     mContext = SDL_GL_CreateContext(mWindow->GetSdlWindow());
     glewExperimental = GL_TRUE;
+    
     if (glewInit() != GLEW_OK)
     {
         Log::Error(LogType::Video, "Failed to initialize GLEW");
@@ -73,9 +74,6 @@ bool GlRenderer::Initialize(Window& pWindow)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     Log::Info("OpenGL Version : " + glVersion);
@@ -174,6 +172,8 @@ void GlRenderer::DrawMeshes() const
 void GlRenderer::DrawSprites()
 {
     glEnable(GL_BLEND);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     
@@ -247,11 +247,10 @@ void GlRenderer::Close()
 
 void GlRenderer::DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
 {
-    const Matrix4Row scaleMat = Matrix4Row::CreateScale(
-        static_cast<float>(pTex.GetWidth()),
-        static_cast<float>(pTex.GetHeight()),
-        0.0f);
-    const Matrix4Row world = scaleMat * pTransform.GetWorldTransformMatrix();
+    const Matrix4Row world =
+        Matrix4Row::CreateScale(static_cast<float>(pTex.GetWidth()), static_cast<float>(pTex.GetHeight()), 0.0f) *
+        Matrix4Row::CreateRotationZ(pTransform.GetRotation().z) *
+        Matrix4Row::CreateTranslation(Vector3(pTransform.GetPosition().x, pTransform.GetPosition().y, 0.0f));
     
     mSpriteMaterial->Use();
     mSpriteMaterial->SetMatrix4Row("uWorldTransform", world);

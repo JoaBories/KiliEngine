@@ -265,6 +265,30 @@ Texture* AssetManager::GetTexture(const std::string& pName)
     return mLoadedTextures.at(pName);
 }
 
+Animation AssetManager::GetAnimation(const std::vector<std::string>& pNames, float pFps)
+{
+    std::vector<Texture*> textures;
+    
+    for (const auto& name : pNames)
+    {
+        textures.push_back(GetTexture(name));
+    }
+    
+    return {textures, pFps};
+}
+
+Animation AssetManager::GetAnimation(const std::string& pName, const int pStartFrame, const int pEndFrame, const float pFps)
+{
+    std::vector<Texture*> textures;
+    
+    for (int i = pStartFrame; i <= pEndFrame; i++)
+    {
+        textures.push_back(GetTexture(pName + "_" + std::to_string(i)));
+    }
+    
+    return {textures, pFps};
+}
+
 void AssetManager::FetchShader(const path& pShaderPath)
 {
     if (Shader::IsSupported(pShaderPath.extension().string()))

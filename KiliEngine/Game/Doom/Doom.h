@@ -31,7 +31,8 @@ private:
         player->AddComponent(new Camera(player, Transform(Vector3(0,0,1), Quaternion(), Vector3::unit), 90.0f));
         player->AddComponent(new BoxCollider(player, Transform::Origin, true, Vector3(1,1,2)));
         player->AddComponent(new RigidBody(player, 10.0f, 1.5f, 100.0f, 0.0f));
-        player->AddComponent(new DoomPlayerController(player, 150.0f, 5.0f, Vector2(1.0f,1.0f)));
+        player->AddComponent(new DoomPlayerController(player, 150.0f, 8.0f, Vector2(1.0f,1.0f)));
+        player->AddComponent(new AnimatedSpriteComponent(player, Transform::Origin, AssetManager::GetAnimation("Pistol", 0, 5, 5)));
         AddActor(player);
     }
 
@@ -61,7 +62,7 @@ public :
         SpawnFlyingCamera(Vector3::zero);
         SpawnTerrain(20, 15.0f, true);
 
-        Map* mMap = AssetManager::GetMap("Map1");
+        Map* mMap = AssetManager::GetMap("MapTest");
         for (MapWall wall : mMap->GetWalls())
         {
             SpawnWall(wall.Transform, mMap->GetTexture(wall.TextureIndex));
