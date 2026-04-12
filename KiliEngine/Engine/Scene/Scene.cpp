@@ -48,7 +48,7 @@ void Scene::KillAllDead()
 {
     for (GameActor* actor : mActors)
     {
-        if (actor->GetState() == Dead)
+        if (actor->GetState() == ActorState::Dead)
         {
             RemoveActor(actor);
             delete actor;

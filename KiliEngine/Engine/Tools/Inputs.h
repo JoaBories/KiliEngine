@@ -9,6 +9,7 @@ using Struct::Vector2;
 class Inputs
 {
 	static std::vector<SDL_Keycode> mCurrentPressedInputs;
+	static std::vector<Uint8> mCurrentMouseInputs;
 	static int mLastMouseDeltaX;
 	static int mLastMouseDeltaY;
 
@@ -23,6 +24,7 @@ public:
 	static void SetMouseTracking(bool pIsTracking);
 	
 	static bool IsKeyPressed(SDL_Keycode pKey);
+	static bool IsButtonPressed(Uint8 pButton);
 	static Vector2 GetMouseDelta();
 };
 

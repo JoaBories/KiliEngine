@@ -3,6 +3,7 @@
 #include "Engine/Renderer/OpenGlRenderer.h"
 
 std::vector<SDL_Keycode> Inputs::mCurrentPressedInputs = {};
+std::vector<Uint8> Inputs::mCurrentMouseInputs = {};
 int Inputs::mLastMouseDeltaX = 0;
 int Inputs::mLastMouseDeltaY = 0;
 bool Inputs::mCapturingMouse = false;
@@ -25,7 +26,7 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 {
 	if (pEvent.type == SDL_KEYUP)
 	{
-		const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
+		const auto it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
 		if (it != mCurrentPressedInputs.end())
 		{
 			mCurrentPressedInputs.erase(it);
@@ -66,6 +67,22 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 			mCurrentPressedInputs.emplace_back(pEvent.key.keysym.sym);
 		}
 	}
+	else if (pEvent.type == SDL_MOUSEBUTTONUP)
+	{
+		const auto it = std::find(mCurrentMouseInputs.begin(), mCurrentMouseInputs.end(), pEvent.button.button);
+		if (it != mCurrentMouseInputs.end())
+		{
+			mCurrentMouseInputs.erase(it);
+		}
+	}
+	else if (pEvent.type == SDL_MOUSEBUTTONDOWN)
+	{
+		const auto it = std::find(mCurrentMouseInputs.begin(), mCurrentMouseInputs.end(), pEvent.button.button);
+		if (it == mCurrentMouseInputs.end())
+		{
+			mCurrentMouseInputs.emplace_back(pEvent.button.button);
+		}
+	}
 
 	return false;
 }
@@ -77,8 +94,19 @@ void Inputs::SetMouseTracking(const bool pIsTracking)
 
 bool Inputs::IsKeyPressed(const SDL_Keycode pKey)
 {
-	const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pKey);
+	const auto it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pKey);
 	if (it != mCurrentPressedInputs.end())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Inputs::IsButtonPressed(const Uint8 pButton)
+{
+	const auto it = std::find(mCurrentMouseInputs.begin(), mCurrentMouseInputs.end(), pButton);
+	if (it != mCurrentMouseInputs.end())
 	{
 		return true;
 	}
@@ -88,5 +116,5 @@ bool Inputs::IsKeyPressed(const SDL_Keycode pKey)
 
 Vector2 Inputs::GetMouseDelta()
 {
-	return Vector2(mLastMouseDeltaX, mLastMouseDeltaY);
+	return {mLastMouseDeltaX, mLastMouseDeltaY};
 }

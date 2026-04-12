@@ -247,8 +247,10 @@ void GlRenderer::Close()
 
 void GlRenderer::DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
 {
+    const Vector3 scale = pTransform.GetScale() * Vector3(static_cast<float>(pTex.GetWidth()), static_cast<float>(pTex.GetHeight()), 0.0f);
+    
     const Matrix4Row world =
-        Matrix4Row::CreateScale(static_cast<float>(pTex.GetWidth()), static_cast<float>(pTex.GetHeight()), 0.0f) *
+        Matrix4Row::CreateScale(scale) *
         Matrix4Row::CreateRotationZ(pTransform.GetRotation().z) *
         Matrix4Row::CreateTranslation(Vector3(pTransform.GetPosition().x, pTransform.GetPosition().y, 0.0f));
     

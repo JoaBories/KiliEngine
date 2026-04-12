@@ -27,13 +27,26 @@ private:
 
     void SpawnPlayer(const Vector3& pPosition)
     {
-        EmptyActor* player = new EmptyActor(Transform(pPosition, Quaternion(), Vector3::unit), "Player", ActorPlayer);
+        EmptyActor* player = new EmptyActor(Transform(pPosition, Quaternion(), Vector3::unit), "Player", ActorTags::Player);
         player->AddComponent(new Camera(player, Transform(Vector3(0,0,1), Quaternion(), Vector3::unit), 90.0f, 0.1f, 10000.0f));
         player->AddComponent(new BoxCollider(player, Transform::Origin, true, Vector3(1,1,2)));
         player->AddComponent(new RigidBody(player, 10.0f, 1.5f, 100.0f, 0.0f));
         player->AddComponent(new DoomPlayerController(player, 150.0f, 8.0f, Vector2(1.0f,1.0f)));
-        player->AddComponent(new AnimatedSpriteComponent(player, Transform::Origin, AssetManager::GetAnimation("Pistol", 0, 5, 5)));
         AddActor(player);
+    }
+    
+    void SpawnHud()
+    {
+        EmptyActor* hud = new EmptyActor(Transform::Origin, "Hud", ActorTags::Hud);
+        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3::zero, Quaternion(), Vector3(2.0f,2.0f,2.0f)), AssetManager::GetAnimation("Pistol", 0, 5, 5)));
+        AddActor(hud);
+    }
+    
+    void SpawnSky()
+    {
+        EmptyActor* skybox = new EmptyActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit * 30.0f), "Skybox");
+        skybox->AddComponent(new MeshComponent(skybox, Transform::Origin, AssetManager::GetMesh("Skybox"), AssetManager::GetTexture("DarkSky"), "Basic"));
+        AddActor(skybox);
     }
 
     void SpawnFlyingCamera(const Vector3& pPosition, const float pSpeed)
@@ -58,13 +71,11 @@ public :
     }
 
     void OnStart() override {
-        //SpawnPlayer(Vector3(0, 0, 10));
-        SpawnFlyingCamera(Vector3::zero, 20.0f);
+        SpawnPlayer(Vector3(0, 0, 10));
+        //SpawnFlyingCamera(Vector3::zero, 20.0f);
         SpawnTerrain(20, 15.0f, true);
         
-        EmptyActor* skybox = new EmptyActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit * 50.0f), "Skybox");
-        skybox->AddComponent(new MeshComponent(skybox, Transform::Origin, AssetManager::GetMesh("Skybox"), AssetManager::GetTexture("DarkSky"), "Basic"));
-        AddActor(skybox);
+        SpawnSky();
 
         Map* mMap = AssetManager::GetMap("Map1");
         for (MapWall wall : mMap->GetWalls())
