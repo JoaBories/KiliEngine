@@ -73,4 +73,5 @@ void main(void)
     gl_Position = vec4(rotateZ(spherePosition, rotation), 1.0f) * uWorldTransform * uViewProj;
     
     teseOut.texCoord = interpolate2D(tescOut[0].texCoord, tescOut[1].texCoord, tescOut[2].texCoord);
+    teseOut.normal = normalize(rotateZ(spherePosition, rotation));
 }

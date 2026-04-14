@@ -11,5 +11,5 @@ uniform sampler2D uTexture;
 
 void main()
 {
-    outColor = texture(uTexture, teseOut.texCoord);
+    outColor = vec4((teseOut.normal + 1) / 2, 1);
 }
