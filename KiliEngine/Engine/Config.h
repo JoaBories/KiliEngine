@@ -29,9 +29,9 @@ namespace Cfg
     const std::string MAP_PATH = "Resources/Maps";
 
     constexpr int WINDOW_WIDTH = 800;
-    constexpr int WINDOW_HEIGHT = 600;
+    constexpr int WINDOW_HEIGHT = 800;
     
-    constexpr ScreenMode WINDOW_MODE = ScreenMode::Fullscreen;
+    constexpr ScreenMode WINDOW_MODE = ScreenMode::Windowed;
     constexpr bool WINDOW_BORDERLESS = false;
     constexpr bool WINDOW_ALWAYS_ON_TOP = false;
 

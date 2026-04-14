@@ -34,7 +34,7 @@ public :
 		AddActor(camera);
 
 		EnviroActor* blades = new EnviroActor(Transform(Vector3(100.0f, 0.0f, 0.0f), Quaternion(), Vector3::unit));
-		blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,100.0f), 10000, AssetManager::GetTexture("grass")));
+		blades->AddComponent(new InstanceComponent(blades, Transform::Origin, AssetManager::GetMesh("grass"), Vector2(100.0f,100.0f), 50000, AssetManager::GetTexture("grass")));
 		blades->AddComponent(new MeshComponent(blades, Transform(Vector3(0,0,0), Quaternion(), Vector3(10.0f, 10.0f, 1.0f)), AssetManager::GetMesh("planeBig"), AssetManager::GetTexture("grassSoil")));
 		AddActor(blades);
 		
@@ -44,6 +44,7 @@ public :
 		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 6, 0), Quaternion(), Vector3::unit), "sphere", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 9, 0), Quaternion(), Vector3::unit), "monkey", "DefaultTexture", "BasicLight");
+		CreateEnviroActor(Transform(Vector3(10, 15, 0), Quaternion(), Vector3::unit), "decimate_mannie", "DefaultTexture", "BasicLight");
 	}
 
 	void OnUpdate() override {

@@ -7,7 +7,9 @@ in TeseOut{
     vec3 normal;
 } teseOut;
 
+uniform sampler2D uTexture;
+
 void main()
 {
-    outColor = vec4(1,1,1,1);
+    outColor = texture(uTexture, teseOut.texCoord);
 }
