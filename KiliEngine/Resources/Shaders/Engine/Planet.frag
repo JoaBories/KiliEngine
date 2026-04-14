@@ -5,11 +5,13 @@ out vec4 outColor;
 in TeseOut{
     vec2 texCoord;
     vec3 normal;
+    float perlin;
 } teseOut;
 
 uniform sampler2D uTexture;
 
 void main()
 {
-    outColor = vec4((teseOut.normal + 1) / 2, 1);
+    vec3 perlinColor = vec3(teseOut.perlin * 0.5f + 0.5f);
+    outColor = vec4(perlinColor, 1.0f);
 }
