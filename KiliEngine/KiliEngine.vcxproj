@@ -288,6 +288,7 @@
     <Content Include="Resources\Materials\Normal.mat" />
     <Content Include="Resources\Materials\NormalGeom.mat" />
     <Content Include="Resources\Materials\Planet.mat" />
+    <Content Include="Resources\Materials\PlanetGeom.mat" />
     <Content Include="Resources\Materials\SimpleTess.mat" />
     <Content Include="Resources\Materials\Sprite.mat" />
     <Content Include="Resources\Materials\TerrainTess.mat" />
@@ -320,9 +321,11 @@
     <Content Include="Resources\Shaders\Engine\Normal.frag" />
     <Content Include="Resources\Shaders\Engine\Normal.vert" />
     <Content Include="Resources\Shaders\Engine\Planet.frag" />
+    <Content Include="Resources\Shaders\Engine\PlanetGeom.geom" />
     <Content Include="Resources\Shaders\Engine\Planet.tesc" />
     <Content Include="Resources\Shaders\Engine\Planet.tese" />
     <Content Include="Resources\Shaders\Engine\Planet.vert" />
+    <Content Include="Resources\Shaders\Engine\PlanetGeom.frag" />
     <Content Include="Resources\Shaders\Engine\SimpleTess.frag" />
     <Content Include="Resources\Shaders\Engine\SimpleTess.tesc" />
     <Content Include="Resources\Shaders\Engine\SimpleTess.tese" />

@@ -8,10 +8,12 @@ uniform float uTime;
 
 float PI  = 3.14159265358979f;
 float TAU = 6.28318530717959f;
+float EPSILON = 0.000001f;
 
 float pRotateSpeed = 0.05f; // revolution by second
-float pPerlinScale = 0.1f;
-float pPerlinFrequency = 3.0f;
+float pPerlinScale = 0.2f;
+float pPerlinFrequency = 2.0f;
+float pSeaLevel = -0.1f;
 
 in TescOut{
     vec2 texCoord;
@@ -20,7 +22,9 @@ in TescOut{
 out TeseOut{
     vec2 texCoord;
     vec3 normal;
+    float height;
     float perlin;
+    float steepness;
 } teseOut;
 
 float interpolate(float f0, float f1, float f2)
@@ -70,7 +74,7 @@ vec3 rotateZ(vec3 v, float angle)
                  v.z );
 }
 
-//=== Perlin noise ==================
+// ================Perlin Noise==================
 //
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".
@@ -171,21 +175,69 @@ float cnoise(vec3 P)
     return 2.2 * n_xyz;
 }
 
+int octaves = 3;
+float persistence = 0.75f;
+float lacunarity = 1.8f;
+
+float perlinOctave(vec3 spherePos)
+{
+    float value = 0;
+    float ttAmplitude = 0;
+
+    float amplitude = 1;
+    float frequency = 1;
+
+    for (int i = 0; i < octaves; i++)
+    {
+        value += cnoise(spherePos * frequency) * amplitude;
+        ttAmplitude += amplitude;
+        amplitude *= persistence;
+        frequency *= lacunarity;
+    }
+
+    return value / ttAmplitude;
+}
+
+vec4 perlinTotal(vec3 spherePos, vec3 pX, vec3 pY, vec3 pZ)
+{
+    vec4 result;
+    
+    result.x = perlinOctave(normalize(spherePos + pX * EPSILON) * pPerlinFrequency);
+    result.y = perlinOctave(normalize(spherePos + pY * EPSILON) * pPerlinFrequency);
+    result.z = perlinOctave(normalize(spherePos + pZ * EPSILON) * pPerlinFrequency);
+    result.w = perlinOctave(spherePos * pPerlinFrequency);
+    
+    return result;
+}
+
+// ==============================================
+
 void main(void)
 {
     float rotation = fract(uTime * pRotateSpeed) * TAU;
     vec3 cubePosition = interpolate3D(gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
     vec3 spherePosition = mapOnSphere(cubePosition);
+
+    teseOut.normal = normalize(spherePosition);
+    vec3 perpX = cross(teseOut.normal, vec3(1,0,0));
+    vec3 perpY = cross(teseOut.normal, vec3(0,1,0));
+    vec3 perpZ = cross(teseOut.normal, vec3(0,0,1));
+    teseOut.normal = rotateZ(teseOut.normal, rotation);
+    
+    vec4 perlin = perlinTotal(spherePosition, perpX, perpY, perpZ);
+    teseOut.perlin = perlin.w;
+    perlin = clamp(perlin, pSeaLevel, 1.0f);
+    teseOut.height = perlin.w;
+    
+    float steepX = (perlin.x - perlin.w) / EPSILON;
+    float steepY = (perlin.y - perlin.w) / EPSILON;
+    float steepZ = (perlin.z - perlin.w) / EPSILON;
+    
+    teseOut.steepness = sqrt(steepX * steepX + steepY * steepY + steepZ * steepZ); // gradient magnitude
     
     vec3 rotatedSpherePosition = rotateZ(spherePosition, rotation);
-    teseOut.normal = normalize(rotatedSpherePosition);
-    
-    float perlin = cnoise(spherePosition * pPerlinFrequency);
-    vec3 displacedSpherePosition = rotatedSpherePosition + teseOut.normal * perlin * pPerlinScale;
-    teseOut.normal = normalize(displacedSpherePosition);
-    
+    vec3 displacedSpherePosition = normalize(rotatedSpherePosition) * (1.0f + perlin.w * pPerlinScale);
     gl_Position = vec4(displacedSpherePosition, 1.0f) * uWorldTransform * uViewProj;
     
     teseOut.texCoord = interpolate2D(tescOut[0].texCoord, tescOut[1].texCoord, tescOut[2].texCoord);
-    teseOut.perlin = perlin;
 }

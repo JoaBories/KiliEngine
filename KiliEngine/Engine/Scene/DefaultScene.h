@@ -38,7 +38,10 @@ public :
 		blades->AddComponent(new MeshComponent(blades, Transform(Vector3(0,0,0), Quaternion(), Vector3(10.0f, 10.0f, 1.0f)), AssetManager::GetMesh("planeBig"), AssetManager::GetTexture("grassSoil")));
 		AddActor(blades);
 		
-		CreateEnviroActor(Transform(Vector3(0, 0, 1), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "Planet");
+		EnviroActor* actor = new EnviroActor(Transform::Origin);
+		actor->AddComponent(new MeshComponent(actor, Transform::Origin, AssetManager::GetMesh("cube"), AssetManager::GetTexture("null"), "Planet"));
+		actor->AddComponent(new MeshComponent(actor, Transform::Origin, AssetManager::GetMesh("cube"), AssetManager::GetTexture("null"), "PlanetGeom"));
+		AddActor(actor);
 
 		CreateEnviroActor(Transform(Vector3(10, 12, 0), Quaternion(), Vector3::unit), "cube", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");
