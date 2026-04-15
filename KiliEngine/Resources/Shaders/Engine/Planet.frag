@@ -12,6 +12,10 @@ uniform sampler2D uTexture;
 
 void main()
 {
-    vec3 perlinColor = vec3(teseOut.perlin * 0.5f + 0.5f);
-    outColor = vec4(perlinColor, 1.0f);
+    //Perlin visualization
+    //vec3 perlinColor = vec3(teseOut.perlin * 0.5f + 0.5f);
+    //outColor = vec4(perlinColor, 1.0f);
+    
+    //Normal visualization
+    outColor = vec4(teseOut.normal * 0.5f + 0.5f, 1.0f);
 }
