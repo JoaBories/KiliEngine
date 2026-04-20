@@ -8,6 +8,7 @@
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/PlaneCollider.h"
 #include "Engine/Components/RigidBody.h"
+#include "Engine/Components/SphereCollider.h"
 #include "Engine/Components/TerrainComponent.h"
 #include "Engine/Scene/Scene.h"
 
@@ -77,6 +78,10 @@ public :
         SpawnTerrain(20, 15.0f, false);
         
         SpawnSky();
+
+        EmptyActor* sphere = new EmptyActor(Transform::Origin, "Sphere");
+        sphere->AddComponent(new BoxCollider(sphere, Transform::Origin, false, Vector3::unit * 1.0f));
+        AddActor(sphere);
 
         Map* mMap = AssetManager::GetMap("Map1");
         for (MapWall wall : mMap->GetWalls())

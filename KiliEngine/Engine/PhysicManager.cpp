@@ -69,9 +69,12 @@ Hit PhysicManager::Collide(const Line& pLine, SphereCollider* pSphere)
     const float distance = Line::LineOnSphere(pLine, sp);
     if (distance >= 0)
     {
+        const Vector3 point = pLine.Start + pLine.Direction * distance;
+        
         result = { true,
-            pLine.Start + pLine.Direction * distance,
-            pLine.Direction, pLine, distance,
+            point, pLine.Direction,
+            (point - sp.Center).Normalized(),
+            pLine, distance,
             pSphere->GetOwner(), pSphere
         };
     }
@@ -92,12 +95,19 @@ Hit PhysicManager::Collide(const Line& pLine, BoxCollider* pBox)
     line.Direction = Vector3::Transform(pLine.Direction, inverse);
     line.End = pLine.Start + pLine.Direction * pLine.Length;
 
-    const float distance = Line::LineOnAABB(line, obb);
+    Vector3 normal;
+    
+    const float distance = Line::LineOnAABB(line, obb, normal);
     if (distance >= 0)
     {
+        Quaternion worldRotation = pBox->GetWorldTransform().GetRotation();
+        Vector3 worldNormal = Vector3::Transform(normal, worldRotation).Normalized();
+        
+        const Vector3 point = pLine.Start + pLine.Direction * distance;
+        
         result = { true,
-            pLine.Start + pLine.Direction * distance,
-            pLine.Direction, pLine, distance,
+            point, pLine.Direction,
+            worldNormal, pLine, distance,
             pBox->GetOwner(), pBox
         };
     }

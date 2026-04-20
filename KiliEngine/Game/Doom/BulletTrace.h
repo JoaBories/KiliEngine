@@ -3,11 +3,9 @@
 #include "Utils/CollisionUtils.h"
 
 class BulletTrace : public GameActor
-{
-private:
-    float mTime;
-    
+{    
 protected:
+    void OnEarlyUpdate() override;
     
 public:
     BulletTrace(const CollisionUtils::Line& pLinetrace);

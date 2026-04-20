@@ -1,6 +1,7 @@
 #include "DoomPlayerController.h"
 
 #include "BulletTrace.h"
+#include "BulletImpact.h"
 #include "Engine/PhysicManager.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/GameTime.h"
@@ -81,10 +82,19 @@ void DoomPlayerController::OnUpdate()
     // Shoot
     if (Inputs::IsButtonPressed(SDL_BUTTON_LEFT, true))
     {
-        const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition();
-        const Vector3 hitEnd = hitStart + mCamera->GetWorldTransform().GetTransform().GetForwardVector() * 100.0f;
-        Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner(), 10.0f);
-        SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }));
+        Vector3 forward = mCamera->GetWorldTransform().GetTransform().GetForwardVector();
+        const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition() - Vector3(0.0f, 0.0f, 0.1f) + forward * 0.1f;
+        const Vector3 hitEnd = hitStart + forward * 100.0f;
+
+        if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
+        {
+            SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }));
+            SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.5f)));
+        }
+        else
+        {
+            SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, hitEnd }));
+        }
     }
 }
 

@@ -141,17 +141,20 @@ float CollisionUtils::Line::LineOnSphere(const Line& pLine, const Sphere& pSpher
     return result;
 }
 
-float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb)
+float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb, Vector3& normal)
 {
     float tMin = 0.0f;
     float tMax = pLine.Length;
 
-    std::vector<float> localOrigin {pLine.Start.x, pLine.Start.y, pLine.Start.z};
-    std::vector<float> localDir {pLine.Direction.x, pLine.Direction.y, pLine.Direction.z};
-    std::vector<float> halfExtents {pObb.HalfSize.x, pObb.HalfSize.y, pObb.HalfSize.z};
+    const std::vector<float> localOrigin {pLine.Start.x, pLine.Start.y, pLine.Start.z};
+    const std::vector<float> localDir {pLine.Direction.x, pLine.Direction.y, pLine.Direction.z};
+    const std::vector<float> halfExtents {pObb.HalfSize.x, pObb.HalfSize.y, pObb.HalfSize.z};
 
+    char hitAxis = 0;
+    bool hitSign = false;
+    
     // --- slab test on each axis ---
-    for (int i = 0; i < 3; ++i)
+    for (char i = 0; i < 3; ++i)
     {
         const float origin = localOrigin[i];
         const float dir    = localDir[i];
@@ -167,13 +170,31 @@ float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb)
             float t0   = (-half - origin) * invD;   // entry
             float t1   = ( half - origin) * invD;   // exit
 
-            if (t0 > t1) std::swap(t0, t1);
-
-            tMin = std::max(tMin, t0);
+            bool sign = false;
+            if (t0 > t1)
+            {
+                std::swap(t0, t1);
+                sign = true;
+            }
+            
+            if (t0 > tMin)
+            {
+                tMin = t0;
+                hitAxis = i;
+                hitSign = sign;
+            }
             tMax = std::min(tMax, t1);
 
             if (tMin > tMax) return -1.0f;           // slabs don't overlap
         }
+    }
+
+    switch (hitAxis)
+    {
+    case 0: normal.x = hitSign ? 1.0f : -1.0f; break;
+    case 1: normal.y = hitSign ? 1.0f : -1.0f; break;
+    case 2: normal.z = hitSign ? 1.0f : -1.0f; break;
+    default: break;
     }
 
     return tMin;

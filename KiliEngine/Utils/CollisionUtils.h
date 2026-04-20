@@ -58,7 +58,7 @@ namespace CollisionUtils
         Line(const Vector3& pStart, const Vector3& pEnd);
 
         [[nodiscard]] static float LineOnSphere(const Line& pLine, const Sphere& pSphere); // return length on the Line
-        [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb);
+        [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb, Vector3& normal); // return normal * length
 
         bool operator==(const Line& pLine) const { return Start == pLine.Start && End == pLine.End; }
     };
@@ -68,6 +68,7 @@ namespace CollisionUtils
         bool Collided = false;
         Vector3 Point = Vector3(0, 0, 0);
         Vector3 LineDirection = Vector3(0, 0, 0);
+        Vector3 Normal = Vector3(0, 0, 0);
         Line Linetrace = Line(Vector3(0, 0, 0), Vector3(0, 0, 0));
         float Distance = 0.0f;
         GameActor* OtherActor = nullptr;
