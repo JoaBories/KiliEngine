@@ -10,18 +10,6 @@ namespace CollisionUtils
 {
 
     struct Sphere;
-
-    struct Hit
-    {
-        bool Collided = false;
-        Vector3 Point = Vector3(0, 0, 0);
-        Vector3 LineDirection = Vector3(0, 0, 0);
-        float Distance = 0.0f;
-        GameActor* OtherActor = nullptr;
-        ColliderComponent* OtherCollider = nullptr;
-
-        explicit operator bool() const { return Collided; }
-    };
     
     struct Collision
     {
@@ -73,6 +61,19 @@ namespace CollisionUtils
         [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb);
 
         bool operator==(const Line& pLine) const { return Start == pLine.Start && End == pLine.End; }
+    };
+    
+    struct Hit
+    {
+        bool Collided = false;
+        Vector3 Point = Vector3(0, 0, 0);
+        Vector3 LineDirection = Vector3(0, 0, 0);
+        Line Linetrace = Line(Vector3(0, 0, 0), Vector3(0, 0, 0));
+        float Distance = 0.0f;
+        GameActor* OtherActor = nullptr;
+        ColliderComponent* OtherCollider = nullptr;
+
+        explicit operator bool() const { return Collided; }
     };
     
     float OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis);

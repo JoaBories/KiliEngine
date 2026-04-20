@@ -16,8 +16,8 @@ private:
     static Collision Collide(BoxCollider* pBox, SphereCollider* pSphere);
     static Collision Collide(SphereCollider* pSphere1, SphereCollider* pSphere2);
 
-    static Hit Collide(Line pLine, SphereCollider* pSphere);
-    static Hit Collide(Line pLine, BoxCollider* pBox);
+    static Hit Collide(const Line& pLine, SphereCollider* pSphere);
+    static Hit Collide(const Line& pLine, BoxCollider* pBox);
     
     static Obb BoxToObb(BoxCollider* pBox);
     static Sphere SphereToSphere(SphereCollider* pSphere);

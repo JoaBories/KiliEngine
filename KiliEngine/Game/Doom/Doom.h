@@ -38,7 +38,7 @@ private:
     void SpawnHud()
     {
         EmptyActor* hud = new EmptyActor(Transform::Origin, "Hud", ActorTags::Hud);
-        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3::zero, Quaternion(), Vector3(2.0f,2.0f,2.0f)), AssetManager::GetAnimation("Pistol", 0, 5, 5)));
+        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3::zero, Quaternion(), Vector3(0.0f,0.0f,0.0f)), AssetManager::GetAnimation("Pistol", 0, 5, 5)));
         AddActor(hud);
     }
     
@@ -71,9 +71,10 @@ public :
     }
 
     void OnStart() override {
+        SpawnHud();
         SpawnPlayer(Vector3(0, 0, 10));
         //SpawnFlyingCamera(Vector3::zero, 20.0f);
-        SpawnTerrain(20, 15.0f, true);
+        SpawnTerrain(20, 15.0f, false);
         
         SpawnSky();
 

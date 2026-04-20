@@ -1,6 +1,8 @@
 #include "DoomPlayerController.h"
 
+#include "BulletTrace.h"
 #include "Engine/PhysicManager.h"
+#include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
 #include "Engine/Tools/Log.h"
@@ -9,11 +11,12 @@ void DoomPlayerController::OnStart()
 {
     mCamera = mOwner->GetComponent<Camera>();
     mRigidBody = mOwner->GetComponent<RigidBody>();
-    mSprite = mOwner->GetComponent<AnimatedSpriteComponent>();
+    mSprite = SceneManager::ActiveScene()->GetActorByTag(ActorTags::Hud)->GetComponent<AnimatedSpriteComponent>();
 }
 
 void DoomPlayerController::OnUpdate()
 {
+    // Camera
     Vector2 mouseInput = Inputs::GetMouseDelta(); 
     mouseInput *= mSensibility * 0.05f;
     
@@ -30,6 +33,7 @@ void DoomPlayerController::OnUpdate()
         mCamera->SetLocalRotation(newRotation);
     }
 
+    // Movement
     Vector2 movementInput = { 0.0f, 0.0f };
 
     if (Inputs::IsKeyPressed(SDLK_q)) movementInput.x = -1.0f;
@@ -51,6 +55,7 @@ void DoomPlayerController::OnUpdate()
         mRigidBody->AddVelocity(right * movementInput.x + forward * movementInput.y);
     }
 
+    // Jump
     if (mJumpCooldown < 0.0f)
     {
         const Vector3 hitStart = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.0f);
@@ -71,6 +76,15 @@ void DoomPlayerController::OnUpdate()
     else
     {
         mJumpCooldown -= GameTime::DeltaTime;
+    }
+    
+    // Shoot
+    if (Inputs::IsButtonPressed(SDL_BUTTON_LEFT, true))
+    {
+        const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition();
+        const Vector3 hitEnd = hitStart + mCamera->GetWorldTransform().GetTransform().GetForwardVector() * 100.0f;
+        Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner(), 10.0f);
+        SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }));
     }
 }
 

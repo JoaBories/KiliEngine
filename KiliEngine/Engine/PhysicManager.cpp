@@ -60,7 +60,7 @@ Collision PhysicManager::Collide(SphereCollider* pSphere1, SphereCollider* pSphe
     return result;
 }
 
-Hit PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
+Hit PhysicManager::Collide(const Line& pLine, SphereCollider* pSphere)
 {
     Hit result;
 
@@ -71,7 +71,7 @@ Hit PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
     {
         result = { true,
             pLine.Start + pLine.Direction * distance,
-            pLine.Direction, distance,
+            pLine.Direction, pLine, distance,
             pSphere->GetOwner(), pSphere
         };
     }
@@ -79,7 +79,7 @@ Hit PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
     return result;
 }
 
-Hit PhysicManager::Collide(Line pLine, BoxCollider* pBox)
+Hit PhysicManager::Collide(const Line& pLine, BoxCollider* pBox)
 {
     Hit result;
 
@@ -97,7 +97,7 @@ Hit PhysicManager::Collide(Line pLine, BoxCollider* pBox)
     {
         result = { true,
             pLine.Start + pLine.Direction * distance,
-            pLine.Direction, distance,
+            pLine.Direction, pLine, distance,
             pBox->GetOwner(), pBox
         };
     }

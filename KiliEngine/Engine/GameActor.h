@@ -45,7 +45,7 @@ protected:
 
 public:
 	explicit GameActor(const Transform& pTransform, const std::string& pName, ActorTags pTag = ActorTags::Default);
-	~GameActor();
+	virtual ~GameActor();
 
 	GameActor(const GameActor&) = delete;
 	GameActor& operator=(const GameActor&) = delete;

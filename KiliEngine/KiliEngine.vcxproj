@@ -199,6 +199,7 @@
     </ClCompile>
     <ClCompile Include="Game\Bowling\BowlingPin.cpp">
     </ClCompile>
+    <ClCompile Include="Game\Doom\BulletTrace.cpp" />
     <ClCompile Include="Game\Doom\DoomPlayerController.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_sdl2.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="Game\Bowling\BowlingBall.h" />
     <ClInclude Include="Game\Bowling\BowlingPin.h" />
     <ClInclude Include="Game\Bowling\Floor.h" />
+    <ClInclude Include="Game\Doom\BulletTrace.h" />
     <ClInclude Include="Game\Doom\Doom.h" />
     <ClInclude Include="Game\Doom\DoomPlayerController.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3.h" />

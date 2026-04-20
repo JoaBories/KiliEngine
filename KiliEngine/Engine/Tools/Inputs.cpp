@@ -4,6 +4,7 @@
 
 std::vector<SDL_Keycode> Inputs::mCurrentPressedInputs = {};
 std::vector<Uint8> Inputs::mCurrentMouseInputs = {};
+std::vector<Uint8> Inputs::mButtonsDownThisFrame = {};
 int Inputs::mLastMouseDeltaX = 0;
 int Inputs::mLastMouseDeltaY = 0;
 bool Inputs::mCapturingMouse = false;
@@ -14,8 +15,10 @@ void Inputs::Init()
 	mCapturingMouse = Cfg::MOUSECAPTURE_DEFAULT;
 }
 
-void Inputs::MouseUpdate()
+void Inputs::Update()
 {
+	mButtonsDownThisFrame.clear();
+	
 	if (mCapturingMouse)
 	{
 		SDL_GetRelativeMouseState(&mLastMouseDeltaX, &mLastMouseDeltaY);
@@ -61,7 +64,7 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 		else if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_NORMAL) GlRenderer::RenderMode = Normals;
 		else if (pEvent.key.keysym.sym == Cfg::RENDER_MODE_WIREFRAME) GlRenderer::RenderMode = Wireframe;
 #endif		
-		const std::vector<SDL_Keycode>::iterator it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
+		const auto it = std::find(mCurrentPressedInputs.begin(), mCurrentPressedInputs.end(), pEvent.key.keysym.sym);
 		if (it == mCurrentPressedInputs.end())
 		{
 			mCurrentPressedInputs.emplace_back(pEvent.key.keysym.sym);
@@ -82,6 +85,8 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 		{
 			mCurrentMouseInputs.emplace_back(pEvent.button.button);
 		}
+		
+		mButtonsDownThisFrame.push_back(pEvent.button.button);
 	}
 
 	return false;
@@ -103,8 +108,19 @@ bool Inputs::IsKeyPressed(const SDL_Keycode pKey)
 	return false;
 }
 
-bool Inputs::IsButtonPressed(const Uint8 pButton)
+bool Inputs::IsButtonPressed(const Uint8 pButton, const bool pThisFrame)
 {
+	if (pThisFrame)
+	{
+		const auto it = std::find(mButtonsDownThisFrame.begin(), mButtonsDownThisFrame.end(), pButton);
+		if (it != mButtonsDownThisFrame.end())
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 	const auto it = std::find(mCurrentMouseInputs.begin(), mCurrentMouseInputs.end(), pButton);
 	if (it != mCurrentMouseInputs.end())
 	{
