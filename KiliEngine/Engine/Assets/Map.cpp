@@ -13,7 +13,7 @@ std::vector<std::string> BreakString(const std::string& pString, const char pSep
     std::vector<std::string> r;
     std::string temp = pString;
 
-    int pos = temp.find(pSeparator);
+    size_t pos = temp.find(pSeparator);
 
     while (pos != std::string::npos)
     {
@@ -30,9 +30,8 @@ std::vector<std::string> BreakString(const std::string& pString, const char pSep
 Map::Map(const std::string& pPath)
 {
     std::string line;
-
-    //Open file of this name
     ifstream myFile;
+    
     myFile.open(pPath);
 
     //Check for errors
@@ -41,9 +40,7 @@ Map::Map(const std::string& pPath)
     }
 
     while (std::getline(myFile, line)) {
-        char identifier = line[0];
-
-        switch (identifier)
+        switch (line[0])
         {
         case '$':
             Log::Info("Reading map with version : " + BreakString(line, ' ')[1]);
@@ -53,13 +50,20 @@ Map::Map(const std::string& pPath)
             ResolveDict(line);
             break;
 
+        case 'F' :
+            ResolveFloor(line);
+            break;
+
         case 'V':
+            ResolveVertex(line);
             break;
 
         case 'W':
             ResolveWall(line);
             break;
             
+        default:
+            break;
         }
         
     }
@@ -80,18 +84,56 @@ void Map::ResolveDict(const std::string& pLine)
 
 void Map::ResolveWall(const std::string& pLine)
 {
-    auto brokeLine = BreakString(pLine, ' ');
-    int texture = std::stoi(brokeLine[3]);
-    
-    auto brokePos = BreakString(brokeLine[4], ':');
-    auto brokeRot = BreakString(brokeLine[5], ':');
-    auto brokeScale = BreakString(brokeLine[6], ':');
+    const auto brokeLine = BreakString(pLine, ' ');
+    const int texture = std::stoi(brokeLine[3]);
 
-    Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2])) * 0.2f;
-    Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 10.0f) * 0.5f * 0.2f;
+    const auto brokePos = BreakString(brokeLine[4], ':');
+    const auto brokeRot = BreakString(brokeLine[5], ':');
+    const auto brokeScale = BreakString(brokeLine[6], ':');
+
+    const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2]) * 10.0f) * MAP_SCALE;
+    const Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 10.0f) * 0.5f * MAP_SCALE;
 
     MapWall wall = {texture, Transform(pos, Quaternion(), scale)};
-    float rotation = (stof(brokeRot[2]) + 90.0f) * MathUtils::DEG2RAD;
+    const float rotation = (stof(brokeRot[2]) + 90.0f) * MathUtils::DEG2RAD;
     wall.Transform.Rotate(Vector3::unitZ, rotation);
     mWalls.push_back(wall);
+}
+
+void Map::ResolveVertex(const std::string& pLine)
+{
+    const auto brokeLine = BreakString(pLine, ' ');
+    const int indice = std::stoi(brokeLine[1]);
+
+    const auto brokePos = BreakString(brokeLine[2], ':');
+    const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), 0.0f) * MAP_SCALE;
+
+    mVertices[indice] = pos;
+}
+
+void Map::ResolveFloor(const std::string& pLine)
+{
+    const auto brokeLine = BreakString(pLine, ' ');
+
+    const Vertex center = {Vector3::zero, Vector3::unitZ, {0.5f,0.5f}};
+    std::vector<Vertex> vertices = {center};
+
+    const int verticeCount = std::stoi(brokeLine[1]) + 1;
+    vertices.reserve(verticeCount);
+
+    const auto brokePos = BreakString(brokeLine[2], ':');
+    const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), 0.0f) * MAP_SCALE;
+    
+    const auto brokeVertices = BreakString(brokeLine[3], ':');
+    for (const std::string& vertice : brokeVertices)
+    {
+        int indice = std::stoi(vertice);
+        Vector3 position = mVertices[indice] - pos;
+        vertices.push_back({position, Vector3::unitZ, {position.x / FLOOR_TILESIZE, position.y / FLOOR_TILESIZE}});
+    }
+    vertices.push_back(vertices[1]);
+
+    int textureIndex = std::stoi(brokeLine[4]);
+
+    mFloors.push_back({textureIndex, pos, vertices});
 }

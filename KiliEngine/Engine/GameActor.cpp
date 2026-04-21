@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "Tools/Log.h"
+
 void GameActor::UpdateComponentsTransform()
 {
 	for (ActorComponent* component : mComponents)

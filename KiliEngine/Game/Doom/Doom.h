@@ -3,6 +3,7 @@
 #include "Engine/EmptyActor.h"
 #include "Engine/EnviroActor.h"
 #include "Engine/Assets/AssetManager.h"
+#include "Engine/Components/FloorComponent.h"
 #include "Engine/Components/FreeCamComponent.h"
 #include "Engine/Components/InstanceComponent.h"
 #include "Engine/Components/MeshComponent.h"
@@ -64,6 +65,14 @@ private:
         wall->AddComponent(new BoxCollider(wall, Transform(Vector3::zero, Quaternion(), Vector3::unit), false, Vector3(0.1f,1.0f,1.0f)));
         AddActor(wall);
     }
+
+    void SpawnFloor(const Vector3& pPosition, Mesh* pMesh)
+    {
+        EnviroActor* floor = new EnviroActor(Transform(pPosition, Quaternion(), Vector3::unit));
+        floor->AddComponent(new FloorComponent(floor, Transform::Origin, pMesh));
+        floor->AddComponent(new BoxCollider(floor, Transform(Vector3::zero, Quaternion(), Vector3::unit), false, Vector3(1.0f,0.1f,0.1f)));
+        AddActor(floor);
+    }
     
 public :
     Doom() : Scene("Doom") {}
@@ -73,16 +82,21 @@ public :
 
     void OnStart() override {
         SpawnHud();
-        SpawnPlayer(Vector3(0, 0, 10));
-        //SpawnFlyingCamera(Vector3::zero, 20.0f);
-        SpawnTerrain(20, 15.0f, false);
+        //SpawnPlayer(Vector3(0, 0, 10));
+        SpawnFlyingCamera(Vector3::zero, 20.0f);
         
         SpawnSky();
 
-        Map* mMap = AssetManager::GetMap("Map1");
-        for (MapWall wall : mMap->GetWalls())
+        Map* map = AssetManager::GetMap("Map1");
+        for (auto [TextureIndex, Transform] : map->GetWalls())
         {
-            SpawnWall(wall.Transform, mMap->GetTexture(wall.TextureIndex));
+            SpawnWall(Transform, map->GetTexture(TextureIndex));
+        }
+
+        for (const auto& [TextureIndex, Position, Vertices] : map->GetFloors())
+        {
+            Mesh* mesh = new Mesh(Vertices, map->GetTexture(TextureIndex), "BasicTile");
+            SpawnFloor(Position, mesh);
         }
     }
 

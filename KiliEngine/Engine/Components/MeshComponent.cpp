@@ -2,6 +2,7 @@
 
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Scene/SceneManager.h"
+#include "Engine/Tools/Log.h"
 
 void MeshComponent::OnUpdate()
 {
@@ -18,6 +19,7 @@ MeshComponent::MeshComponent(GameActor* pOwner, const Transform& pTransform, Mes
 MeshComponent::~MeshComponent()
 {
 	SceneManager::ActiveScene()->GetRenderer()->RemoveMesh(this);
+	MeshComponent::CleanUp();
 }
 
 void MeshComponent::Draw(Camera* pCamera, Material* pMaterial)
