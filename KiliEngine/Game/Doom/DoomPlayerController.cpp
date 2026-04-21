@@ -62,7 +62,7 @@ void DoomPlayerController::OnUpdate()
         const Vector3 hitStart = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.0f);
         const Vector3 hitEnd = mOwner->GetWorldTransform().GetPosition() - Vector3(0,0,2.05f);
         
-        if (Hit hit = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner(), 1.0f))
+        if (Hit hit = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
         {
             mCanJump = true;
         }

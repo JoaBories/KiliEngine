@@ -79,10 +79,6 @@ public :
         
         SpawnSky();
 
-        EmptyActor* sphere = new EmptyActor(Transform::Origin, "Sphere");
-        sphere->AddComponent(new BoxCollider(sphere, Transform::Origin, false, Vector3::unit * 1.0f));
-        AddActor(sphere);
-
         Map* mMap = AssetManager::GetMap("Map1");
         for (MapWall wall : mMap->GetWalls())
         {

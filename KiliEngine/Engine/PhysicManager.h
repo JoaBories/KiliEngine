@@ -37,12 +37,12 @@ public:
 
 struct LineTraceWrap
 {
-    Line Trace;
+    Matrix4Row Transform;
     float TimeRemaining;
     bool Collided;
 
     bool operator==(const LineTraceWrap& pOther) const {
-        return Trace == pOther.Trace && MathUtils::NearlyEqual(TimeRemaining, pOther.TimeRemaining) && Collided == pOther.Collided;
+        return Transform == pOther.Transform && MathUtils::NearlyEqual(TimeRemaining, pOther.TimeRemaining) && Collided == pOther.Collided;
     }
 };
 

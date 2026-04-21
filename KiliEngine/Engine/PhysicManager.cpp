@@ -237,7 +237,11 @@ Hit PhysicManager::Linetrace(const Vector3& pStart, const Vector3& pEnd, const G
     }
 
 #ifdef _DEBUG
-    if (pDebugTime > 0.0f) mLineTraceWraps.push_back({lineTrace, pDebugTime, bestHit.Collided});
+    Matrix4Row worldTransform = Matrix4Row::CreateScale(0.01f, 0.01f, lineTrace.Length / 2);
+    worldTransform *= Matrix4Row::CreateFromQuaternion(Quaternion::QuaternionFromDirection(lineTrace.Direction));
+    worldTransform *= Matrix4Row::CreateTranslation((lineTrace.End + lineTrace.Start) * 0.5f);
+    
+    if (pDebugTime > 0.0f) mLineTraceWraps.push_back({worldTransform, pDebugTime, bestHit.Collided});
 #endif
 
     return bestHit;
@@ -260,14 +264,8 @@ void PhysicManager::DrawDebug(const Camera* pCam)
             continue;
         }
         
-        Matrix4Row worldTransform = Matrix4Row::CreateScale(0.01f, 0.01f, lineTrace.Trace.Length / 2);
-
-        worldTransform *= Matrix4Row::CreateFromQuaternion(Quaternion::QuaternionFromDirection(lineTrace.Trace.Direction));
-        
-        worldTransform *= Matrix4Row::CreateTranslation((lineTrace.Trace.End + lineTrace.Trace.Start) * 0.5f);
-	
         AssetManager::GetMaterial("Collider")->SetMatrix4Row("uViewProj", pCam->GetViewProjMatrix());
-        AssetManager::GetMaterial("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
+        AssetManager::GetMaterial("Collider")->SetMatrix4Row("uWorldTransform", lineTrace.Transform);
 
         const Vector4 color = lineTrace.Collided ? Vector4(1,0,0,1) : Vector4(0,1,0,1);
         AssetManager::GetMaterial("Collider")->SetVec4("color", color.x,color.y,color.z,color.w);

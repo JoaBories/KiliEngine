@@ -18,7 +18,6 @@ public:
 	explicit Matrix4Row(float inMat[4][4])
 	{
 		memcpy(mat, inMat, 16 * sizeof(float));
-
 	}
 
 	// Cast to a const float pointer
@@ -27,6 +26,10 @@ public:
 		return reinterpret_cast<const float*>(&mat[0][0]);
 	}
 
+	bool operator==(const Matrix4Row& pOther) const {
+		return std::equal(std::begin(mat), std::end(mat), std::begin(pOther.mat));
+	}
+	
 	// Matrix multiplication (a * b)
 	friend Matrix4Row operator*(const Matrix4Row& a, const Matrix4Row& b)
 	{

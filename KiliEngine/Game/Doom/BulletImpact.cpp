@@ -16,7 +16,7 @@ void BulletImpact::OnEarlyUpdate()
 
 BulletImpact::BulletImpact(const Transform& pTransform) :
 	GameActor(pTransform, "BulletImpact"),
-	mTime(60.0f)
+	mTime(30.0f)
 {
 	AddComponent(new MeshComponent(this, Transform::Origin, AssetManager::GetMesh("plane"), AssetManager::GetTexture("BulletImpact"), "Decals"));
 }

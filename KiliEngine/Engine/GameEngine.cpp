@@ -104,7 +104,7 @@ void GameEngine::CheckForInputs()
 
 			default:
 #ifdef _DEBUG
-				Gui::Input(event);
+				if (!Inputs::mCapturingMouse) Gui::Input(event);
 #endif
 				if (Inputs::InputUpdate(event))
 				{

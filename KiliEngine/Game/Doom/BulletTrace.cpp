@@ -7,7 +7,7 @@
 
 void BulletTrace::OnEarlyUpdate()
 {
-    const Vector3 scale = GetWorldTransform().GetScale() * (1.0f - 7.5f * GameTime::DeltaTime);
+    const Vector3 scale = GetWorldTransform().GetScale() * (1.0f - 5.0f * GameTime::DeltaTime);
     SetScale(Vector3(scale.x, scale.y, GetWorldTransform().GetScale().z));
 
     if (scale.x <= 0.1f)
