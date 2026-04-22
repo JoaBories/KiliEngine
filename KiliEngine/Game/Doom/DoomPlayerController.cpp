@@ -88,6 +88,7 @@ void DoomPlayerController::OnUpdate()
 
         mSprite->Reset();
         mSprite->Play(false);
+        mSprite->SetFrame(1);
 
         if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
         {

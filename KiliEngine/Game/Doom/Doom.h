@@ -31,7 +31,7 @@ private:
     {
         EmptyActor* player = new EmptyActor(Transform(pPosition, Quaternion(), Vector3::unit), "Player", ActorTags::Player);
         player->AddComponent(new Camera(player, Transform(Vector3(0,0,1), Quaternion(), Vector3::unit), 90.0f, 0.1f, 10000.0f));
-        player->AddComponent(new BoxCollider(player, Transform::Origin, true, Vector3(1,1,2)));
+        player->AddComponent(new BoxCollider(player, Transform::Origin, true, Vector3(0.9f,0.9f,2)));
         player->AddComponent(new RigidBody(player, 10.0f, 1.5f, 100.0f, 0.0f));
         player->AddComponent(new DoomPlayerController(player, 150.0f, 8.0f, Vector2(1.0f,1.0f)));
         AddActor(player);
@@ -40,7 +40,7 @@ private:
     void SpawnHud()
     {
         EmptyActor* hud = new EmptyActor(Transform::Origin, "Hud", ActorTags::Hud);
-        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3(0.0f,-95.0f,0.0f), Quaternion(), Vector3(5.0f,5.0f,5.0f)), AssetManager::GetAnimation("Pistol", 0, 1, 10)));
+        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3(0.0f,-95.0f,0.0f), Quaternion(), Vector3(5.0f,5.0f,5.0f)), AssetManager::GetAnimation("Pistol", 0, 4, 24)));
         AddActor(hud);
     }
     
@@ -82,12 +82,12 @@ public :
 
     void OnStart() override {
         SpawnHud();
-        SpawnPlayer(Vector3(0, 0, 10));
-        //SpawnFlyingCamera(Vector3::zero, 20.0f);
+        //SpawnPlayer(Vector3(0, 0, 10));
+        SpawnFlyingCamera(Vector3::zero, 20.0f);
         
         SpawnSky();
 
-        Map* map = AssetManager::GetMap("Map1");
+        Map* map = AssetManager::GetMap("Doom1");
         for (auto [TextureIndex, Transform] : map->GetWalls())
         {
             SpawnWall(Transform, map->GetTexture(TextureIndex));

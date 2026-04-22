@@ -9,7 +9,7 @@
 class Texture;
 
 constexpr float MAP_SCALE = 0.2f;
-constexpr float FLOOR_TILESIZE = 5.0f;
+constexpr float FLOOR_TILESIZE = 8.0f;
 
 struct MapWall
 {
