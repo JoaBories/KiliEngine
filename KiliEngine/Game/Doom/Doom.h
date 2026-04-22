@@ -1,17 +1,17 @@
 #pragma once
+#include "Engine/Scene/Scene.h"
+#include "Engine/Assets/AssetManager.h"
+
 #include "DoomPlayerController.h"
+#include "FloorComponent.h"
 #include "Engine/EmptyActor.h"
 #include "Engine/EnviroActor.h"
-#include "Engine/Assets/AssetManager.h"
-#include "Engine/Components/FloorComponent.h"
 #include "Engine/Components/FreeCamComponent.h"
-#include "Engine/Components/InstanceComponent.h"
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/PlaneCollider.h"
 #include "Engine/Components/RigidBody.h"
 #include "Engine/Components/SphereCollider.h"
 #include "Engine/Components/TerrainComponent.h"
-#include "Engine/Scene/Scene.h"
 
 class Doom : public Scene
 {
@@ -66,11 +66,11 @@ private:
         AddActor(wall);
     }
 
-    void SpawnFloor(const Vector3& pPosition, Mesh* pMesh)
+    void SpawnFloor(const Vector3& pPosition, Mesh* pMesh, const Vector3& pOffset, const Vector2 pSize)
     {
         EnviroActor* floor = new EnviroActor(Transform(pPosition, Quaternion(), Vector3::unit));
         floor->AddComponent(new FloorComponent(floor, Transform::Origin, pMesh));
-        floor->AddComponent(new BoxCollider(floor, Transform(Vector3::zero, Quaternion(), Vector3::unit), false, Vector3(1.0f,0.1f,0.1f)));
+        floor->AddComponent(new PlaneCollider(floor, Transform(pOffset, Quaternion(), Vector3::unit), false, pSize));
         AddActor(floor);
     }
     
@@ -82,8 +82,8 @@ public :
 
     void OnStart() override {
         SpawnHud();
-        //SpawnPlayer(Vector3(0, 0, 10));
-        SpawnFlyingCamera(Vector3::zero, 20.0f);
+        SpawnPlayer(Vector3(0, 0, 10));
+        //SpawnFlyingCamera(Vector3::zero, 20.0f);
         
         SpawnSky();
 
@@ -93,10 +93,10 @@ public :
             SpawnWall(Transform, map->GetTexture(TextureIndex));
         }
 
-        for (const auto& [TextureIndex, Position, Vertices] : map->GetFloors())
+        for (const auto& [TextureIndex, Position, Vertices, Offset, Size] : map->GetFloors())
         {
             Mesh* mesh = new Mesh(Vertices, map->GetTexture(TextureIndex), "BasicTile");
-            SpawnFloor(Position, mesh);
+            SpawnFloor(Position, mesh, Offset, Size);
         }
     }
 

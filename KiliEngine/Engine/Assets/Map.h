@@ -22,6 +22,8 @@ struct MapFloor
     int TextureIndex;
     Vector3 Position;
     std::vector<Vertex> Vertices;
+    Vector3 ColliderOffset;
+    Vector2 ColliderSize;
 };
 
 class Map

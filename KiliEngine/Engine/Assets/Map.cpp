@@ -125,15 +125,32 @@ void Map::ResolveFloor(const std::string& pLine)
     const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), 0.0f) * MAP_SCALE;
     
     const auto brokeVertices = BreakString(brokeLine[3], ':');
+
+    float minX = MathUtils::INFINITY_POS;
+    float maxX = MathUtils::INFINITY_NEG;
+    float minY = MathUtils::INFINITY_POS;
+    float maxY = MathUtils::INFINITY_NEG;
+    
     for (const std::string& vertice : brokeVertices)
     {
         int indice = std::stoi(vertice);
         Vector3 position = mVertices[indice] - pos;
+
+        minX = MathUtils::Min(minX, position.x);
+        maxX = MathUtils::Max(maxX, position.x);
+        minY = MathUtils::Min(minY, position.y);
+        maxY = MathUtils::Max(maxY, position.y);
+        
         vertices.push_back({position, Vector3::unitZ, {position.x / FLOOR_TILESIZE, position.y / FLOOR_TILESIZE}});
     }
     vertices.push_back(vertices[1]);
 
     int textureIndex = std::stoi(brokeLine[4]);
 
-    mFloors.push_back({textureIndex, pos, vertices});
+    const Vector3 offset = Vector3((minX + maxX) * 0.5f,
+                                   (minY + maxY) * 0.5f, 0.0f);
+    const Vector2 size = Vector2((MathUtils::Abs(minX) + MathUtils::Abs(maxX)) * 0.5f,
+                                 (MathUtils::Abs(minY) + MathUtils::Abs(maxY)) * 0.5f);
+
+    mFloors.push_back({textureIndex, pos, vertices, offset, size});
 }
