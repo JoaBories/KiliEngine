@@ -83,8 +83,11 @@ void DoomPlayerController::OnUpdate()
     if (Inputs::IsButtonPressed(SDL_BUTTON_LEFT, true))
     {
         Vector3 forward = mCamera->GetWorldTransform().GetTransform().GetForwardVector();
-        const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition() - Vector3(0.0f, 0.0f, 0.1f) + forward * 0.1f;
+        const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition() - Vector3(0.0f, 0.0f, 0.5f) + forward * 0.1f;
         const Vector3 hitEnd = hitStart + forward * 100.0f;
+
+        mSprite->Reset();
+        mSprite->Play(false);
 
         if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
         {

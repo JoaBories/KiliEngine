@@ -6,6 +6,8 @@ class AnimatedSpriteComponent : public SpriteComponent
 private:
 	Animation mAnimation;
 	float mCurrentFrame;
+	bool mPlaying;
+	bool mLooping;
 
 public:
 	AnimatedSpriteComponent(GameActor* pOwner, Transform pTransform, const Animation& pAnim, int pDrawOrder = 100);
@@ -17,10 +19,15 @@ public:
 
 	float GetAnimationFps() const { return mAnimation.Fps; }
 	
-	void SetAnimation(const Animation& pAnimation) { mAnimation = pAnimation; }
-	
-	void SetAnimationTextures(const std::vector<Texture*>& pTextures);
+	void SetAnimation(const Animation& pAnimation);
 	void SetAnimationFps(float pFps);
 
 	void OnUpdate() override;
+
+	void PlayAnimation(const Animation& pAnimation, bool pLoop);
+	void SetFrame(int pFrame);
+	void SetLooping(bool pLoop);
+	void Play(bool pLoop);
+	void Pause();
+	void Reset();
 };

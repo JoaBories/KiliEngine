@@ -40,7 +40,7 @@ private:
     void SpawnHud()
     {
         EmptyActor* hud = new EmptyActor(Transform::Origin, "Hud", ActorTags::Hud);
-        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3::zero, Quaternion(), Vector3(0.0f,0.0f,0.0f)), AssetManager::GetAnimation("Pistol", 0, 5, 5)));
+        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3(0.0f,-95.0f,0.0f), Quaternion(), Vector3(5.0f,5.0f,5.0f)), AssetManager::GetAnimation("Pistol", 0, 1, 10)));
         AddActor(hud);
     }
     
