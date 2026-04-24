@@ -287,6 +287,9 @@
     <ClInclude Include="Utils\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Maps\Doom1.map" />
+    <Content Include="Resources\Maps\Map1.map" />
+    <Content Include="Resources\Maps\Map2.map" />
     <Content Include="Resources\Materials\Basic.mat" />
     <Content Include="Resources\Materials\BasicLight.mat" />
     <Content Include="Resources\Materials\BasicTile.mat" />
@@ -351,9 +354,6 @@
     <Content Include="Resources\Textures\Bowling\return.png" />
     <Content Include="Resources\Textures\DefaultTexture.png" />
     <Content Include="Resources\Textures\Ground.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Maps\" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

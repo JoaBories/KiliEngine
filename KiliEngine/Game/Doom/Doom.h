@@ -67,11 +67,12 @@ private:
         AddActor(wall);
     }
 
-    void SpawnFloor(const Vector3& pPosition, Mesh* pMesh, const Vector3& pOffset, const Vector2 pSize)
+    void SpawnFloor(const Vector3& pPosition, Mesh* pMesh, const Vector3& pOffset, const Vector2 pSize, const float pFloorHeight)
     {
+        const Vector3 floorOffset = Vector3(0.0f,0.0f,pFloorHeight);
         EnviroActor* floor = new EnviroActor(Transform(pPosition, Quaternion(), Vector3::unit));
-        floor->AddComponent(new FloorComponent(floor, Transform::Origin, pMesh));
-        floor->AddComponent(new PlaneCollider(floor, Transform(pOffset, Quaternion(), Vector3::unit), false, pSize));
+        floor->AddComponent(new FloorComponent(floor, Transform(floorOffset, Quaternion(), Vector3::unit), pMesh));
+        floor->AddComponent(new PlaneCollider(floor, Transform(pOffset + floorOffset, Quaternion(), Vector3::unit), false, pSize));
         AddActor(floor);
     }
     
@@ -100,16 +101,16 @@ public :
         
         SpawnDoor(Vector3(0, 0, 2.0f), Quaternion());
 
-        Map* map = AssetManager::GetMap("Map1");
+        Map* map = AssetManager::GetMap("Map2");
         for (auto [TextureIndex, Transform] : map->GetWalls())
         {
             SpawnWall(Transform, map->GetTexture(TextureIndex));
         }
 
-        for (const auto& [TextureIndex, Position, Vertices, Offset, Size] : map->GetFloors())
+        for (const auto& [TextureIndex, Position, Vertices, Offset, Size, Floor] : map->GetFloors())
         {
             Mesh* mesh = new Mesh(Vertices, map->GetTexture(TextureIndex), "BasicTile");
-            SpawnFloor(Position, mesh, Offset, Size);
+            SpawnFloor(Position, mesh, Offset, Size, Floor);
         }
     }
 

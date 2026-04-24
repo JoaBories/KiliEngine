@@ -24,6 +24,7 @@ struct MapFloor
     std::vector<Vertex> Vertices;
     Vector3 ColliderOffset;
     Vector2 ColliderSize;
+    float FloorHeight;
 };
 
 class Map

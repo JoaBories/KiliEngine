@@ -92,7 +92,7 @@ void Map::ResolveWall(const std::string& pLine)
     const auto brokeScale = BreakString(brokeLine[6], ':');
 
     const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2]) * 10.0f) * MAP_SCALE;
-    const Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 10.0f) * 0.5f * MAP_SCALE;
+    const Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 20.0f) * 0.5f * MAP_SCALE;
 
     MapWall wall = {texture, Transform(pos, Quaternion(), scale)};
     const float rotation = (stof(brokeRot[2]) + 90.0f) * MathUtils::DEG2RAD;
@@ -152,5 +152,7 @@ void Map::ResolveFloor(const std::string& pLine)
     const Vector2 size = Vector2((MathUtils::Abs(minX) + MathUtils::Abs(maxX)) * 0.5f,
                                  (MathUtils::Abs(minY) + MathUtils::Abs(maxY)) * 0.5f);
 
-    mFloors.push_back({textureIndex, pos, vertices, offset, size});
+    const float floorHeight = std::stof(brokeLine[5]);
+
+    mFloors.push_back({textureIndex, pos, vertices, offset, size, floorHeight});
 }
