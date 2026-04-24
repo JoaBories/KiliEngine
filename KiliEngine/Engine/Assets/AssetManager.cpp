@@ -173,22 +173,37 @@ void AssetManager::UnfetchAll()
 void AssetManager::LoadAll()
 {
     Log::Info("==========| Start loading Files");
-    const auto startTime = clk::now();
+    const auto globalStartTime = clk::now();
     
     UnloadAll();
 
+    auto startTime = clk::now();
     for (auto& unloadedPath : mUnloadedTextures) LoadTexture(unloadedPath.first);
-    
-    for (auto& unloadedPath : mUnloadedShaders) LoadShader(unloadedPath.first);
-    
-    for (auto& unloadedPath : mUnloadedMaterials) LoadMaterial(unloadedPath.first);
-    
-    for (auto& unloadedPath : mUnloadedMeshes) LoadMesh(unloadedPath.first);
+    std::string time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Textures in : " + time + "s");
 
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedShaders) LoadShader(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Shaders in : " + time + "s");
+
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedMaterials) LoadMaterial(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Material in : " + time + "s");
+
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedMeshes) LoadMesh(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Mesh in : " + time + "s");
+
+    startTime = clk::now();
     for (auto& unloadedPath : mUnloadedMaps) LoadMap(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Map in : " + time + "s");
     
     const auto endTime = clk::now();
-    const std::string time = std::to_string(std::chrono::duration<double>(endTime - startTime).count());
+    time = std::to_string(std::chrono::duration<double>(endTime - globalStartTime).count());
     Log::Info("==========| Finish loading Files in : " + time + "s");
 }
 

@@ -3,6 +3,7 @@
 #include "Engine/Assets/AssetManager.h"
 
 #include "DoomPlayerController.h"
+#include "DoorComponent.h"
 #include "FloorComponent.h"
 #include "Engine/EmptyActor.h"
 #include "Engine/EnviroActor.h"
@@ -74,6 +75,16 @@ private:
         AddActor(floor);
     }
     
+    void SpawnDoor(const Vector3& pPosition, const Quaternion& pRotation)
+    {
+        const Vector3 size = Vector3(0.5f,4.0f,4.0f);
+        EmptyActor* door = new EmptyActor(Transform(pPosition, pRotation, Vector3::unit), "Door", ActorTags::Door);
+        door->AddComponent(new DoorComponent(door));
+        door->AddComponent(new MeshComponent(door, Transform(Vector3::zero, Quaternion(), size), AssetManager::GetMesh("cube"), AssetManager::GetTexture("Door"), "Basic"));
+        door->AddComponent(new BoxCollider(door, Transform::Origin, false, size));
+        AddActor(door);
+    }
+    
 public :
     Doom() : Scene("Doom") {}
 
@@ -82,12 +93,14 @@ public :
 
     void OnStart() override {
         SpawnHud();
-        //SpawnPlayer(Vector3(0, 0, 10));
-        SpawnFlyingCamera(Vector3::zero, 20.0f);
+        SpawnPlayer(Vector3(0, 0, 10));
+        //SpawnFlyingCamera(Vector3::zero, 20.0f);
         
         SpawnSky();
+        
+        SpawnDoor(Vector3(0, 0, 2.0f), Quaternion());
 
-        Map* map = AssetManager::GetMap("Doom1");
+        Map* map = AssetManager::GetMap("Map1");
         for (auto [TextureIndex, Transform] : map->GetWalls())
         {
             SpawnWall(Transform, map->GetTexture(TextureIndex));

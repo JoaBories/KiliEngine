@@ -2,6 +2,7 @@
 
 #include "BulletTrace.h"
 #include "BulletImpact.h"
+#include "DoorComponent.h"
 #include "Engine/PhysicManager.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/GameTime.h"
@@ -93,19 +94,38 @@ void DoomPlayerController::OnUpdate()
         if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
         {
             SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }));
-            SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.5f)));
+            if (raycast.OtherActor->GetTag() != ActorTags::Door)
+            {
+                SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.5f)));
+            }
         }
         else
         {
             SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, hitEnd }));
         }
     }
+    
+    // OpenDoor
+    if (Inputs::IsButtonPressed(SDL_BUTTON_RIGHT, true))
+    {
+        Vector3 forward = mCamera->GetWorldTransform().GetTransform().GetForwardVector();
+        const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition() - Vector3(0.0f, 0.0f, 0.5f) + forward * 0.1f;
+        const Vector3 hitEnd = hitStart + forward * 5.0f;
+        
+        if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner(), 1.0f))
+        {
+            if (raycast.OtherActor->GetTag() == ActorTags::Door)
+            {
+                raycast.OtherActor->GetComponent<DoorComponent>()->Up();
+            }
+        }
+    }
 }
 
-DoomPlayerController::DoomPlayerController(GameActor* pOwner, const float pSpeed, float pJumpForce, const Vector2 pSensibility) :
+DoomPlayerController::DoomPlayerController(GameActor* pOwner, const float pSpeed, const float pJumpForce, const Vector2 pSensibility) :
     ActorComponent(pOwner, Transform::Origin), mSpeed(pSpeed), mJumpForce(pJumpForce), mSensibility(pSensibility),
-    mCamera(nullptr), mRigidBody(nullptr),
-    mCanJump(false), mJumpCooldown(0.0f)
+    mCanJump(false), mJumpCooldown(0.0f),
+    mCamera(nullptr), mRigidBody(nullptr)
 {
     SetName("DoomController");
 }

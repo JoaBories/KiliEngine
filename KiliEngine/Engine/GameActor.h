@@ -22,7 +22,8 @@ enum class ActorTags : Uint8
 	Default,
 	Block,
 	Player,
-	Hud
+	Hud, 
+	Door
 };
 
 class GameActor

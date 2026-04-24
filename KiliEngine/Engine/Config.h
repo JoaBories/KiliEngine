@@ -45,7 +45,7 @@ namespace Cfg
 
     constexpr bool MOUSECAPTURE_DEFAULT= true;
 
-    const Vector3 DIRECTIONAL_LIGHT = Vector3(-1, -1, -1).Normalized();
+    const Vector3 DIRECTIONAL_LIGHT = Vector3(-1, -1, 0).Normalized();
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;
@@ -57,6 +57,6 @@ namespace Cfg
 
     constexpr SDL_Keycode MOUSECAPTURE_TOGGLE = SDLK_F5;
 
-    constexpr bool DEBUG_COLLISIONS = false;
+    constexpr bool DEBUG_COLLISIONS = true;
     #endif
 }

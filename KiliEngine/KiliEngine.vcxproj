@@ -202,6 +202,7 @@
     <ClCompile Include="Game\Doom\BulletTrace.cpp" />
     <ClCompile Include="Game\Doom\DoomPlayerController.cpp" />
     <ClCompile Include="Game\Doom\BulletImpact.cpp" />
+    <ClCompile Include="Game\Doom\DoorComponent.cpp" />
     <ClCompile Include="Game\Doom\FloorComponent.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_sdl2.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="Game\Doom\Doom.h" />
     <ClInclude Include="Game\Doom\DoomPlayerController.h" />
     <ClInclude Include="Game\Doom\BulletImpact.h" />
+    <ClInclude Include="Game\Doom\DoorComponent.h" />
     <ClInclude Include="Game\Doom\FloorComponent.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_opengl3_loader.h" />

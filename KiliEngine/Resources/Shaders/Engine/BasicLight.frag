@@ -9,7 +9,7 @@ uniform vec3 uDirectionalLight;
 
 void main()
 {
-    float difuseFactor = (dot(uDirectionalLight, normalize(fragNormal)) + 1.0f) / 2.0f;
+    float difuseFactor = (dot(-uDirectionalLight, normalize(fragNormal)) + 1.0f) / 2.0f;
     vec4 diffuseColor = vec4(0,0,0,1);
     
     vec4 textureColor = texture(uTexture, fragTexCoord);
