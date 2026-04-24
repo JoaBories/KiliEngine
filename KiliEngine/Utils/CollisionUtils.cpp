@@ -7,10 +7,15 @@ Vector3 CollisionUtils::Obb::ObbOnObb(const Obb& pA, const Obb& pB) // project c
     if (const Vector3 firstTest = Sphere::SphereOnSphere(pA.AsSphere(),pB.AsSphere()); firstTest == Vector3::zero) 
         return Vector3::zero;
 
-    std::vector<Vector3> axes {
-        pA.Axis1, pA.Axis2, pA.Axis3,
-        pB.Axis1, pB.Axis2, pB.Axis3
-    };
+    Vector3 axes[15];
+    int axisCount = 0;
+
+    axes[axisCount++] = pA.Axis1;
+    axes[axisCount++] = pA.Axis2;
+    axes[axisCount++] = pA.Axis3;
+    axes[axisCount++] = pB.Axis1;
+    axes[axisCount++] = pB.Axis2;
+    axes[axisCount++] = pB.Axis3;
 
     for (int i = 0; i < 3; ++i)
     {
@@ -18,32 +23,31 @@ Vector3 CollisionUtils::Obb::ObbOnObb(const Obb& pA, const Obb& pB) // project c
         {
             Vector3 crossAxis = Vector3::Cross(axes[i], axes[3 + j]);
             if (crossAxis.LengthSq() < 0.01f) continue;
-            axes.push_back(crossAxis);
+            axes[axisCount++] = crossAxis;
         }
     }
 
-    const std::vector<Vector3> a = pA.GetCorners();
-    const std::vector<Vector3> b = pB.GetCorners();
+    Vector3 cornersA[8], cornersB[8];
+    pA.GetCorners(cornersA);
+    pB.GetCorners(cornersB);
 
     float minOverlap = MathUtils::INFINITY_POS;
     Vector3 minOverlapAxis;
     
-    for (auto axe : axes)
+    for (int i = 0; i < axisCount; ++i)
     {
-        const float overlap = OverlapOnAxis(a, b, axe);
+        const float overlap = OverlapOnAxis(cornersA, 8, cornersB, 8, axes[i]);
 
         if (overlap < 0.0f) return Vector3::zero;
         
         if (overlap < minOverlap)
         {
             minOverlap = overlap;
-            minOverlapAxis = axe;
+            minOverlapAxis = axes[i];
         }
     }
-    
-    Vector3 distance = pA.Center - pB.Center;
 
-    if (Vector3::Dot(distance, minOverlapAxis) < 0.0f)
+    if (Vector3::Dot(pA.Center - pB.Center, minOverlapAxis) < 0.0f)
     {
         minOverlapAxis = -minOverlapAxis;
     }
@@ -64,22 +68,20 @@ Vector3 CollisionUtils::Obb::GetClosestFromPoint(const Vector3& pPoint) const
     return closest;
 }
 
-std::vector<Vector3> CollisionUtils::Obb::GetCorners() const
+void CollisionUtils::Obb::GetCorners(Vector3 pOut[8]) const
 {
     const Vector3 x = Axis1 * HalfSize.x;
     const Vector3 y = Axis2 * HalfSize.y;
     const Vector3 z = Axis3 * HalfSize.z;
-        
-    return {
-        Center + x + y + z,
-        Center + x + y - z,
-        Center + x - y + z,
-        Center + x - y - z,
-        Center - x + y + z,
-        Center - x + y - z,
-        Center - x - y + z,
-        Center - x - y - z,
-    };
+    
+    pOut[0] = Center + x + y + z;
+    pOut[1] = Center + x + y - z;
+    pOut[2] = Center + x - y + z;
+    pOut[3] = Center + x - y - z;
+    pOut[4] = Center - x + y + z;
+    pOut[5] = Center - x + y - z;
+    pOut[6] = Center - x - y + z;
+    pOut[7] = Center - x - y - z;
 }
 
 CollisionUtils::Sphere CollisionUtils::Obb::AsSphere() const
@@ -141,7 +143,7 @@ float CollisionUtils::Line::LineOnSphere(const Line& pLine, const Sphere& pSpher
     return result;
 }
 
-float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb, Vector3& normal)
+float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb, Vector3& pNormal)
 {
     float tMin = 0.0f;
     float tMax = pLine.Length;
@@ -191,30 +193,30 @@ float CollisionUtils::Line::LineOnAABB(const Line& pLine, const Obb& pObb, Vecto
 
     switch (hitAxis)
     {
-    case 0: normal.x = hitSign ? 1.0f : -1.0f; break;
-    case 1: normal.y = hitSign ? 1.0f : -1.0f; break;
-    case 2: normal.z = hitSign ? 1.0f : -1.0f; break;
+    case 0: pNormal.x = hitSign ? 1.0f : -1.0f; break;
+    case 1: pNormal.y = hitSign ? 1.0f : -1.0f; break;
+    case 2: pNormal.z = hitSign ? 1.0f : -1.0f; break;
     default: break;
     }
 
     return tMin;
 }
 
-float CollisionUtils::OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis)
+float CollisionUtils::OverlapOnAxis(const Vector3* pA, const size_t pACount, const Vector3* pB, const size_t pBCount, const Vector3& pAxis)
 {
     float aMin = FLT_MAX, aMax = -FLT_MAX;
     float bMin = FLT_MAX, bMax = -FLT_MAX;
 
-    for (const auto& point : pA)
+    for (size_t i = 0; i < pACount; i++)
     {
-        float projection = Vector3::Dot(point,pAxis);
+        float projection = Vector3::Dot(pA[i],pAxis);
         aMin = MathUtils::Min(projection, aMin);
         aMax = MathUtils::Max(projection, aMax);
     }
 
-    for (const auto& point : pB)
+    for (size_t i = 0; i < pBCount; i++)
     {
-        float projection = Vector3::Dot(point,pAxis);
+        float projection = Vector3::Dot(pB[i],pAxis);
         bMin = MathUtils::Min(projection, bMin);
         bMax = MathUtils::Max(projection, bMax);
     }

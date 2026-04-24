@@ -57,6 +57,6 @@ namespace Cfg
 
     constexpr SDL_Keycode MOUSECAPTURE_TOGGLE = SDLK_F5;
 
-    constexpr bool DEBUG_COLLISIONS = true;
+    constexpr bool DEBUG_COLLISIONS = false;
     #endif
 }
