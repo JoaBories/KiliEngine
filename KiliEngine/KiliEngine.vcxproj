@@ -146,7 +146,7 @@
     <ClCompile Include="Engine\CameraActor.cpp" />
     <ClCompile Include="Engine\Components\ActorComponent.cpp">
     </ClCompile>
-    <ClCompile Include="Engine\Components\AnimatedSpriteComponent.cpp">
+    <ClCompile Include="Engine\Components\AnimatedComponent.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\BoxCollider.cpp">
     </ClCompile>
@@ -229,7 +229,7 @@
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\CameraActor.h" />
     <ClInclude Include="Engine\Components\ActorComponent.h" />
-    <ClInclude Include="Engine\Components\AnimatedSpriteComponent.h" />
+    <ClInclude Include="Engine\Components\AnimatedComponent.h" />
     <ClInclude Include="Engine\Components\BoxCollider.h" />
     <ClInclude Include="Engine\Components\ColliderComponent.h" />
     <ClInclude Include="Engine\Components\FollowCameraComponent.h" />

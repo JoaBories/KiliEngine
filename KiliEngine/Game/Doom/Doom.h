@@ -12,6 +12,7 @@
 #include "Engine/Components/PlaneCollider.h"
 #include "Engine/Components/RigidBody.h"
 #include "Engine/Components/SphereCollider.h"
+#include "Engine/Components/SpriteComponent.h"
 #include "Engine/Components/TerrainComponent.h"
 
 class Doom : public Scene
@@ -41,7 +42,8 @@ private:
     void SpawnHud()
     {
         EmptyActor* hud = new EmptyActor(Transform::Origin, "Hud", ActorTags::Hud);
-        hud->AddComponent(new AnimatedSpriteComponent(hud, Transform(Vector3(0.0f,-95.0f,0.0f), Quaternion(), Vector3(5.0f,5.0f,5.0f)), AssetManager::GetAnimation("Pistol", 0, 4, 24)));
+        hud->AddComponent(new AnimatedComponent(hud, AssetManager::GetAnimation("Pistol", 0, 4, 24)));
+        hud->AddComponent(new SpriteComponent(hud, Transform(Vector3(0.0f,-95.0f,0.0f), Quaternion(), Vector3(5.0f,5.0f,5.0f)), AssetManager::GetTexture("Pistol_0")));
         AddActor(hud);
     }
     

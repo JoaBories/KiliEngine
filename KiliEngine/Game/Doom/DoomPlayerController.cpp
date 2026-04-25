@@ -12,7 +12,7 @@ void DoomPlayerController::OnStart()
 {
     mCamera = mOwner->GetComponent<Camera>();
     mRigidBody = mOwner->GetComponent<RigidBody>();
-    mSprite = SceneManager::ActiveScene()->GetActorByTag(ActorTags::Hud)->GetComponent<AnimatedSpriteComponent>();
+    mSprite = SceneManager::ActiveScene()->GetActorByTag(ActorTags::Hud)->GetComponent<AnimatedComponent>();
 }
 
 void DoomPlayerController::OnUpdate()
