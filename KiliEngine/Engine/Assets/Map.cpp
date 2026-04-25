@@ -62,6 +62,9 @@ Map::Map(const std::string& pPath)
             ResolveWall(line);
             break;
             
+        case 'A':
+            ResolveActor(line);
+            
         default:
             break;
         }
@@ -91,8 +94,8 @@ void Map::ResolveWall(const std::string& pLine)
     const auto brokeRot = BreakString(brokeLine[5], ':');
     const auto brokeScale = BreakString(brokeLine[6], ':');
 
-    const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2]) * 10.0f) * MAP_SCALE;
-    const Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 20.0f) * 0.5f * MAP_SCALE;
+    const Vector3 pos = Vector3(stof(brokePos[0]), std::stof(brokePos[1]), std::stof(brokePos[2]) * 25.0f) * MAP_SCALE;
+    const Vector3 scale = Vector3(stof(brokeScale[0]), std::stof(brokeScale[1]), std::stof(brokeScale[2]) * 50.0f) * 0.5f * MAP_SCALE;
 
     MapWall wall = {texture, Transform(pos, Quaternion(), scale)};
     const float rotation = (stof(brokeRot[2]) + 90.0f) * MathUtils::DEG2RAD;
@@ -155,4 +158,22 @@ void Map::ResolveFloor(const std::string& pLine)
     const float floorHeight = std::stof(brokeLine[5]);
 
     mFloors.push_back({textureIndex, pos, vertices, offset, size, floorHeight});
+}
+
+void Map::ResolveActor(const std::string& pLine)
+{
+    const auto brokeLine = BreakString(pLine, ' ');
+    
+    if (brokeLine[1] == "Door")
+    {
+        const auto brokePos = BreakString(brokeLine[2], ':');
+        const Vector3 pos = Vector3(stof(brokePos[0])* MAP_SCALE, std::stof(brokePos[1])* MAP_SCALE, 5.0f) ;
+
+        Transform door = Transform(pos, Quaternion(), Vector3::unit);
+        
+        const float rotation = (stof(brokeLine[3]) + 90.0f) * MathUtils::DEG2RAD;
+        door.Rotate(Vector3::unitZ, rotation);
+        
+        mDoors.push_back(door);
+    }
 }

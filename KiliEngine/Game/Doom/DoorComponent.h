@@ -13,7 +13,7 @@ protected:
     void OnUpdate() override;
     
 public:
-    DoorComponent(GameActor* pOwner, float pZMovement = 10.0f, float pInterpSpeed = 0.2f);
+    DoorComponent(GameActor* pOwner, float pZMovement = 5.0f, float pInterpSpeed = 0.2f);
     
     void Up();
     

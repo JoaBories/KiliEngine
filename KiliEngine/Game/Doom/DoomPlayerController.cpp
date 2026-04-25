@@ -7,7 +7,6 @@
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
-#include "Engine/Tools/Log.h"
 
 void DoomPlayerController::OnStart()
 {

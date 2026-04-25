@@ -78,7 +78,7 @@ private:
     
     void SpawnDoor(const Vector3& pPosition, const Quaternion& pRotation)
     {
-        const Vector3 size = Vector3(0.5f,4.0f,4.0f);
+        const Vector3 size = Vector3(0.5f,10.0f,5.0f);
         EmptyActor* door = new EmptyActor(Transform(pPosition, pRotation, Vector3::unit), "Door", ActorTags::Door);
         door->AddComponent(new DoorComponent(door));
         door->AddComponent(new MeshComponent(door, Transform(Vector3::zero, Quaternion(), size), AssetManager::GetMesh("cube"), AssetManager::GetTexture("Door"), "Basic"));
@@ -97,9 +97,7 @@ public :
         SpawnPlayer(Vector3(0, 0, 10));
         //SpawnFlyingCamera(Vector3::zero, 20.0f);
         
-        SpawnSky();
-        
-        SpawnDoor(Vector3(0, 0, 2.0f), Quaternion());
+        //SpawnSky();
 
         Map* map = AssetManager::GetMap("Map2");
         for (auto [TextureIndex, Transform] : map->GetWalls())
@@ -111,6 +109,11 @@ public :
         {
             Mesh* mesh = new Mesh(Vertices, map->GetTexture(TextureIndex), "BasicTile");
             SpawnFloor(Position, mesh, Offset, Size, Floor);
+        }
+        
+        for (const Transform& door : map->GetDoors())
+        {
+            SpawnDoor(door.GetPosition(), door.GetRotation());
         }
     }
 
