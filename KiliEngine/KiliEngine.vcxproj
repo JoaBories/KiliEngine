@@ -148,6 +148,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Components\AnimatedComponent.cpp">
     </ClCompile>
+    <ClCompile Include="Engine\Components\BillboardComponent.cpp" />
     <ClCompile Include="Engine\Components\BoxCollider.cpp">
     </ClCompile>
     <ClCompile Include="Engine\Components\ColliderComponent.cpp">
@@ -230,6 +231,7 @@
     <ClInclude Include="Engine\CameraActor.h" />
     <ClInclude Include="Engine\Components\ActorComponent.h" />
     <ClInclude Include="Engine\Components\AnimatedComponent.h" />
+    <ClInclude Include="Engine\Components\BillboardComponent.h" />
     <ClInclude Include="Engine\Components\BoxCollider.h" />
     <ClInclude Include="Engine\Components\ColliderComponent.h" />
     <ClInclude Include="Engine\Components\FollowCameraComponent.h" />
@@ -293,6 +295,7 @@
     <Content Include="Resources\Materials\Basic.mat" />
     <Content Include="Resources\Materials\BasicLight.mat" />
     <Content Include="Resources\Materials\BasicTile.mat" />
+    <Content Include="Resources\Materials\Billboard.mat" />
     <Content Include="Resources\Materials\Collider.mat" />
     <Content Include="Resources\Materials\Decals.mat" />
     <Content Include="Resources\Materials\InstancedGrass.mat" />
@@ -321,6 +324,8 @@
     <Content Include="Resources\Shaders\Engine\BasicLight.vert" />
     <Content Include="Resources\Shaders\Engine\BasicTile.frag" />
     <Content Include="Resources\Shaders\Engine\BasicTile.vert" />
+    <Content Include="Resources\Shaders\Engine\Billboard.geom" />
+    <Content Include="Resources\Shaders\Engine\Billboard.vert" />
     <Content Include="Resources\Shaders\Engine\Collider.frag" />
     <Content Include="Resources\Shaders\Engine\Collider.vert" />
     <Content Include="Resources\Shaders\Engine\Decals.frag" />

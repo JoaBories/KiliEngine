@@ -11,6 +11,7 @@
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/TerrainComponent.h"
 #include "Engine/Components/ColliderComponent.h"
+#include "Engine/Components/BillboardComponent.h"
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
@@ -92,6 +93,7 @@ void GlRenderer::BeginDraw()
 void GlRenderer::Draw()
 {
     if (!mMeshes.empty()) DrawMeshes();
+    if (!mBillboards.empty()) DrawBillboards();
     if (!mTerrains.empty()) DrawTerrains();
     if (!mSprites.empty()) DrawSprites();
 
@@ -234,6 +236,20 @@ void GlRenderer::DrawTerrains()
     glPatchParameteri(GL_PATCH_VERTICES, 3);
 }
 
+void GlRenderer::DrawBillboards()
+{
+    Material* material = AssetManager::GetMaterial("Billboard");
+    material->Use();
+    
+    material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+    material->SetVec3("uCamPos", mCamera->GetWorldTransform().GetPosition());
+    
+    for (BillboardComponent* billboard : mBillboards)
+    {
+        billboard->Draw(material);
+    }
+}
+
 void GlRenderer::EndDraw()
 {
     SDL_GL_SwapWindow(mWindow->GetSdlWindow());
@@ -324,6 +340,17 @@ void GlRenderer::RemoveTerrain(const TerrainComponent* pTerrain)
     if (mTerrains.at(shaderName).empty()) mTerrains.erase(shaderName);
 }
 
+void GlRenderer::AddBillboard(BillboardComponent* pBillboard)
+{
+    mBillboards.push_back(pBillboard);
+}
+
+void GlRenderer::RemoveBillboard(const BillboardComponent* pBillboard)
+{
+    const auto iterator = std::find(mBillboards.begin(), mBillboards.end(), pBillboard);
+    mBillboards.erase(iterator);
+}
+
 #ifdef _DEBUG
 
 RenderMode GlRenderer::RenderMode = DefaultRender;
@@ -333,7 +360,7 @@ void GlRenderer::AddCollider(ColliderComponent* pCollider)
     mColliders.push_back(pCollider);
 }
 
-void GlRenderer::RemoveCollider(ColliderComponent* pCollider)
+void GlRenderer::RemoveCollider(const ColliderComponent* pCollider)
 {
     const auto iterator = std::find(mColliders.begin(), mColliders.end(), pCollider);
     mColliders.erase(iterator);

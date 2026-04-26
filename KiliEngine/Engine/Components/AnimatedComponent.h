@@ -8,9 +8,9 @@ class MeshComponent;
 class AnimatedComponent : public ActorComponent
 {
 private:
-	Animation mAnimation;
 	SpriteComponent* mSprite;
 	MeshComponent* mMesh;
+	Animation mAnimation;
 	float mCurrentFrame;
 	bool mPlaying;
 	bool mLooping;

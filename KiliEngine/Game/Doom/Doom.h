@@ -7,6 +7,7 @@
 #include "FloorComponent.h"
 #include "Engine/EmptyActor.h"
 #include "Engine/EnviroActor.h"
+#include "Engine/Components/BillboardComponent.h"
 #include "Engine/Components/FreeCamComponent.h"
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/PlaneCollider.h"
@@ -100,6 +101,12 @@ public :
         //SpawnFlyingCamera(Vector3::zero, 20.0f);
         
         //SpawnSky();
+        
+        EmptyActor* enemy = new EmptyActor(Transform(Vector3(0,0,5.0f), Quaternion(), Vector3::unit), "Enemy");
+        enemy->AddComponent(new BillboardComponent(enemy, Transform(Vector3(0,0,0), Quaternion(), Vector3(3.0f, 1.0f, 3.0f)), AssetManager::GetTexture("Imp_0")));
+        enemy->AddComponent(new BoxCollider(enemy, Transform::Origin, true, Vector3(1.0f, 1.0f, 3.0f)));
+        enemy->AddComponent(new RigidBody(enemy, 10.0f, 1.5f, 100.0f, 0.0f));
+        AddActor(enemy);
 
         Map* map = AssetManager::GetMap("Map2");
         for (auto [TextureIndex, Transform] : map->GetWalls())
