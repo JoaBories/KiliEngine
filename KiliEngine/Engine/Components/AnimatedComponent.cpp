@@ -38,6 +38,11 @@ bool AnimatedComponent::SetTexture(Texture* pTexture) const
 		mMesh->SetTextureOverride(pTexture); // change texture from mesh override
 		ret = true;
 	}
+	if (mBillboard)
+	{
+		mBillboard->SetTexture(pTexture);
+		ret = true;
+	}
 	
 	return ret;
 }
@@ -62,6 +67,7 @@ void AnimatedComponent::OnStart()
 {
 	mSprite = mOwner->GetComponent<SpriteComponent>();	
 	mMesh = mOwner->GetComponent<MeshComponent>();
+	mBillboard = mOwner->GetComponent<BillboardComponent>();
 }
 
 void AnimatedComponent::PlayAnimation(const Animation& pAnimation, const bool pLoop)
@@ -101,6 +107,5 @@ void AnimatedComponent::Reset()
 {
 	mCurrentFrame = 0.0f;
 	mPlaying = false;
-	mLooping = false;
 	SetTexture(mAnimation.Textures[0]);
 }

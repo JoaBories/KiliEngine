@@ -4,6 +4,7 @@
 
 #include "DoomPlayerController.h"
 #include "DoorComponent.h"
+#include "EnemyComponent.h"
 #include "FloorComponent.h"
 #include "Engine/EmptyActor.h"
 #include "Engine/EnviroActor.h"
@@ -36,7 +37,7 @@ private:
         player->AddComponent(new Camera(player, Transform(Vector3(0,0,1), Quaternion(), Vector3::unit), 90.0f, 0.1f, 10000.0f));
         player->AddComponent(new BoxCollider(player, Transform::Origin, true, Vector3(0.9f,0.9f,2)));
         player->AddComponent(new RigidBody(player, 10.0f, 1.5f, 100.0f, 0.0f));
-        player->AddComponent(new DoomPlayerController(player, 150.0f, 8.0f, Vector2(1.0f,1.0f)));
+        player->AddComponent(new DoomPlayerController(player, 200.0f, 10.0f, Vector2(1.0f,1.0f)));
         AddActor(player);
     }
     
@@ -89,6 +90,17 @@ private:
         AddActor(door);
     }
     
+    void SpawnEnemy(const Vector3& pPosition)
+    {
+        EmptyActor* enemy = new EmptyActor(Transform(pPosition, Quaternion(), Vector3::unit), "Enemy", ActorTags::Enemy);
+        enemy->AddComponent(new BillboardComponent(enemy, Transform(Vector3(0,0,0), Quaternion(), Vector3(3.0f, 1.0f, 3.0f)), AssetManager::GetTexture("Imp_0")));
+        enemy->AddComponent(new AnimatedComponent(enemy, AssetManager::GetAnimation("Imp", 0, 3, 6)));
+        enemy->AddComponent(new BoxCollider(enemy, Transform::Origin, true, Vector3(1.0f, 1.0f, 3.0f)));
+        enemy->AddComponent(new RigidBody(enemy, 10.0f, 1.5f, 100.0f, 0.0f));
+        enemy->AddComponent(new EnemyComponent(enemy));
+        AddActor(enemy);
+    }
+    
 public :
     Doom() : Scene("Doom") {}
 
@@ -101,12 +113,6 @@ public :
         //SpawnFlyingCamera(Vector3::zero, 20.0f);
         
         //SpawnSky();
-        
-        EmptyActor* enemy = new EmptyActor(Transform(Vector3(0,0,5.0f), Quaternion(), Vector3::unit), "Enemy");
-        enemy->AddComponent(new BillboardComponent(enemy, Transform(Vector3(0,0,0), Quaternion(), Vector3(3.0f, 1.0f, 3.0f)), AssetManager::GetTexture("Imp_0")));
-        enemy->AddComponent(new BoxCollider(enemy, Transform::Origin, true, Vector3(1.0f, 1.0f, 3.0f)));
-        enemy->AddComponent(new RigidBody(enemy, 10.0f, 1.5f, 100.0f, 0.0f));
-        AddActor(enemy);
 
         Map* map = AssetManager::GetMap("Map2");
         for (auto [TextureIndex, Transform] : map->GetWalls())
@@ -123,6 +129,11 @@ public :
         for (const Transform& door : map->GetDoors())
         {
             SpawnDoor(door.GetPosition(), door.GetRotation());
+        }
+        
+        for (const Vector3& enemy : map->GetEnemies())
+        {
+            SpawnEnemy(enemy);
         }
     }
 

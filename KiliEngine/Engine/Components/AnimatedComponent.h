@@ -1,5 +1,6 @@
 #pragma once
 #include "ActorComponent.h"
+#include "BillboardComponent.h"
 #include "Engine/Assets/Texture.h"
 
 class SpriteComponent;
@@ -10,6 +11,7 @@ class AnimatedComponent : public ActorComponent
 private:
 	SpriteComponent* mSprite;
 	MeshComponent* mMesh;
+	BillboardComponent* mBillboard;
 	Animation mAnimation;
 	float mCurrentFrame;
 	bool mPlaying;

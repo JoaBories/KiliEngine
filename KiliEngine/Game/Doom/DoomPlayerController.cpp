@@ -1,8 +1,10 @@
 #include "DoomPlayerController.h"
 
+#include "BulletFx.h"
 #include "BulletTrace.h"
 #include "BulletImpact.h"
 #include "DoorComponent.h"
+#include "EnemyComponent.h"
 #include "Engine/PhysicManager.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/GameTime.h"
@@ -93,9 +95,16 @@ void DoomPlayerController::OnUpdate()
         if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
         {
             SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }));
-            if (raycast.OtherActor->GetTag() != ActorTags::Door)
+            if (raycast.OtherActor->GetTag() != ActorTags::Door && raycast.OtherActor->GetTag() != ActorTags::Enemy)
             {
-                SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.5f)));
+                SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.75f)));
+            }
+            
+            SceneManager::ActiveScene()->AddActor(new BulletFx(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion(), Vector3::unit)));
+            
+            if (raycast.OtherActor->GetTag() == ActorTags::Enemy)
+            {
+                raycast.OtherActor->GetComponent<EnemyComponent>()->TakeDamage(1.0f);
             }
         }
         else

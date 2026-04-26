@@ -36,6 +36,7 @@ private:
     std::vector<MapFloor> mFloors;
     std::map<int, Vector3> mVertices;
     std::vector<Transform> mDoors;
+    std::vector<Vector3> mEnemies;
 
     void ResolveDict(const std::string& pLine);
     void ResolveWall(const std::string& pLine);
@@ -51,5 +52,6 @@ public:
     [[nodiscard]] std::vector<MapFloor> GetFloors() const { return mFloors;}
     [[nodiscard]] std::map<int, Vector3> GetVertices() const { return mVertices;}
     [[nodiscard]] std::vector<Transform> GetDoors() const { return mDoors;}
+    [[nodiscard]] std::vector<Vector3> GetEnemies() const { return mEnemies;}
     Texture* GetTexture(int pIndex);
 };

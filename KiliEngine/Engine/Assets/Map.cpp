@@ -176,4 +176,11 @@ void Map::ResolveActor(const std::string& pLine)
         
         mDoors.push_back(door);
     }
+    else if (brokeLine[1] == "Demon")
+    {
+        const auto brokePos = BreakString(brokeLine[2], ':');
+        const Vector3 pos = Vector3(stof(brokePos[0])* MAP_SCALE, std::stof(brokePos[1])* MAP_SCALE, 5.0f) ;
+        
+        mEnemies.push_back(pos);
+    }
 }
