@@ -27,7 +27,7 @@ An **Asset Manager** responsible for loading and managing: **Textures**, **Meshe
 ### Physics & collisions
 - Physics with: **Gravity** and **Linear velocity**
 - Collision system supporting: **Sphere colliders**, **Box colliders** and **Ray Cast**
-- Includes **ray casting** for queries/picking/tests.
+- Includes **Line Trace** for queries in collisions.
 
 ### Input
 A simple input layer (on top of **SDL2**) to manage: **Pressed** button states, **Mouse capture** (useful for camera controls).
@@ -37,6 +37,7 @@ A simple input layer (on top of **SDL2**) to manage: **Pressed** button states, 
 ## Example game
 
 - Small [**Bowling**](https://github.com/JoaBories/KiliEngine/releases/tag/Bowling1.0) to demonstrate physics and collisions.
+- Small [**Doom**](https://github.com/JoaBories/KiliEngine/releases/tag/DoomLike1.1) to push the Engine further, implement **ray cast** and read map from [Alexandre Coppens](https://github.com/Alexandre-Coppens)'s [DOOM-MapMaker](https://github.com/Alexandre-Coppens/14-Engine/tree/Doom-MapMaker).
 
 ## Project goals
 
