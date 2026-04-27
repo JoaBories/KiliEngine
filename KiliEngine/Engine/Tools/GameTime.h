@@ -39,7 +39,7 @@ public:
 		mFrameStart = SDL_GetPerformanceCounter();
 		const Uint64 dt = mFrameStart - mLastFrame;
 		mLastFrame = mFrameStart;
-		DeltaTime = static_cast<float>(dt) / static_cast<float>(Frequency);
+		DeltaTime = MathUtils::Min(static_cast<float>(dt) / static_cast<float>(Frequency), Cfg::DELTA_TIME_MAX);
 		mTotalTime += dt;
 		mFrameCount++;
 		return dt;

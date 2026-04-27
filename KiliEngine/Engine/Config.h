@@ -21,6 +21,8 @@ namespace Cfg
 {
     constexpr FpsMode FPS_LOCKED = Unlimited;
     constexpr int FPS_MAX = 144;
+
+    constexpr float DELTA_TIME_MAX = 0.1f;
     
     const std::string TEXTURE_PATH = "Resources/Textures";
     const std::string SHADER_PATH = "Resources/Shaders";
