@@ -125,7 +125,7 @@ void DoomPlayerController::OnUpdate()
             Vector3 right = mCamera->GetWorldTransform().GetTransform().GetRightVector();
             Vector3 up = mCamera->GetWorldTransform().GetTransform().GetUpVector();
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 8; i++)
             {
                 float randAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * MathUtils::TAU;
                 float randRadius = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) / 8.0f;

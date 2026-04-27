@@ -67,7 +67,7 @@ private:
     {
         EnviroActor* wall = new EnviroActor(pTransform);
         wall->AddComponent(new MeshComponent(wall, Transform::Origin, AssetManager::GetMesh("Wall"), pTexture, "Wall"));
-        wall->AddComponent(new BoxCollider(wall, Transform(Vector3::zero, Quaternion(), Vector3::unit), false, Vector3(0.1f,1.0f,1.0f)));
+        wall->AddComponent(new BoxCollider(wall, Transform::Origin, false, Vector3(0.1f,1.0f,1.0f)));
         AddActor(wall);
     }
 
@@ -105,6 +105,7 @@ public :
     Doom() : Scene("Doom") {}
 
     void AssetLoad() override {
+        AssetManager::LoadAll();
     }
 
     void OnStart() override {

@@ -119,6 +119,11 @@ Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
     }
 
     while (std::getline(myFile, line)) {
+        if (!line.empty() && line.back() == '\r')
+            line.pop_back();
+
+        if (line.empty()) continue;
+        
         shaders.push_back(GetShader(line));
         shadersForLog += line + ", ";
     }
@@ -126,6 +131,7 @@ Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
     myFile.close();
 
     Material* loadedMaterial = new Material(shaders);
+    
     Log::Info("Material "+ pFilePath + " loaded with : " + shadersForLog);
     return loadedMaterial;
 }
@@ -260,7 +266,7 @@ Texture* AssetManager::LoadTexture(const std::string& pName)
     const path texturePath = mUnloadedTextures.at(pName); 
     
     Texture* texture = new Texture(); // todo move this in the constructor
-    texture->Load(mRenderer, texturePath.string());
+    texture->Load(mRenderer, texturePath.generic_string());
     mLoadedTextures[pName] = texture;
     return mLoadedTextures.at(pName);
 }
@@ -318,7 +324,7 @@ void AssetManager::FetchShader(const path& pShaderPath)
 
 Shader* AssetManager::LoadShader(const std::string& pName)
 {
-    const std::string shaderPath = mUnloadedShaders.at(pName).string();
+    const std::string shaderPath = mUnloadedShaders.at(pName).generic_string();
     mLoadedShaders[pName] = new Shader(shaderPath, Shader::GetShaderType(mUnloadedShaders.at(pName).extension().string()));
     return mLoadedShaders.at(pName);
 }
@@ -352,7 +358,7 @@ void AssetManager::FetchMesh(const path& pMeshPath)
 
 Mesh* AssetManager::LoadMesh(const std::string& pName)
 {
-    const std::string meshPath = mUnloadedMeshes.at(pName).string();
+    const std::string meshPath = mUnloadedMeshes.at(pName).generic_string();
     mLoadedMeshes[pName] = LoadMeshFromFile(meshPath);
     return mLoadedMeshes.at(pName);
 }
@@ -386,7 +392,7 @@ void AssetManager::FetchMaterial(const path& pMaterialPath)
 
 Material* AssetManager::LoadMaterial(const std::string& pName)
 {
-    const std::string materialPath = mUnloadedMaterials.at(pName).string();
+    const std::string materialPath = mUnloadedMaterials.at(pName).generic_string();
     mLoadedMaterials[pName] = LoadMaterialFromFile(materialPath);
     return mLoadedMaterials.at(pName);
 }
@@ -420,7 +426,7 @@ void AssetManager::FetchMap(const path& pMapPath)
 
 Map* AssetManager::LoadMap(const std::string& pName)
 {
-    const std::string mapPath = mUnloadedMaps.at(pName).string();
+    const std::string mapPath = mUnloadedMaps.at(pName).generic_string();
     mLoadedMaps[pName] = new Map(mapPath);
     return mLoadedMaps.at(pName);
 }

@@ -43,7 +43,7 @@ Map::Map(const std::string& pPath)
         switch (line[0])
         {
         case '$':
-            Log::Info("Reading map with version : " + BreakString(line, ' ')[1]);
+            Log::Info("Reading map : " + pPath + " with version : " + BreakString(line, ' ')[1]);
             break;
             
         case 'D' :
