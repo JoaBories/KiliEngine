@@ -375,7 +375,6 @@ void GlRenderer::DrawColliders()
     glDisable(GL_CULL_FACE);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glLineWidth(2.0f);
 
     AssetManager::GetMaterial("Collider")->Use();
     
@@ -387,7 +386,6 @@ void GlRenderer::DrawColliders()
     PhysicManager::DrawDebug(mCamera);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glLineWidth(1.0f);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }

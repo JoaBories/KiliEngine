@@ -19,7 +19,7 @@ enum FpsMode : Uint8
 
 namespace Cfg
 {
-    constexpr FpsMode FPS_LOCKED = Unlimited;
+    constexpr FpsMode FPS_LOCKED = Limited;
     constexpr int FPS_MAX = 144;
 
     constexpr float DELTA_TIME_MAX = 0.1f;
@@ -34,10 +34,10 @@ namespace Cfg
     constexpr int WINDOW_HEIGHT = 800;
     
     constexpr ScreenMode WINDOW_MODE = ScreenMode::Windowed;
-    constexpr bool WINDOW_BORDERLESS = false;
+    constexpr bool WINDOW_BORDERLESS = true;
     constexpr bool WINDOW_ALWAYS_ON_TOP = false;
 
-    const std::string WINDOW_TITLE = "Kili Engine";
+    const std::string WINDOW_TITLE = "Kili Engine - DoomLike";
 
     constexpr float GRAVITY_FORCE = 9.8f;
     const Vector3 GRAVITY_DIR = Vector3(0, 0, -1).Normalized();
@@ -59,6 +59,6 @@ namespace Cfg
 
     constexpr SDL_Keycode MOUSECAPTURE_TOGGLE = SDLK_F5;
 
-    constexpr bool DEBUG_COLLISIONS = false;
+    constexpr bool DEBUG_COLLISIONS = true;
     #endif
 }

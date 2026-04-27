@@ -45,8 +45,7 @@ void DoomPlayerController::OnStart()
 
     mPistol = AssetManager::GetAnimation("Pistol", 0, 4, 24);
     mShotgun = AssetManager::GetAnimation("Shotgun", 0, 3, 24);
-
-    mHasShotgun = true;
+    
     mSprite->SetAnimation(mHasShotgun ? mShotgun : mPistol);
 }
 
