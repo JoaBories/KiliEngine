@@ -3,6 +3,7 @@
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
 #include "Engine/GameActor.h"
+#include "Engine/PhysicManager.h"
 
 void FreeCamComponent::OnUpdate()
 {

@@ -141,6 +141,30 @@ public:
 		return retVal;
 	}
 
+	static Quaternion QuaternionFromDirection(const Vector3& direction)
+	{
+		const Vector3 from = Vector3(0, 0, 1); // cube's default forward axis
+		const Vector3 to   = direction.Normalized();
+
+		const float   dot  = Vector3::Dot(from, to);
+		const Vector3 axis = Vector3::Cross(from, to);
+
+		// --- Edge case: vectors are opposite (dot ≈ -1) ---
+		// Cross product is near-zero, pick any perpendicular axis
+		if (dot < -0.9999f)
+		{
+			Vector3 perp = fabsf(from.x) < 0.9f ?
+				Vector3::Cross(from, Vector3(1, 0, 0)) : Vector3::Cross(from, Vector3(0, 1, 0));
+			perp.Normalize();
+			return Quaternion(perp.x, perp.y, perp.z, 0.0f); // 180° rotation
+		}
+
+		// --- General case ---
+		// w = 1 + dot  (half-angle trick, normalize afterwards)
+		Quaternion q(axis.x, axis.y, axis.z, 1.0f + dot);
+		return Normalize(q);
+	}
+
 	class Matrix4Row AsMatrixRow() const;
 
 	static const Quaternion Identity;

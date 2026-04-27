@@ -7,35 +7,14 @@
 #include "Engine/Tools/Log.h"
 #include "Engine/PhysicManager.h"
 
-std::vector<Vector3> BoxCollider::GetCorners()
-{
-    std::vector<Vector3> corners = {
-        Vector3( mHalfSize.x,  mHalfSize.y,  mHalfSize.z),
-        Vector3(-mHalfSize.x,  mHalfSize.y,  mHalfSize.z),
-        Vector3(-mHalfSize.x, -mHalfSize.y,  mHalfSize.z),
-        Vector3(-mHalfSize.x, -mHalfSize.y, -mHalfSize.z),
-        Vector3(-mHalfSize.x,  mHalfSize.y, -mHalfSize.z),
-        Vector3( mHalfSize.x, -mHalfSize.y,  mHalfSize.z),
-        Vector3( mHalfSize.x, -mHalfSize.y, -mHalfSize.z),
-        Vector3( mHalfSize.x,  mHalfSize.y, -mHalfSize.z)
-    };
-
-    for (auto& corner : corners)
-    {
-        corner = GetWorldTransform().GetWorldTransformMatrix().TransformVector3(corner);
-    }
-
-    return corners;
-}
-
-BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const Vector3& pHalfSize, const short pUpdateOrder) :
-    ColliderComponent(pOwner, pTransform, pUpdateOrder),
-    mHalfSize(pHalfSize), mRadius(0.0f)
+BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const bool pQuery, const Vector3& pHalfSize, const short pUpdateOrder) :
+    ColliderComponent(pOwner, pTransform, pQuery, pUpdateOrder),
+    mHalfSize(pHalfSize), mRadiusSq(0.0f)
 {
     SetName("BoxCollider");
     PhysicManager::AddBoxCollider(this);
     
-    mRadius = mHalfSize.Length();
+    mRadiusSq = (mHalfSize * GetWorldTransform().GetScale()).LengthSq();
 #ifdef _DEBUG
     mMesh = AssetManager::GetMesh("cube");    
 #endif
@@ -44,6 +23,12 @@ BoxCollider::BoxCollider(GameActor* pOwner, const Transform& pTransform, const V
 BoxCollider::~BoxCollider()
 {
     PhysicManager::RemoveBoxCollider(this);
+}
+
+void BoxCollider::SetHalfSize(const Vector3& pHalfSize)
+{
+    mHalfSize = pHalfSize;
+    mRadiusSq = (mHalfSize * GetWorldTransform().GetScale()).LengthSq();
 }
 
 #ifdef _DEBUG

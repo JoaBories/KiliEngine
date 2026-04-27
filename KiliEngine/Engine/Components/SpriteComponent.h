@@ -18,7 +18,7 @@ protected:
 	bool mFlipX;
 
 public:
-	SpriteComponent(GameActor* pOwner, Transform pTransform, Texture* pTexture, int pDrawOrder = 100);
+	SpriteComponent(GameActor* pOwner, const Transform& pTransform, Texture* pTexture, int pDrawOrder = 100);
 	~SpriteComponent() override;
 
 	SpriteComponent() = delete;

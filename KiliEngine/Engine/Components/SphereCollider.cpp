@@ -3,8 +3,8 @@
 #include "Engine/GameActor.h"
 #include "Engine/PhysicManager.h"
 
-SphereCollider::SphereCollider(GameActor* pOwner, const Transform& pTransform, const float pRadius, const short pUpdateOrder) :
-    ColliderComponent(pOwner, pTransform, pUpdateOrder),
+SphereCollider::SphereCollider(GameActor* pOwner, const Transform& pTransform, const bool pQuery, const float pRadius, const short pUpdateOrder) :
+    ColliderComponent(pOwner, pTransform, pQuery, pUpdateOrder),
     mRadius(pRadius)
 {
     SetName("SphereCollider");

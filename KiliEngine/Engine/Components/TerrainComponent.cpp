@@ -81,7 +81,7 @@ void TerrainComponent::Draw(Camera* pCamera, Material* pMaterial)
         pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
         pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
         pMaterial->SetVec3("uCamPos", pCamera->GetWorldTransform().GetPosition());
-        pMaterial->SetVec2("uTilling", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x);
+        pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
         pMaterial->SetFloat("uHeightScale", mHeightScale);
         
         mTexture->SetActive();

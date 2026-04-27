@@ -10,6 +10,7 @@
 #include "Engine/Assets/Material.h"
 #include "Utils/Matrix4Row.h"
 #include "Utils/Struct.h"
+class BillboardComponent;
 using Struct::Rectangle;
 
 class Texture;
@@ -44,6 +45,7 @@ private:
 	std::vector<SpriteComponent*> mSprites;
 	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Meshes sorted by material
 	std::map<std::string, std::vector<TerrainComponent*>> mTerrains; //Terrains sorted by material
+	std::vector<BillboardComponent*> mBillboards;
 
 public:
 	
@@ -59,10 +61,12 @@ public:
 	void DrawMeshes() const;
 	void DrawSprites();
 	void DrawTerrains();
+	void DrawBillboards();
 	void EndDraw();
 	void Close();
 	
-	void SetCamera(Camera* pCamera) {mCamera = pCamera;}
+	void SetCamera(Camera* pCamera) { mCamera = pCamera; }
+	Camera* GetCamera() const { return mCamera; }
 
 	void DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const;
 	void AddSprite(SpriteComponent* pSprite);
@@ -73,8 +77,12 @@ public:
 	
 	void AddTerrain(TerrainComponent* pTerrain);
 	void RemoveTerrain(const TerrainComponent* pTerrain);
+	
+	void AddBillboard(BillboardComponent* pBillboard);
+	void RemoveBillboard(const BillboardComponent* pBillboard);
 
 	[[nodiscard]] SDL_GLContext GetContext() const {return mContext;}
+	[[nodiscard]] Window* GetWindow() const {return mWindow;}
 
 #ifdef _DEBUG
 
@@ -85,7 +93,7 @@ public:
 	static RenderMode RenderMode;
 	
 	void AddCollider(ColliderComponent* pCollider);
-	void RemoveCollider(ColliderComponent* pCollider);
+	void RemoveCollider(const ColliderComponent* pCollider);
 
 	void DrawColliders();
 	

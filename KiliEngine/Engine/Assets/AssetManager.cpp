@@ -4,7 +4,7 @@
 #include "Libraries/tiny_obj_loader.h"
 
 #include <chrono>
-using Clk = std::chrono::high_resolution_clock;
+using clk = std::chrono::high_resolution_clock;
 using namespace std::filesystem;
 
 void AssetManager::SearchAFolderFor(const path& pFolderPath, const AssetType pForWhat)
@@ -19,21 +19,25 @@ void AssetManager::SearchAFolderFor(const path& pFolderPath, const AssetType pFo
 
         switch (pForWhat)
         {
-        case AssetTexture:
-            FetchTexture(entry.path());
-            break;
-            
-        case AssetShader:
-            FetchShader(entry.path());
-            break;
+            case AssetTexture:
+                FetchTexture(entry.path());
+                break;
+                
+            case AssetShader:
+                FetchShader(entry.path());
+                break;
 
-        case AssetMesh:
-            FetchMesh(entry.path());
-            break;
+            case AssetMesh:
+                FetchMesh(entry.path());
+                break;
 
-        case AssetMaterial:
-            FetchMaterial(entry.path());
-            break;
+            case AssetMaterial:
+                FetchMaterial(entry.path());
+                break;
+
+            case AssetMap:
+                FetchMap(entry.path());
+                break;
         }
     }
 }
@@ -44,11 +48,13 @@ std::map<std::string, Texture*> AssetManager::mLoadedTextures = {};
 std::map<std::string, Shader*> AssetManager::mLoadedShaders = {};
 std::map<std::string, Mesh*> AssetManager::mLoadedMeshes = {};
 std::map<std::string, Material*> AssetManager::mLoadedMaterials = {};
+std::map<std::string, Map*> AssetManager::mLoadedMaps = {};
 
 std::map<std::string, path> AssetManager::mUnloadedTextures = {};
 std::map<std::string, path> AssetManager::mUnloadedShaders = {};
 std::map<std::string, path> AssetManager::mUnloadedMeshes = {};
 std::map<std::string, path> AssetManager::mUnloadedMaterials = {};
+std::map<std::string, path> AssetManager::mUnloadedMaps = {};
 
 Mesh* AssetManager::LoadMeshFromFile(const std::string& pFilePath)
 {
@@ -113,6 +119,11 @@ Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
     }
 
     while (std::getline(myFile, line)) {
+        if (!line.empty() && line.back() == '\r')
+            line.pop_back();
+
+        if (line.empty()) continue;
+        
         shaders.push_back(GetShader(line));
         shadersForLog += line + ", ";
     }
@@ -120,6 +131,7 @@ Material* AssetManager::LoadMaterialFromFile(const std::string& pFilePath)
     myFile.close();
 
     Material* loadedMaterial = new Material(shaders);
+    
     Log::Info("Material "+ pFilePath + " loaded with : " + shadersForLog);
     return loadedMaterial;
 }
@@ -140,7 +152,7 @@ void AssetManager::Close()
 void AssetManager::FetchAll()
 {
     Log::Info("==========| Start fetching Files");
-    const auto startTime = Clk::now();
+    const auto startTime = clk::now();
 
     UnfetchAll();
     
@@ -148,8 +160,9 @@ void AssetManager::FetchAll()
     SearchAFolderFor(path(Cfg::SHADER_PATH), AssetShader);
     SearchAFolderFor(path(Cfg::MESH_PATH), AssetMesh);
     SearchAFolderFor(path(Cfg::MATERIAL_PATH), AssetMaterial);
+    SearchAFolderFor(path(Cfg::MAP_PATH), AssetMap);
 
-    const auto endTime = Clk::now();
+    const auto endTime = clk::now();
     const std::string time = std::to_string(std::chrono::duration<double>(endTime - startTime).count());
     Log::Info("==========| Finish fetching Files in : " + time + "s");
 }
@@ -160,37 +173,43 @@ void AssetManager::UnfetchAll()
     mUnloadedShaders.clear();
     mUnloadedMeshes.clear();
     mUnloadedMaterials.clear();
+    mUnloadedMaps.clear();
 }
 
 void AssetManager::LoadAll()
 {
     Log::Info("==========| Start loading Files");
-    const auto startTime = Clk::now();
+    const auto globalStartTime = clk::now();
     
     UnloadAll();
 
-    for (auto& unloadedPath : mUnloadedTextures)
-    {
-        LoadTexture(unloadedPath.first);
-    }
+    auto startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedTextures) LoadTexture(unloadedPath.first);
+    std::string time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Textures in : " + time + "s");
+
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedShaders) LoadShader(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Shaders in : " + time + "s");
+
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedMaterials) LoadMaterial(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Material in : " + time + "s");
+
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedMeshes) LoadMesh(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Mesh in : " + time + "s");
+
+    startTime = clk::now();
+    for (auto& unloadedPath : mUnloadedMaps) LoadMap(unloadedPath.first);
+    time = std::to_string(std::chrono::duration<double>(clk::now() - startTime).count());
+    Log::Info("==========| Finish loading Map in : " + time + "s");
     
-    for (auto& unloadedPath : mUnloadedShaders)
-    {
-        LoadShader(unloadedPath.first);
-    }
-    
-    for (auto& unloadedPath : mUnloadedMaterials)
-    {
-        LoadMaterial(unloadedPath.first);
-    }
-    
-    for (auto& unloadedPath : mUnloadedMeshes)
-    {
-        LoadMesh(unloadedPath.first);
-    }
-    
-    const auto endTime = Clk::now();
-    const std::string time = std::to_string(std::chrono::duration<double>(endTime - startTime).count());
+    const auto endTime = clk::now();
+    time = std::to_string(std::chrono::duration<double>(endTime - globalStartTime).count());
     Log::Info("==========| Finish loading Files in : " + time + "s");
 }
 
@@ -216,6 +235,17 @@ void AssetManager::UnloadAll()
         delete mesh;
     }
     mLoadedMeshes.clear();
+
+    for (const auto& [name, material] : mLoadedMaterials)
+    {
+        delete material;
+    }
+    mLoadedMaterials.clear();
+
+    for (const auto& [name, map] : mLoadedMaps)
+    {
+        delete map;
+    }
 }
 
 void AssetManager::FetchTexture(const path& pTexturePath)
@@ -236,7 +266,7 @@ Texture* AssetManager::LoadTexture(const std::string& pName)
     const path texturePath = mUnloadedTextures.at(pName); 
     
     Texture* texture = new Texture(); // todo move this in the constructor
-    texture->Load(mRenderer, texturePath.string());
+    texture->Load(mRenderer, texturePath.generic_string());
     mLoadedTextures[pName] = texture;
     return mLoadedTextures.at(pName);
 }
@@ -248,12 +278,36 @@ Texture* AssetManager::GetTexture(const std::string& pName)
         if (mUnloadedTextures.find(pName) == mUnloadedTextures.end())
         {
             Log::Error(LogType::Application, "Texture " + pName + " does not exist in fetched textures");
-            return nullptr;
+            return GetTexture("DefaultTexture");
         }
         
         return LoadTexture(pName);
     }
     return mLoadedTextures.at(pName);
+}
+
+Animation AssetManager::GetAnimation(const std::vector<std::string>& pNames, float pFps)
+{
+    std::vector<Texture*> textures;
+    
+    for (const auto& name : pNames)
+    {
+        textures.push_back(GetTexture(name));
+    }
+    
+    return {textures, pFps};
+}
+
+Animation AssetManager::GetAnimation(const std::string& pName, const int pStartFrame, const int pEndFrame, const float pFps)
+{
+    std::vector<Texture*> textures;
+    
+    for (int i = pStartFrame; i <= pEndFrame; i++)
+    {
+        textures.push_back(GetTexture(pName + "_" + std::to_string(i)));
+    }
+    
+    return {textures, pFps};
 }
 
 void AssetManager::FetchShader(const path& pShaderPath)
@@ -270,7 +324,7 @@ void AssetManager::FetchShader(const path& pShaderPath)
 
 Shader* AssetManager::LoadShader(const std::string& pName)
 {
-    const std::string shaderPath = mUnloadedShaders.at(pName).string();
+    const std::string shaderPath = mUnloadedShaders.at(pName).generic_string();
     mLoadedShaders[pName] = new Shader(shaderPath, Shader::GetShaderType(mUnloadedShaders.at(pName).extension().string()));
     return mLoadedShaders.at(pName);
 }
@@ -304,7 +358,7 @@ void AssetManager::FetchMesh(const path& pMeshPath)
 
 Mesh* AssetManager::LoadMesh(const std::string& pName)
 {
-    const std::string meshPath = mUnloadedMeshes.at(pName).string();
+    const std::string meshPath = mUnloadedMeshes.at(pName).generic_string();
     mLoadedMeshes[pName] = LoadMeshFromFile(meshPath);
     return mLoadedMeshes.at(pName);
 }
@@ -338,7 +392,7 @@ void AssetManager::FetchMaterial(const path& pMaterialPath)
 
 Material* AssetManager::LoadMaterial(const std::string& pName)
 {
-    const std::string materialPath = mUnloadedMaterials.at(pName).string();
+    const std::string materialPath = mUnloadedMaterials.at(pName).generic_string();
     mLoadedMaterials[pName] = LoadMaterialFromFile(materialPath);
     return mLoadedMaterials.at(pName);
 }
@@ -356,4 +410,38 @@ Material* AssetManager::GetMaterial(const std::string& pName)
         return LoadMaterial(pName);
     }
     return mLoadedMaterials.at(pName);
+}
+
+void AssetManager::FetchMap(const path& pMapPath)
+{
+    if (pMapPath.extension() == ".map")
+    {
+        const std::string name = pMapPath.filename().replace_extension("").string();
+        if (mLoadedMaps.find(name) == mLoadedMaps.end())
+        {
+            mUnloadedMaps[name] = pMapPath;
+        }
+    }
+}
+
+Map* AssetManager::LoadMap(const std::string& pName)
+{
+    const std::string mapPath = mUnloadedMaps.at(pName).generic_string();
+    mLoadedMaps[pName] = new Map(mapPath);
+    return mLoadedMaps.at(pName);
+}
+
+Map* AssetManager::GetMap(const std::string& pName)
+{
+    if (mLoadedMaps.find(pName) == mLoadedMaps.end())
+    {
+        if (mUnloadedMaps.find(pName) == mUnloadedMaps.end())
+        {
+            Log::Error(LogType::Application,"Map " + pName + " does not exist in assets manager");
+            return nullptr;
+        }
+        
+        return LoadMap(pName);
+    }
+    return mLoadedMaps.at(pName);
 }

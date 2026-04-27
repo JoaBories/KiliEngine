@@ -5,11 +5,11 @@ layout(location = 2) in vec2 texCoord;
 
 uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
-uniform vec2 uTilling;
+uniform vec3 uScale;
 
 out vec2 fragTexCoord;
 void main()
 {
     gl_Position = vec4(pos, 1.0) * uWorldTransform * uViewProj;
-    fragTexCoord = texCoord * uTilling;
+    fragTexCoord = texCoord * uScale.xy;
 }

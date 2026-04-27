@@ -4,6 +4,8 @@
 #include "Components/BoxCollider.h"
 #include "Components/RigidBody.h"
 
+class Camera;
+
 class PhysicManager
 {
 private:
@@ -13,6 +15,9 @@ private:
     static Collision Collide(BoxCollider* pBox1, BoxCollider* pBox2);
     static Collision Collide(BoxCollider* pBox, SphereCollider* pSphere);
     static Collision Collide(SphereCollider* pSphere1, SphereCollider* pSphere2);
+
+    static Hit Collide(const Line& pLine, SphereCollider* pSphere);
+    static Hit Collide(const Line& pLine, BoxCollider* pBox);
     
     static Obb BoxToObb(BoxCollider* pBox);
     static Sphere SphereToSphere(SphereCollider* pSphere);
@@ -25,5 +30,28 @@ public:
 
     static void AddSphereCollider(SphereCollider* pCollider);
     static void RemoveSphereCollider(SphereCollider* pCollider);
+
+    static Hit Linetrace(const Vector3& pStart, const Vector3& pEnd, const GameActor* pSelf, float pDebugTime = 0.0f);
+
+#ifdef _DEBUG
+
+struct LineTraceWrap
+{
+    Matrix4Row Transform;
+    float TimeRemaining;
+    bool Collided;
+
+    bool operator==(const LineTraceWrap& pOther) const {
+        return Transform == pOther.Transform && MathUtils::NearlyEqual(TimeRemaining, pOther.TimeRemaining) && Collided == pOther.Collided;
+    }
+};
+
+private :
+    static std::vector<LineTraceWrap> mLineTraceWraps;
+
+public :
+    static void DrawDebug(const Camera* pCam);
+    
+#endif
     
 };

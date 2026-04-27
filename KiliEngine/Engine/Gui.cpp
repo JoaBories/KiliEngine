@@ -14,9 +14,9 @@ void Gui::DrawFps()
     ImGui::SetNextWindowBgAlpha(0.5f);
     if (ImGui::Begin("Performance", nullptr, window_flags))
     {
-        std::string fps = std::to_string(MathUtils::Round(1.0f / GameTime::DeltaTime));
+        const std::string fps = std::to_string(MathUtils::Round(1.0f / GameTime::DeltaTime));
         ImGui::Text(("Fps : " + fps).c_str());
-        std::string avg = std::to_string(MathUtils::Round(1000.0f / GameTime::GetAvgFrameTime()));
+        const std::string avg = std::to_string(MathUtils::Round(1000.0f / static_cast<float>(GameTime::GetAvgFrameTime())));
         ImGui::Text(("Avg : " + avg).c_str());
     }
     ImGui::End();

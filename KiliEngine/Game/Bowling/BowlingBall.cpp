@@ -1,5 +1,6 @@
 #include "BowlingBall.h"
 
+#include "Engine/CameraActor.h"
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
 #include "Engine/Scene/SceneManager.h"
@@ -52,7 +53,7 @@ void BowlingBall::OnLateUpdate()
         {
             mLaunched = true;
             mRb->AddVelocity(GetWorldTransform().GetTransform().GetForwardVector() * mForce * 10.0f);
-            SceneManager::ActiveScene()->GetActorOfClass<Camera>()->AddPosition(Vector3(0,0,-2));
+            SceneManager::ActiveScene()->GetActorOfClass<CameraActor>()->AddPosition(Vector3(0,0,-2));
             mArrow->SetActive(false);
         }
     }

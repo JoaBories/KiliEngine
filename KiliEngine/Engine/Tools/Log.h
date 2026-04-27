@@ -25,12 +25,12 @@ public:
 	Log(const Log&) = delete;
 	Log& operator=(const Log&) = delete;
 
-	inline static void Info(const std::string& message) { 
-		SDL_Log((message + "\n").c_str());
+	inline static void Info(const std::string& pMessage) {
+		SDL_Log((pMessage + "\n").c_str());
 	}
 
-	inline static void Error(LogType category, const std::string& message) { 
-		SDL_LogError(static_cast<int>(category), "%s | SDL : %s", message.c_str(), SDL_GetError());
+	inline static void Error(LogType pCategory, const std::string& pMessage) { 
+		SDL_LogError(static_cast<int>(pCategory), "%s | SDL : %s", pMessage.c_str(), SDL_GetError());
 	}
 };
 

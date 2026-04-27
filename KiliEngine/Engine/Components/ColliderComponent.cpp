@@ -6,8 +6,8 @@
 #include "Engine/Scene/SceneManager.h"
 #endif
 
-ColliderComponent::ColliderComponent(GameActor* pOwner, const Transform& pTransform, const short pUpdateOrder) :
-    ActorComponent(pOwner, pTransform, pUpdateOrder)
+ColliderComponent::ColliderComponent(GameActor* pOwner, const Transform& pTransform, const bool pQuery, const short pUpdateOrder) :
+    ActorComponent(pOwner, pTransform, pUpdateOrder), mQuery(pQuery)
 {
     SetName("ColliderComponent");
     
@@ -30,5 +30,7 @@ void ColliderComponent::OnCollide(Collision pColl, ColliderComponent* pOtherColl
         rb->OnCollide(pColl, pOtherCollider);
     }
 
+#ifdef _DEBUG
     mCollided = true;
+#endif
 }

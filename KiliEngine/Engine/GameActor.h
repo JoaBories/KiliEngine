@@ -9,7 +9,7 @@ using Struct::Vector2;
 
 class Scene;
 
-enum ActorState : Uint8
+enum class ActorState : Uint8
 {
 	WaitingStart,
 	Active,
@@ -17,11 +17,14 @@ enum ActorState : Uint8
 	Dead
 };
 
-enum ActorTags : Uint8
+enum class ActorTags : Uint8
 {
-	ActorDefault,
-	ActorBlock,
-	ActorPlayer
+	Default,
+	Block,
+	Player,
+	Hud, 
+	Door,
+	Enemy
 };
 
 class GameActor
@@ -31,9 +34,9 @@ private:
 	ActorTags mTag;
 	std::vector<ActorComponent*> mComponents;
 	std::string mName;
+	WorldTransform mTransform;
 
 protected:
-	WorldTransform mTransform;
 	
 	// only called by the base class in Start() and Update()
 	virtual void OnStart() {}
@@ -43,8 +46,8 @@ protected:
 	void UpdateComponentsTransform();
 
 public:
-	explicit GameActor(const Transform& pTransform, const std::string& pName, ActorTags pTag = ActorDefault);
-	~GameActor();
+	explicit GameActor(const Transform& pTransform, const std::string& pName, ActorTags pTag = ActorTags::Default);
+	virtual ~GameActor();
 
 	GameActor(const GameActor&) = delete;
 	GameActor& operator=(const GameActor&) = delete;
@@ -61,9 +64,9 @@ public:
 	void Rotate(const Vector3& pAxis, float pAngle);
 	void SetRotation(const Quaternion& pRotation);
 
-	void Destroy()							{ mActiveState = Dead; }
-	void SetActive(const bool pNewActive)	{ mActiveState = pNewActive ? Active : Paused; }
-	bool GetActive() const					{ return mActiveState == Active; }
+	void Destroy()							{ mActiveState = ActorState::Dead; }
+	void SetActive(const bool pNewActive)	{ mActiveState = pNewActive ? ActorState::Active : ActorState::Paused; }
+	bool GetActive() const					{ return mActiveState == ActorState::Active; }
 	ActorState GetState() const				{ return mActiveState; }
 
 	ActorTags GetTag() const				{ return mTag; }
@@ -73,7 +76,7 @@ public:
 	void RemoveComponent(const ActorComponent* pComp) ;
 
 	void AddComponent(ActorComponent* pComp) {
-		if (mActiveState != WaitingStart) pComp->Start();
+		if (mActiveState != ActorState::WaitingStart) pComp->Start();
 		mComponents.push_back(pComp);
 	}
 

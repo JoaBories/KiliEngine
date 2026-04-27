@@ -1,0 +1,32 @@
+#include "InstanceComponent.h"
+
+#include "Engine/Tools/GameTime.h"
+
+void InstanceComponent::OnUpdate()
+{
+}
+
+InstanceComponent::InstanceComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, const Vector2& pSize, int pCount, Texture* pTextureOverride) :
+    MeshComponent(pOwner, pTransform, pMesh, pTextureOverride, "InstancedGrass"),
+    mSize(pSize), mCount(pCount)
+{
+    SetName("InstanceComponent");
+}
+
+void InstanceComponent::Draw(Camera* pCamera, Material* pMaterial)
+{
+    if (IsActive())
+    {
+        pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
+        pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
+        pMaterial->SetVec3("uSize", mSize.x * GetWorldTransform().GetScale().x, mSize.y * GetWorldTransform().GetScale().y, 0.0f);
+        pMaterial->SetInt("uInstanceCount", mCount);
+        pMaterial->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
+
+        if(const Texture* texture = GetTexture()) texture->SetActive();
+	
+        mMesh->GetVertexArray()->SetActive();
+
+        glDrawArraysInstanced(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount(), mCount);
+    }
+}

@@ -41,35 +41,29 @@ void Scene::AddActor(GameActor* pActor)
     {
         mActors.emplace_back(pActor);
     }
-
 }
 
 void Scene::KillAllDead()
 {
-    for (GameActor* actor : mActors)
+    std::vector<GameActor*> dead; // collect deads
+
+    auto actorIterator = mActors.begin();
+    while (actorIterator != mActors.end()) // iterate trough actors
     {
-        if (actor->GetState() == Dead)
+        if ((*actorIterator)->GetState() == ActorState::Dead) // if dead remove it from list and add it in dead
         {
-            RemoveActor(actor);
-            delete actor;
+            dead.push_back(*actorIterator);
+            actorIterator = mActors.erase(actorIterator);     // remove dead actor and return next iterator
+        }
+        else
+        {
+            ++actorIterator;
         }
     }
-}
-
-void Scene::RemoveActor(const GameActor* pActor)
-{
-    auto it = find(mPendingActors.begin(), mPendingActors.end(), pActor);
-    if (it != mPendingActors.end())
+    
+    for (const GameActor* actor : dead)
     {
-        std::iter_swap(it, mPendingActors.end() - 1);
-        mPendingActors.pop_back();
-    }
-
-    it = find(mActors.begin(), mActors.end(), pActor);
-    if (it != mActors.end())
-    {
-        iter_swap(it, mActors.end() - 1);
-        mActors.pop_back();
+        delete actor;
     }
 }
 

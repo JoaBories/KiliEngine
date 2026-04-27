@@ -6,7 +6,7 @@ layout(location = 2) in vec2 texCoord;
 
 uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
-uniform vec2 uTilling;
+uniform vec3 uScale;
 
 out VertOut{
     vec2 texCoord;
@@ -15,5 +15,5 @@ out VertOut{
 void main()
 {
     gl_Position = vec4(pos, 1.0) * uWorldTransform * uViewProj;
-    vert_out.texCoord = texCoord * uTilling;
+    vert_out.texCoord = texCoord * uScale.xy;
 }

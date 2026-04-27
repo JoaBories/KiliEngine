@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <crtdbg.h>
 
+#include "Game/Doom/Doom.h"
+
 #ifdef _DEBUG
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 #else
