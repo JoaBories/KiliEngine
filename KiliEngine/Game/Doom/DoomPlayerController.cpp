@@ -160,6 +160,14 @@ void DoomPlayerController::OnUpdate()
             }
         }
     }
+
+    //Change weapon
+    if (Inputs::GetScrollY() != 0)
+    {
+        mHasShotgun = !mHasShotgun;
+
+        mSprite->SetAnimation(mHasShotgun ? mShotgun : mPistol);
+    }
 }
 
 DoomPlayerController::DoomPlayerController(GameActor* pOwner, const float pSpeed, const float pJumpForce, const Vector2 pSensibility) :

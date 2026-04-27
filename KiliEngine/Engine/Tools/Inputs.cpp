@@ -7,6 +7,7 @@ std::vector<Uint8> Inputs::mCurrentMouseInputs = {};
 std::vector<Uint8> Inputs::mButtonsDownThisFrame = {};
 int Inputs::mLastMouseDeltaX = 0;
 int Inputs::mLastMouseDeltaY = 0;
+int Inputs::mLastScrollY = 0;
 bool Inputs::mCapturingMouse = false;
 
 void Inputs::Init()
@@ -18,6 +19,7 @@ void Inputs::Init()
 void Inputs::Update()
 {
 	mButtonsDownThisFrame.clear();
+	mLastScrollY = 0;
 	
 	if (mCapturingMouse)
 	{
@@ -88,6 +90,10 @@ bool Inputs::InputUpdate(SDL_Event pEvent)
 		
 		mButtonsDownThisFrame.push_back(pEvent.button.button);
 	}
+	else if (pEvent.type == SDL_MOUSEWHEEL)
+	{
+		mLastScrollY = pEvent.wheel.y;
+	}
 
 	return false;
 }
@@ -133,4 +139,9 @@ bool Inputs::IsButtonPressed(const Uint8 pButton, const bool pThisFrame)
 Vector2 Inputs::GetMouseDelta()
 {
 	return {mLastMouseDeltaX, mLastMouseDeltaY};
+}
+
+int Inputs::GetScrollY()
+{
+	return mLastScrollY;
 }

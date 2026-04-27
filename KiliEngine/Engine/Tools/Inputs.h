@@ -13,6 +13,7 @@ class Inputs
 	static std::vector<Uint8> mButtonsDownThisFrame;
 	static int mLastMouseDeltaX;
 	static int mLastMouseDeltaY;
+	static int mLastScrollY;
 
 public:
 	static bool mCapturingMouse;
@@ -26,5 +27,6 @@ public:
 	static bool IsKeyPressed(SDL_Keycode pKey);
 	static bool IsButtonPressed(Uint8 pButton, bool pThisFrame);
 	static Vector2 GetMouseDelta();
+	static int GetScrollY();
 };
 
