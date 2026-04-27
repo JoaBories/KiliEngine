@@ -8,18 +8,16 @@ class BoxCollider : public ColliderComponent
 {
 protected:
     Vector3 mHalfSize;
-    float mRadius;
-
-    std::vector<Vector3> GetCorners();
+    float mRadiusSq;
     
 public:
     BoxCollider(GameActor* pOwner, const Transform& pTransform, bool pQuery, const Vector3& pHalfSize, short pUpdateOrder = 50);
     ~BoxCollider() override;
     
     Vector3 GetHalfSize() const {return mHalfSize;}
-    void SetHalfSize(const Vector3& pHalfSize) {mHalfSize = pHalfSize;}
+    void SetHalfSize(const Vector3& pHalfSize);
     
-    float GetRadius() const {return mRadius;}
+    float GetRadiusSq() const {return mRadiusSq;}
 
 #ifdef _DEBUG
 

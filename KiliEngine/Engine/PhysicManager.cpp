@@ -10,10 +10,10 @@ Collision PhysicManager::Collide(BoxCollider* pBox1, BoxCollider* pBox2)
 {
     Collision result;
 
-    const float radSum = pBox1->GetRadius() + pBox2->GetRadius();
-    const float distance = (pBox1->GetWorldTransform().GetPosition() - pBox2->GetWorldTransform().GetPosition()).LengthSq();
+    const float radSum = pBox1->GetRadiusSq() + pBox2->GetRadiusSq();
+    const Vector3 distance = pBox1->GetWorldTransform().GetPosition() - pBox2->GetWorldTransform().GetPosition();
 
-    if (radSum * radSum > distance)
+    if (radSum > distance.LengthSq())
     {
         const Obb obb1 = BoxToObb(pBox1);
         const Obb obb2 = BoxToObb(pBox2);

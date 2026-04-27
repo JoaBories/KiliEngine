@@ -293,8 +293,6 @@
     <ClInclude Include="Utils\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Maps\Doom1.map" />
-    <Content Include="Resources\Maps\Map1.map" />
     <Content Include="Resources\Maps\Map2.map" />
     <Content Include="Resources\Materials\Basic.mat" />
     <Content Include="Resources\Materials\BasicLight.mat" />
