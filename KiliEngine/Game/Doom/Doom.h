@@ -36,7 +36,7 @@ private:
         EmptyActor* player = new EmptyActor(Transform(pPosition, Quaternion(), Vector3::unit), "Player", ActorTags::Player);
         player->AddComponent(new Camera(player, Transform(Vector3(0,0,1), Quaternion(), Vector3::unit), 90.0f, 0.1f, 10000.0f));
         player->AddComponent(new BoxCollider(player, Transform::Origin, true, Vector3(0.9f,0.9f,2)));
-        player->AddComponent(new RigidBody(player, 10.0f, 1.5f, 100.0f, 0.0f));
+        player->AddComponent(new RigidBody(player, 10.0f, 2.0f, 100.0f, 0.0f));
         player->AddComponent(new DoomPlayerController(player, 200.0f, 10.0f, Vector2(1.0f,1.0f)));
         AddActor(player);
     }
@@ -112,7 +112,7 @@ public :
         SpawnPlayer(Vector3(0, 0, 10));
         //SpawnFlyingCamera(Vector3::zero, 20.0f);
         
-        //SpawnSky();
+        SpawnSky();
 
         Map* map = AssetManager::GetMap("Map2");
         for (auto [TextureIndex, Transform] : map->GetWalls())

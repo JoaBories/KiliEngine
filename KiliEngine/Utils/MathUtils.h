@@ -6,7 +6,7 @@
 namespace MathUtils {
 
 	constexpr float PI = 3.1415926536f;
-	constexpr float PI2 = PI * 2.0f;
+	constexpr float TAU = PI * 2.0f;
 	constexpr float DEG2RAD = PI/180;
 	constexpr float RAD2DEG = 180/PI;
 	constexpr double EPSILON = 1e-8;

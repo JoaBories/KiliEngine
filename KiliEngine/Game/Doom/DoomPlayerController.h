@@ -18,6 +18,13 @@ private:
     Camera* mCamera;
     RigidBody* mRigidBody;
     AnimatedComponent* mSprite;
+
+    Animation mPistol;
+    Animation mShotgun;
+
+    bool mHasShotgun;
+
+    void ShootBullet(const Vector3& pPos, const Vector3& pDir, bool pShotgun) const;
     
 protected:
     void OnStart() override;

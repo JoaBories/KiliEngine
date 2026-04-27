@@ -6,15 +6,48 @@
 #include "DoorComponent.h"
 #include "EnemyComponent.h"
 #include "Engine/PhysicManager.h"
+#include "Engine/Assets/AssetManager.h"
 #include "Engine/Scene/SceneManager.h"
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
+
+void DoomPlayerController::ShootBullet(const Vector3& pPos, const Vector3& pDir, bool pShotgun) const
+{
+    const Vector3 hitStart = pPos;
+    const Vector3 hitEnd = hitStart + pDir * 100.0f;
+
+    if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
+    {
+        SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }, pShotgun ? 10.0f : 5.0f));
+        if (raycast.OtherActor->GetTag() != ActorTags::Door && raycast.OtherActor->GetTag() != ActorTags::Enemy)
+        {
+            SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.75f)));
+        }
+            
+        SceneManager::ActiveScene()->AddActor(new BulletFx(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion(), Vector3::unit)));
+            
+        if (raycast.OtherActor->GetTag() == ActorTags::Enemy)
+        {
+            raycast.OtherActor->GetComponent<EnemyComponent>()->TakeDamage(pShotgun ? 0.5f : 1.0f);
+        }
+    }
+    else
+    {
+        SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, hitEnd }, pShotgun ? 10.0f : 5.0f));
+    }
+}
 
 void DoomPlayerController::OnStart()
 {
     mCamera = mOwner->GetComponent<Camera>();
     mRigidBody = mOwner->GetComponent<RigidBody>();
     mSprite = SceneManager::ActiveScene()->GetActorByTag(ActorTags::Hud)->GetComponent<AnimatedComponent>();
+
+    mPistol = AssetManager::GetAnimation("Pistol", 0, 4, 24);
+    mShotgun = AssetManager::GetAnimation("Shotgun", 0, 3, 24);
+
+    mHasShotgun = true;
+    mSprite->SetAnimation(mHasShotgun ? mShotgun : mPistol);
 }
 
 void DoomPlayerController::OnUpdate()
@@ -86,31 +119,30 @@ void DoomPlayerController::OnUpdate()
     {
         Vector3 forward = mCamera->GetWorldTransform().GetTransform().GetForwardVector();
         const Vector3 hitStart = mCamera->GetWorldTransform().GetPosition() - Vector3(0.0f, 0.0f, 0.5f) + forward * 0.1f;
-        const Vector3 hitEnd = hitStart + forward * 100.0f;
-
-        mSprite->Reset();
-        mSprite->Play(false);
-        mSprite->SetFrame(1);
-
-        if (Hit raycast = PhysicManager::Linetrace(hitStart, hitEnd, GetOwner()))
+        
+        if (mHasShotgun)
         {
-            SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, raycast.Point }));
-            if (raycast.OtherActor->GetTag() != ActorTags::Door && raycast.OtherActor->GetTag() != ActorTags::Enemy)
+            Vector3 right = mCamera->GetWorldTransform().GetTransform().GetRightVector();
+            Vector3 up = mCamera->GetWorldTransform().GetTransform().GetUpVector();
+
+            for (int i = 0; i < 12; i++)
             {
-                SceneManager::ActiveScene()->AddActor(new BulletImpact(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion::QuaternionFromDirection(raycast.Normal), Vector3::unit * 0.75f)));
-            }
-            
-            SceneManager::ActiveScene()->AddActor(new BulletFx(Transform(raycast.Point + raycast.Normal * 0.1f, Quaternion(), Vector3::unit)));
-            
-            if (raycast.OtherActor->GetTag() == ActorTags::Enemy)
-            {
-                raycast.OtherActor->GetComponent<EnemyComponent>()->TakeDamage(1.0f);
+                float randAngle = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) * MathUtils::TAU;
+                float randRadius = static_cast<float>(rand()) / static_cast<float>(RAND_MAX) / 8.0f;
+                Vector2 offset = {MathUtils::Cos(randAngle) * randRadius, MathUtils::Sin(randAngle) * randRadius};
+
+                Vector3 dir = (forward + right * offset.x + up * offset.y).Normalized();
+                ShootBullet(hitStart, dir, true);
             }
         }
         else
         {
-            SceneManager::ActiveScene()->AddActor(new BulletTrace(Line{ hitStart, hitEnd }));
+            ShootBullet(hitStart, forward, false);
         }
+        
+        mSprite->Reset();
+        mSprite->PlayAnimation(mHasShotgun ? mShotgun : mPistol, false);
+        mSprite->SetFrame(1);
     }
     
     // OpenDoor
