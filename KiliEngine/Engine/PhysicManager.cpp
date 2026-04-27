@@ -9,16 +9,22 @@ std::vector<SphereCollider*> PhysicManager::mSphereColliders = {};
 Collision PhysicManager::Collide(BoxCollider* pBox1, BoxCollider* pBox2)
 {
     Collision result;
-    
-    const Obb obb1 = BoxToObb(pBox1);
-    const Obb obb2 = BoxToObb(pBox2);
-    
-    const Vector3 overlap = Obb::ObbOnObb(obb1,obb2);
-    if (overlap != Vector3::zero)
+
+    const float radSum = pBox1->GetRadius() + pBox2->GetRadius();
+    const float distance = (pBox1->GetWorldTransform().GetPosition() - pBox2->GetWorldTransform().GetPosition()).LengthSq();
+
+    if (radSum * radSum > distance)
     {
-        result.Collided = true;
-        result.OverlapLength = overlap.Length();
-        result.OverlapDir = overlap / result.OverlapLength;
+        const Obb obb1 = BoxToObb(pBox1);
+        const Obb obb2 = BoxToObb(pBox2);
+    
+        const Vector3 overlap = Obb::ObbOnObb(obb1,obb2);
+        if (overlap != Vector3::zero)
+        {
+            result.Collided = true;
+            result.OverlapLength = overlap.Length();
+            result.OverlapDir = overlap / result.OverlapLength;
+        }
     }
     
     return result;
@@ -141,6 +147,7 @@ void PhysicManager::Update()
         
         for (const auto& boxCollider2 : mBoxColliders)
         {
+            if (boxCollider1 == boxCollider2) continue;
             if (const Collision coll = Collide(boxCollider1, boxCollider2))
             {
                 boxCollider1->OnCollide(coll, boxCollider2);
@@ -164,6 +171,7 @@ void PhysicManager::Update()
         
         for (const auto& sphereCollider2 : mSphereColliders)
         {
+            if (sphereCollider1 == sphereCollider2) continue;
             if (const Collision coll = Collide(sphereCollider1, sphereCollider2))
             {
                 sphereCollider1->OnCollide(coll, sphereCollider2);

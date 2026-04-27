@@ -4,9 +4,6 @@
 
 Vector3 CollisionUtils::Obb::ObbOnObb(const Obb& pA, const Obb& pB) // project corners on each axis
 {
-    if (const Vector3 firstTest = Sphere::SphereOnSphere(pA.AsSphere(),pB.AsSphere()); firstTest == Vector3::zero) 
-        return Vector3::zero;
-
     Vector3 axes[15];
     int axisCount = 0;
 
@@ -209,16 +206,16 @@ float CollisionUtils::OverlapOnAxis(const Vector3* pA, const size_t pACount, con
 
     for (size_t i = 0; i < pACount; i++)
     {
-        float projection = Vector3::Dot(pA[i],pAxis);
-        aMin = MathUtils::Min(projection, aMin);
-        aMax = MathUtils::Max(projection, aMax);
+        const float p = Vector3::Dot(pA[i],pAxis);
+        if (p < aMin) aMin = p;
+        if (p > aMax) aMax = p;
     }
 
     for (size_t i = 0; i < pBCount; i++)
     {
-        float projection = Vector3::Dot(pB[i],pAxis);
-        bMin = MathUtils::Min(projection, bMin);
-        bMax = MathUtils::Max(projection, bMax);
+        const float p = Vector3::Dot(pB[i],pAxis);
+        if (p < bMin) bMin = p;
+        if (p > bMax) bMax = p;
     }
 
     return MathUtils::Min(aMax, bMax) - MathUtils::Max(aMin, bMin);
