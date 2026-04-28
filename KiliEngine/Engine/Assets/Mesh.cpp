@@ -1,17 +1,24 @@
 #include "Mesh.h"
 #include "AssetManager.h"
+#include "Engine/Tools/Log.h"
 
 Mesh::Mesh() :
 	mVao(nullptr), mMaterialName("Basic")
 {
 }
 
-Mesh::Mesh(const std::vector<Vertex>& pVertices) :
-	mMaterialName("Basic")
+Mesh::Mesh(const std::vector<Vertex>& pVertices, Texture* pTexture, std::string pMaterialName) :
+	mTextures({pTexture}), mMaterialName(std::move(pMaterialName))
 {
 	float* verticeInfo = ToVerticeArray(pVertices);
 	mVao = new VertexArray(verticeInfo, pVertices.size());
 	delete[] verticeInfo;
+}
+
+Mesh::~Mesh()
+{
+	Unload();
+	mTextures.clear();
 }
 
 void Mesh::Unload()

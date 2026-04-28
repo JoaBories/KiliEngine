@@ -21,6 +21,8 @@ namespace Cfg
 {
     constexpr FpsMode FPS_LOCKED = FpsMode::Unlimited;
     constexpr int FPS_MAX = 144;
+
+    constexpr float DELTA_TIME_MAX = 0.1f;
     
     const std::string TEXTURE_PATH = "Resources/Textures";
     const std::string SHADER_PATH = "Resources/Shaders";
@@ -45,7 +47,7 @@ namespace Cfg
 
     constexpr bool MOUSECAPTURE_DEFAULT= true;
 
-    const Vector3 DIRECTIONAL_LIGHT = Vector3(-1, -1, -1).Normalized();
+    const Vector3 DIRECTIONAL_LIGHT = Vector3(-1, -1, 0).Normalized();
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;

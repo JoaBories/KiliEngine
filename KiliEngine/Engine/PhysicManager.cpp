@@ -9,16 +9,22 @@ std::vector<SphereCollider*> PhysicManager::mSphereColliders = {};
 Collision PhysicManager::Collide(BoxCollider* pBox1, BoxCollider* pBox2)
 {
     Collision result;
-    
-    const Obb obb1 = BoxToObb(pBox1);
-    const Obb obb2 = BoxToObb(pBox2);
-    
-    const Vector3 overlap = Obb::ObbOnObb(obb1,obb2);
-    if (overlap != Vector3::zero)
+
+    const float radSum = pBox1->GetRadiusSq() + pBox2->GetRadiusSq();
+    const Vector3 distance = pBox1->GetWorldTransform().GetPosition() - pBox2->GetWorldTransform().GetPosition();
+
+    if (radSum > distance.LengthSq())
     {
-        result.Collided = true;
-        result.OverlapLength = overlap.Length();
-        result.OverlapDir = overlap / result.OverlapLength;
+        const Obb obb1 = BoxToObb(pBox1);
+        const Obb obb2 = BoxToObb(pBox2);
+    
+        const Vector3 overlap = Obb::ObbOnObb(obb1,obb2);
+        if (overlap != Vector3::zero)
+        {
+            result.Collided = true;
+            result.OverlapLength = overlap.Length();
+            result.OverlapDir = overlap / result.OverlapLength;
+        }
     }
     
     return result;
@@ -60,7 +66,7 @@ Collision PhysicManager::Collide(SphereCollider* pSphere1, SphereCollider* pSphe
     return result;
 }
 
-Hit PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
+Hit PhysicManager::Collide(const Line& pLine, SphereCollider* pSphere)
 {
     Hit result;
 
@@ -69,9 +75,12 @@ Hit PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
     const float distance = Line::LineOnSphere(pLine, sp);
     if (distance >= 0)
     {
+        const Vector3 point = pLine.Start + pLine.Direction * distance;
+        
         result = { true,
-            pLine.Start + pLine.Direction * distance,
-            pLine.Direction, distance,
+            point, pLine.Direction,
+            (point - sp.Center).Normalized(),
+            pLine, distance,
             pSphere->GetOwner(), pSphere
         };
     }
@@ -79,7 +88,7 @@ Hit PhysicManager::Collide(Line pLine, SphereCollider* pSphere)
     return result;
 }
 
-Hit PhysicManager::Collide(Line pLine, BoxCollider* pBox)
+Hit PhysicManager::Collide(const Line& pLine, BoxCollider* pBox)
 {
     Hit result;
 
@@ -92,12 +101,19 @@ Hit PhysicManager::Collide(Line pLine, BoxCollider* pBox)
     line.Direction = Vector3::Transform(pLine.Direction, inverse);
     line.End = pLine.Start + pLine.Direction * pLine.Length;
 
-    const float distance = Line::LineOnAABB(line, obb);
+    Vector3 normal;
+    
+    const float distance = Line::LineOnAABB(line, obb, normal);
     if (distance >= 0)
     {
+        Quaternion worldRotation = pBox->GetWorldTransform().GetRotation();
+        Vector3 worldNormal = Vector3::Transform(normal, worldRotation).Normalized();
+        
+        const Vector3 point = pLine.Start + pLine.Direction * distance;
+        
         result = { true,
-            pLine.Start + pLine.Direction * distance,
-            pLine.Direction, distance,
+            point, pLine.Direction,
+            worldNormal, pLine, distance,
             pBox->GetOwner(), pBox
         };
     }
@@ -131,6 +147,7 @@ void PhysicManager::Update()
         
         for (const auto& boxCollider2 : mBoxColliders)
         {
+            if (boxCollider1 == boxCollider2) continue;
             if (const Collision coll = Collide(boxCollider1, boxCollider2))
             {
                 boxCollider1->OnCollide(coll, boxCollider2);
@@ -154,6 +171,7 @@ void PhysicManager::Update()
         
         for (const auto& sphereCollider2 : mSphereColliders)
         {
+            if (sphereCollider1 == sphereCollider2) continue;
             if (const Collision coll = Collide(sphereCollider1, sphereCollider2))
             {
                 sphereCollider1->OnCollide(coll, sphereCollider2);
@@ -227,7 +245,11 @@ Hit PhysicManager::Linetrace(const Vector3& pStart, const Vector3& pEnd, const G
     }
 
 #ifdef _DEBUG
-    if (pDebugTime > 0.0f) mLineTraceWraps.push_back({lineTrace, pDebugTime, bestHit.Collided});
+    Matrix4Row worldTransform = Matrix4Row::CreateScale(0.01f, 0.01f, lineTrace.Length / 2);
+    worldTransform *= Matrix4Row::CreateFromQuaternion(Quaternion::QuaternionFromDirection(lineTrace.Direction));
+    worldTransform *= Matrix4Row::CreateTranslation((lineTrace.End + lineTrace.Start) * 0.5f);
+    
+    if (pDebugTime > 0.0f) mLineTraceWraps.push_back({worldTransform, pDebugTime, bestHit.Collided});
 #endif
 
     return bestHit;
@@ -250,14 +272,8 @@ void PhysicManager::DrawDebug(const Camera* pCam)
             continue;
         }
         
-        Matrix4Row worldTransform = Matrix4Row::CreateScale(0.01f, 0.01f, lineTrace.Trace.Length / 2);
-
-        worldTransform *= Matrix4Row::CreateFromQuaternion(Quaternion::QuaternionFromDirection(lineTrace.Trace.Direction));
-        
-        worldTransform *= Matrix4Row::CreateTranslation((lineTrace.Trace.End + lineTrace.Trace.Start) * 0.5f);
-	
         AssetManager::GetMaterial("Collider")->SetMatrix4Row("uViewProj", pCam->GetViewProjMatrix());
-        AssetManager::GetMaterial("Collider")->SetMatrix4Row("uWorldTransform", worldTransform);
+        AssetManager::GetMaterial("Collider")->SetMatrix4Row("uWorldTransform", lineTrace.Transform);
 
         const Vector4 color = lineTrace.Collided ? Vector4(1,0,0,1) : Vector4(0,1,0,1);
         AssetManager::GetMaterial("Collider")->SetVec4("color", color.x,color.y,color.z,color.w);

@@ -10,18 +10,6 @@ namespace CollisionUtils
 {
 
     struct Sphere;
-
-    struct Hit
-    {
-        bool Collided = false;
-        Vector3 Point = Vector3(0, 0, 0);
-        Vector3 LineDirection = Vector3(0, 0, 0);
-        float Distance = 0.0f;
-        GameActor* OtherActor = nullptr;
-        ColliderComponent* OtherCollider = nullptr;
-
-        explicit operator bool() const { return Collided; }
-    };
     
     struct Collision
     {
@@ -46,7 +34,7 @@ namespace CollisionUtils
         [[nodiscard]] static Vector3 ObbOnObb(const Obb& pA, const Obb& pB);
         
         [[nodiscard]] Vector3 GetClosestFromPoint(const Vector3& pPoint) const;
-        [[nodiscard]] std::vector<Vector3> GetCorners() const;
+        void GetCorners(Vector3 pOut[8]) const;
 
         [[nodiscard]] Sphere AsSphere() const;
     };
@@ -70,11 +58,25 @@ namespace CollisionUtils
         Line(const Vector3& pStart, const Vector3& pEnd);
 
         [[nodiscard]] static float LineOnSphere(const Line& pLine, const Sphere& pSphere); // return length on the Line
-        [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb);
+        [[nodiscard]] static float LineOnAABB(const Line& pLine, const Obb& pObb, Vector3& pNormal); // return normal * length
 
         bool operator==(const Line& pLine) const { return Start == pLine.Start && End == pLine.End; }
     };
     
-    float OverlapOnAxis(const std::vector<Vector3>& pA, const std::vector<Vector3>& pB, const Vector3& pAxis);
+    struct Hit
+    {
+        bool Collided = false;
+        Vector3 Point = Vector3(0, 0, 0);
+        Vector3 LineDirection = Vector3(0, 0, 0);
+        Vector3 Normal = Vector3(0, 0, 0);
+        Line Linetrace = Line(Vector3(0, 0, 0), Vector3(0, 0, 0));
+        float Distance = 0.0f;
+        GameActor* OtherActor = nullptr;
+        ColliderComponent* OtherCollider = nullptr;
+
+        explicit operator bool() const { return Collided; }
+    };
+    
+    float OverlapOnAxis(const Vector3* pA, size_t pACount, const Vector3* pB, size_t pBCount, const Vector3& pAxis);
     
 };

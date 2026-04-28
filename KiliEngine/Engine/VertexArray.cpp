@@ -30,7 +30,7 @@ VertexArray::VertexArray(const float* pVertices, const unsigned int pVerticeCoun
 	glBindVertexArray(0);
 }
 
-VertexArray::VertexArray(const float* pVertices, unsigned int pVerticeCount, const unsigned int* pIndices, unsigned int pIndicesCount) :
+VertexArray::VertexArray(const float* pVertices, const unsigned int pVerticeCount, const unsigned int* pIndices, const unsigned int pIndicesCount) :
 	mVerticeCount(pVerticeCount), mIndiceCount(pIndicesCount), mVaoId(0), mVboId(0), mEboId(0)
 {
 	//Generate VAO

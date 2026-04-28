@@ -91,7 +91,7 @@ void GameEngine::CheckForInputs()
 {
 	if (mIsRunning)
 	{
-		Inputs::MouseUpdate();
+		Inputs::Update();
 		
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
@@ -104,7 +104,7 @@ void GameEngine::CheckForInputs()
 
 			default:
 #ifdef _DEBUG
-				Gui::Input(event);
+				if (!Inputs::mCapturingMouse) Gui::Input(event);
 #endif
 				if (Inputs::InputUpdate(event))
 				{

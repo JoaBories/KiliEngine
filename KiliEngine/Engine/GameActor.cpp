@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <vector>
 
+#include "Tools/Log.h"
+
 void GameActor::UpdateComponentsTransform()
 {
 	for (ActorComponent* component : mComponents)
@@ -13,7 +15,7 @@ void GameActor::UpdateComponentsTransform()
 }
 
 GameActor::GameActor(const Transform& pTransform, const std::string& pName, const ActorTags pTag) :
-	mActiveState(WaitingStart), mTag(pTag), mName(pName), mTransform(pTransform)
+	mActiveState(ActorState::WaitingStart), mTag(pTag), mName(pName), mTransform(pTransform)
 {
 };
 
@@ -30,7 +32,7 @@ GameActor::~GameActor()
 
 void GameActor::Start()
 {
-	mActiveState = Active;
+	mActiveState = ActorState::Active;
 
 	for (ActorComponent* component : mComponents)
 	{

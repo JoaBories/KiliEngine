@@ -11,6 +11,7 @@
 #include "Engine/Components/MeshComponent.h"
 #include "Engine/Components/TerrainComponent.h"
 #include "Engine/Components/ColliderComponent.h"
+#include "Engine/Components/BillboardComponent.h"
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
@@ -39,10 +40,11 @@ bool GlRenderer::Initialize(Window& pWindow)
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     mContext = SDL_GL_CreateContext(mWindow->GetSdlWindow());
     glewExperimental = GL_TRUE;
+    
     if (glewInit() != GLEW_OK)
     {
         Log::Error(LogType::Video, "Failed to initialize GLEW");
@@ -73,9 +75,6 @@ bool GlRenderer::Initialize(Window& pWindow)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     const std::string glVersion = std::string(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
     Log::Info("OpenGL Version : " + glVersion);
@@ -94,6 +93,7 @@ void GlRenderer::BeginDraw()
 void GlRenderer::Draw()
 {
     if (!mMeshes.empty()) DrawMeshes();
+    if (!mBillboards.empty()) DrawBillboards();
     if (!mTerrains.empty()) DrawTerrains();
     if (!mSprites.empty()) DrawSprites();
 
@@ -174,6 +174,8 @@ void GlRenderer::DrawMeshes() const
 void GlRenderer::DrawSprites()
 {
     glEnable(GL_BLEND);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     
@@ -234,6 +236,20 @@ void GlRenderer::DrawTerrains()
     glPatchParameteri(GL_PATCH_VERTICES, 3);
 }
 
+void GlRenderer::DrawBillboards()
+{
+    Material* material = AssetManager::GetMaterial("Billboard");
+    material->Use();
+    
+    material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+    material->SetVec3("uCamPos", mCamera->GetWorldTransform().GetPosition());
+    
+    for (BillboardComponent* billboard : mBillboards)
+    {
+        billboard->Draw(material);
+    }
+}
+
 void GlRenderer::EndDraw()
 {
     SDL_GL_SwapWindow(mWindow->GetSdlWindow());
@@ -247,11 +263,12 @@ void GlRenderer::Close()
 
 void GlRenderer::DrawSprite(GameActor* pActor, const WorldTransform& pTransform, const Texture& pTex, Rectangle pSourceRect, Vector2 pOrigin, SDL_RendererFlip pFlip) const
 {
-    const Matrix4Row scaleMat = Matrix4Row::CreateScale(
-        static_cast<float>(pTex.GetWidth()),
-        static_cast<float>(pTex.GetHeight()),
-        0.0f);
-    const Matrix4Row world = scaleMat * pTransform.GetWorldTransformMatrix();
+    const Vector3 scale = pTransform.GetScale() * Vector3(static_cast<float>(pTex.GetWidth()), static_cast<float>(pTex.GetHeight()), 0.0f);
+    
+    const Matrix4Row world =
+        Matrix4Row::CreateScale(scale) *
+        Matrix4Row::CreateRotationZ(pTransform.GetRotation().z) *
+        Matrix4Row::CreateTranslation(Vector3(pTransform.GetPosition().x, pTransform.GetPosition().y, 0.0f));
     
     mSpriteMaterial->Use();
     mSpriteMaterial->SetMatrix4Row("uWorldTransform", world);
@@ -323,6 +340,17 @@ void GlRenderer::RemoveTerrain(const TerrainComponent* pTerrain)
     if (mTerrains.at(shaderName).empty()) mTerrains.erase(shaderName);
 }
 
+void GlRenderer::AddBillboard(BillboardComponent* pBillboard)
+{
+    mBillboards.push_back(pBillboard);
+}
+
+void GlRenderer::RemoveBillboard(const BillboardComponent* pBillboard)
+{
+    const auto iterator = std::find(mBillboards.begin(), mBillboards.end(), pBillboard);
+    mBillboards.erase(iterator);
+}
+
 #ifdef _DEBUG
 
 RenderMode GlRenderer::RenderMode = DefaultRender;
@@ -332,7 +360,7 @@ void GlRenderer::AddCollider(ColliderComponent* pCollider)
     mColliders.push_back(pCollider);
 }
 
-void GlRenderer::RemoveCollider(ColliderComponent* pCollider)
+void GlRenderer::RemoveCollider(const ColliderComponent* pCollider)
 {
     const auto iterator = std::find(mColliders.begin(), mColliders.end(), pCollider);
     mColliders.erase(iterator);
@@ -347,7 +375,6 @@ void GlRenderer::DrawColliders()
     glDisable(GL_CULL_FACE);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glLineWidth(2.0f);
 
     AssetManager::GetMaterial("Collider")->Use();
     
@@ -359,7 +386,6 @@ void GlRenderer::DrawColliders()
     PhysicManager::DrawDebug(mCamera);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glLineWidth(1.0f);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 }

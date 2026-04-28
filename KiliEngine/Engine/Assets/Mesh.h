@@ -17,7 +17,8 @@ private:
 
 public:
 	Mesh();
-	explicit Mesh(const std::vector<Vertex>& pVertices);
+	explicit Mesh(const std::vector<Vertex>& pVertices, Texture* pTexture = nullptr, std::string pMaterialName = "Basic");
+	~Mesh();
 	
 	void Unload();
 

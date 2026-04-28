@@ -21,7 +21,7 @@ void InstanceComponent::Draw(Camera* pCamera, Material* pMaterial)
         pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
         pMaterial->SetVec3("uSize", mSize.x * GetWorldTransform().GetScale().x, mSize.y * GetWorldTransform().GetScale().y, 0.0f);
         pMaterial->SetInt("uInstanceCount", mCount);
-        pMaterial->SetFloat("uTime", GameTime::GetTime());
+        pMaterial->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
 
         if(const Texture* texture = GetTexture()) texture->SetActive();
 	

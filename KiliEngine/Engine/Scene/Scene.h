@@ -30,7 +30,6 @@ public :
 	[[nodiscard]] GlRenderer* GetRenderer() const { return mRenderer; }
 
 	void UpdateAllActors();
-	void RemoveActor(const GameActor* pActor);
 	void AddActor(GameActor* pActor);
 	void KillAllDead();
 

@@ -4,12 +4,8 @@
 #include "Engine/EnviroActor.h"
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Components/FreeCamComponent.h"
+#include "Engine/Components/InstanceComponent.h"
 #include "Engine/Components/MeshComponent.h"
-#include "Engine/Components/PlaneCollider.h"
-#include "Engine/Components/RigidBody.h"
-#include "Engine/Components/SphereCollider.h"
-#include "Engine/Components/SpriteComponent.h"
-#include "Engine/Components/TerrainComponent.h"
 
 class DefaultScene : public Scene
 {

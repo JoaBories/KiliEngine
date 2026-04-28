@@ -2,6 +2,7 @@
 
 #include "SDL.h"
 #include <string>
+#include <vector>
 
 class GlRenderer;
 
@@ -27,5 +28,11 @@ public:
 	int GetHeight() const { return mHeight; }
 
 	void UpdateInfo(int& pWOut, int& pHOut);
+};
+
+struct Animation
+{
+	std::vector<Texture*> Textures;
+	float Fps;
 };
 

@@ -15,7 +15,7 @@ void Camera::OnUpdate()
     mViewMatrix = Matrix4Row::CreateLookAt(camPosition, target, Vector3::unitZ);
     
     Vector2 screenSize = SceneManager::ActiveScene()->GetRenderer()->GetWindow()->GetDimensions();
-    mProjMatrix = Matrix4Row::CreatePerspectiveFOV(mFov, Cfg::WINDOW_WIDTH, Cfg::WINDOW_HEIGHT, mNearPane, mFarPane);
+    mProjMatrix = Matrix4Row::CreatePerspectiveFOV(mFov, screenSize.x, screenSize.y, mNearPane, mFarPane);
 }
 
 Camera::Camera(GameActor* pOwner, const Transform& pTransform, const float pFov, const float pNear, const float pFar):
