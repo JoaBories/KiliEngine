@@ -47,7 +47,7 @@ namespace Cfg
 
     constexpr bool MOUSECAPTURE_DEFAULT= true;
 
-    const Vector3 DIRECTIONAL_LIGHT = Vector3(-1, -1, 0).Normalized();
+    const Vector3 DIRECTIONAL_LIGHT = Vector3(1, 0, 0).Normalized();
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;

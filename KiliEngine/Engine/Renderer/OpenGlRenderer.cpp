@@ -96,6 +96,7 @@ void GlRenderer::Draw()
     if (!mMeshes.empty()) DrawMeshes();
     if (!mBillboards.empty()) DrawBillboards();
     if (!mTerrains.empty()) DrawTerrains();
+    if (!mPlanetMeshes.empty()) DrawPlanetMeshes();
     if (!mSprites.empty()) DrawSprites();
 
 #ifdef _DEBUG
@@ -265,6 +266,49 @@ void GlRenderer::DrawBillboards()
     }
 }
 
+void GlRenderer::DrawPlanetMeshes()
+{
+#ifdef _DEBUG
+    if (RenderMode == Wireframe)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+
+    glDisable(GL_CULL_FACE);
+#endif
+    
+    Material* material = AssetManager::GetMaterial("Planet");
+    material->Use();
+
+    material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+    material->SetVec3("uCamDir", mCamera->GetWorldTransform().GetTransform().GetForwardVector());
+    material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
+    material->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
+
+    for (const auto& mesh : mPlanetMeshes)
+    {
+        if (mesh->IsActive()) mesh->DrawFirst(material);
+    }
+
+    material = AssetManager::GetMaterial("PlanetGeom");
+    material->Use();
+
+    material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+    material->SetVec3("uCamDir", mCamera->GetWorldTransform().GetTransform().GetForwardVector());
+    material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
+    material->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
+
+    for (const auto& mesh : mPlanetMeshes)
+    {
+        if (mesh->IsActive()) mesh->DrawSecond(material);
+    }
+    
+#ifdef _DEBUG
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_CULL_FACE);
+#endif
+}
+
 void GlRenderer::EndDraw()
 {
     SDL_GL_SwapWindow(mWindow->GetSdlWindow());
@@ -364,6 +408,17 @@ void GlRenderer::RemoveBillboard(const BillboardComponent* pBillboard)
 {
     const auto iterator = std::find(mBillboards.begin(), mBillboards.end(), pBillboard);
     mBillboards.erase(iterator);
+}
+
+void GlRenderer::AddPlanetMesh(PlanetMeshComponent* pPlanetMesh)
+{
+    mPlanetMeshes.push_back(pPlanetMesh);
+}
+
+void GlRenderer::RemovePlanetMesh(const PlanetMeshComponent* pPlanetMesh)
+{
+    const auto iterator = std::find(mPlanetMeshes.begin(), mPlanetMeshes.end(), pPlanetMesh);
+    mPlanetMeshes.erase(iterator);
 }
 
 #ifdef _DEBUG

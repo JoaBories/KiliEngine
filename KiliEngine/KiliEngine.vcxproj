@@ -196,6 +196,7 @@
     </ClCompile>
     <ClCompile Include="Engine\Window.cpp">
     </ClCompile>
+    <ClCompile Include="Game\AdvancedOpenGl\PlanetMeshComponent.cpp" />
     <ClCompile Include="Game\Bowling\BowlingBall.cpp">
     </ClCompile>
     <ClCompile Include="Game\Bowling\BowlingPin.cpp">
@@ -262,6 +263,8 @@
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Engine\VertexArray.h" />
     <ClInclude Include="Engine\Window.h" />
+    <ClInclude Include="Game\AdvancedOpenGl\AdvancedOpenGl.h" />
+    <ClInclude Include="Game\AdvancedOpenGl\PlanetMeshComponent.h" />
     <ClInclude Include="Game\Bowling\Bowling.h" />
     <ClInclude Include="Game\Bowling\BowlingBall.h" />
     <ClInclude Include="Game\Bowling\BowlingPin.h" />

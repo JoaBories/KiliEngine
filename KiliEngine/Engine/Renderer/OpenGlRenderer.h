@@ -8,6 +8,7 @@
 
 #include "Engine/Transform.h"
 #include "Engine/Assets/Material.h"
+#include "Game/AdvancedOpenGl/PlanetMeshComponent.h"
 #include "Utils/Matrix4Row.h"
 #include "Utils/Struct.h"
 class BillboardComponent;
@@ -46,6 +47,7 @@ private:
 	std::map<std::string, std::vector<MeshComponent*>> mMeshes; //Meshes sorted by material
 	std::map<std::string, std::vector<TerrainComponent*>> mTerrains; //Terrains sorted by material
 	std::vector<BillboardComponent*> mBillboards;
+	std::vector<PlanetMeshComponent*> mPlanetMeshes;
 
 public:
 	
@@ -62,6 +64,7 @@ public:
 	void DrawSprites();
 	void DrawTerrains();
 	void DrawBillboards();
+	void DrawPlanetMeshes();
 	void EndDraw();
 	void Close();
 	
@@ -80,6 +83,9 @@ public:
 	
 	void AddBillboard(BillboardComponent* pBillboard);
 	void RemoveBillboard(const BillboardComponent* pBillboard);
+
+	void AddPlanetMesh(PlanetMeshComponent* pPlanetMesh);
+	void RemovePlanetMesh(const PlanetMeshComponent* pPlanetMesh);
 
 	[[nodiscard]] SDL_GLContext GetContext() const {return mContext;}
 	[[nodiscard]] Window* GetWindow() const {return mWindow;}

@@ -14,10 +14,11 @@
 #include "Engine/Scene/DefaultScene.h"
 #include "Game/Bowling/Bowling.h"
 #include "Engine/Scene/SceneManager.h"
+#include "Game/AdvancedOpenGl/AdvancedOpenGl.h"
 
 int main(int argc, char* argv[])
 {
-	SceneManager::SetScenes({ new DefaultScene() });
+	SceneManager::SetScenes({ new AdvancedOpenGl() });
 
 	GameEngine* kili = new GameEngine("KiliEngine");
 	kili->Init();

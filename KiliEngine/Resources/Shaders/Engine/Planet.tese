@@ -10,8 +10,8 @@ float PI  = 3.14159265358979f;
 float TAU = 6.28318530717959f;
 float EPSILON = 0.000001f;
 
-float pRotateSpeed = 0.05f; // revolution by second
-float pPerlinScale = 0.2f;
+float pRotateSpeed = 0.005f; // revolution by second
+float pPerlinScale = 0.05f;
 float pPerlinFrequency = 2.0f;
 float pSeaLevel = -0.1f;
 
@@ -173,7 +173,7 @@ float cnoise(vec3 P)
     return 2.2 * n_xyz;
 }
 
-int octaves = 3;
+int octaves = 6;
 float persistence = 0.75f;
 float lacunarity = 1.8f;
 
@@ -194,18 +194,6 @@ float perlinOctave(vec3 spherePos)
     }
 
     return value / ttAmplitude;
-}
-
-vec4 perlinTotal(vec3 spherePos, vec3 pX, vec3 pY, vec3 pZ)
-{
-    vec4 result;
-    
-    result.x = perlinOctave(normalize(spherePos + pX * EPSILON) * pPerlinFrequency);
-    result.y = perlinOctave(normalize(spherePos + pY * EPSILON) * pPerlinFrequency);
-    result.z = perlinOctave(normalize(spherePos + pZ * EPSILON) * pPerlinFrequency);
-    result.w = perlinOctave(spherePos * pPerlinFrequency);
-    
-    return result;
 }
 
 // ==============================================

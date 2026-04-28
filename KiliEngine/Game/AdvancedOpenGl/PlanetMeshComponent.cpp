@@ -1,0 +1,42 @@
+#include "PlanetMeshComponent.h"
+
+#include "Engine/Assets/AssetManager.h"
+#include "Engine/Scene/SceneManager.h"
+
+PlanetMeshComponent::PlanetMeshComponent(GameActor* pOwner, const float pScale) :
+	ActorComponent(pOwner, Transform(Vector3::zero, Quaternion(), Vector3::unit * pScale)),
+	mPlanetMeshLod1(AssetManager::GetMesh("cube2")), // subdivided cube
+	mPlanetMeshLod0(AssetManager::GetMesh("cube"))	// normal cube
+{
+	SetName("PlanetMesh");
+	SceneManager::ActiveScene()->GetRenderer()->AddPlanetMesh(this);
+}
+
+PlanetMeshComponent::~PlanetMeshComponent()
+{
+	SceneManager::ActiveScene()->GetRenderer()->RemovePlanetMesh(this);
+}
+
+void PlanetMeshComponent::DrawFirst(Material* pMat) // planet
+{
+	pMat->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
+	pMat->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
+
+	//if(const Texture* texture = GetTexture()) texture->SetActive();
+	
+	mPlanetMeshLod1->GetVertexArray()->SetActive();
+	
+	glDrawArrays(GL_PATCHES, 0, mPlanetMeshLod1->GetVertexArray()->GetVerticeCount());
+}
+
+void PlanetMeshComponent::DrawSecond(Material* pMat) // trees
+{
+	pMat->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
+	pMat->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
+
+	//if(const Texture* texture = GetTexture()) texture->SetActive();
+	
+	mPlanetMeshLod0->GetVertexArray()->SetActive();
+	
+	glDrawArrays(GL_PATCHES, 0, mPlanetMeshLod0->GetVertexArray()->GetVerticeCount());
+}
