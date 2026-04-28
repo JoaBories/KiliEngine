@@ -13,6 +13,6 @@ public:
     InstanceComponent() = delete;
     InstanceComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, const Vector2& pSize, int pCount, Texture* pTextureOverride = nullptr);
 
-    void Draw(Camera* pCamera, Material* pMaterial) override;
+    void Draw(Material* pMaterial) override;
     
 };

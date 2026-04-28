@@ -22,27 +22,22 @@ MeshComponent::~MeshComponent()
 	MeshComponent::CleanUp();
 }
 
-void MeshComponent::Draw(Camera* pCamera, Material* pMaterial)
+void MeshComponent::Draw(Material* pMaterial)
 {
-	if (IsActive())
-	{
-		pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
-		pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
-		pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
-		pMaterial->SetFloat("uTime", GameTime::GetTime());
+	pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
+	pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
 
-		if(const Texture* texture = GetTexture()) texture->SetActive();
+	if(const Texture* texture = GetTexture()) texture->SetActive();
 	
-		mMesh->GetVertexArray()->SetActive();
+	mMesh->GetVertexArray()->SetActive();
 
-		if (pMaterial->GetShaderByType(TessControlShader))
-		{
-			glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexArray()->GetVerticeCount());
-		}
-		else
-		{
-			glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount());
-		}
+	if (pMaterial->GetShaderByType(TessControlShader))
+	{
+		glDrawArrays(GL_PATCHES, 0, mMesh->GetVertexArray()->GetVerticeCount());
+	}
+	else
+	{
+		glDrawArrays(GL_TRIANGLES, 0, mMesh->GetVertexArray()->GetVerticeCount());
 	}
 }
 

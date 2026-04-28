@@ -12,6 +12,7 @@
 #include "Engine/Components/TerrainComponent.h"
 #include "Engine/Components/ColliderComponent.h"
 #include "Engine/Components/BillboardComponent.h"
+#include "Engine/Tools/GameTime.h"
 
 GlRenderer::GlRenderer() : 
     mWindow(nullptr),
@@ -133,23 +134,34 @@ void GlRenderer::DrawMeshes() const
         {
             material = AssetManager::GetMaterial(materialName);
             material->Use();
+            
             material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
+            material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+            material->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
         }
         
         for (auto& mesh : meshVector)
         {
-            if (RenderMode == Normals)
+            if (mesh->IsActive())
             {
-                material = AssetManager::GetMaterial("NormalGeom");
-                material->Use();
-                mesh->Draw(mCamera, material);
-                material = AssetManager::GetMaterial("Normal");
-                material->Use();
-                mesh->Draw(mCamera, material);
-            }
-            else
-            {
-                mesh->Draw(mCamera, material);
+                if (RenderMode == Normals)
+                {
+                    material = AssetManager::GetMaterial("NormalGeom");
+                    material->Use();
+                    material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+                
+                    mesh->Draw(material);
+                
+                    material = AssetManager::GetMaterial("Normal");
+                    material->Use();
+                    material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+                
+                    mesh->Draw(material);
+                }
+                else
+                {
+                    mesh->Draw(material);
+                }
             }
         }
     }
@@ -161,11 +173,14 @@ void GlRenderer::DrawMeshes() const
     {
         Material* material = AssetManager::GetMaterial(materialName);
         material->Use();
+        
         material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
+        material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
+        material->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
         
         for (auto& mesh : meshVector)
         {
-            mesh->Draw(mCamera, material);
+            if (mesh->IsActive()) mesh->Draw(material);
         }
     }
 #endif

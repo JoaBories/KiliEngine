@@ -20,7 +20,7 @@ public:
     MeshComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pMesh, Texture* pTextureOverride = nullptr, const std::string& pMaterialOverride = "Null");
     ~MeshComponent() override;
 	
-    virtual void Draw(Camera* pCamera, Material* pMaterial);
+    virtual void Draw(Material* pMaterial);
     virtual void SetMesh(Mesh& pMesh); // todo doesn't support shader change after loading
     Mesh* GetMesh() const { return mMesh; }
 

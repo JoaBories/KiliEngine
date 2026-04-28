@@ -12,6 +12,6 @@ public:
     FloorComponent() = delete;
     FloorComponent(GameActor* pOwner, const Transform& pTransform, Mesh* pFloorMesh);
 
-    void Draw(Camera* pCamera, Material* pMaterial) override;
+    void Draw(Material* pMaterial) override;
     
 };

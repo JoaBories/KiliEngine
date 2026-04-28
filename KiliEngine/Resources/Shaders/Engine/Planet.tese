@@ -21,10 +21,8 @@ in TescOut{
 
 out TeseOut{
     vec2 texCoord;
-    vec3 normal;
     float height;
     float perlin;
-    float steepness;
 } teseOut;
 
 float interpolate(float f0, float f1, float f2)
@@ -218,26 +216,20 @@ void main(void)
     vec3 cubePosition = interpolate3D(gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
     vec3 spherePosition = mapOnSphere(cubePosition);
 
-    teseOut.normal = normalize(spherePosition);
-    vec3 perpX = cross(teseOut.normal, vec3(1,0,0));
-    vec3 perpY = cross(teseOut.normal, vec3(0,1,0));
-    vec3 perpZ = cross(teseOut.normal, vec3(0,0,1));
-    teseOut.normal = rotateZ(teseOut.normal, rotation);
-    
-    vec4 perlin = perlinTotal(spherePosition, perpX, perpY, perpZ);
-    teseOut.perlin = perlin.w;
+    vec3 normal = normalize(spherePosition);
+    vec3 perpX = cross(normal, vec3(1,0,0));
+    vec3 perpY = cross(normal, vec3(0,1,0));
+    vec3 perpZ = cross(normal, vec3(0,0,1));
+    normal = rotateZ(normal, rotation);
+
+    float perlin = perlinOctave(spherePosition * pPerlinFrequency);
+    teseOut.perlin = perlin;
     perlin = clamp(perlin, pSeaLevel, 1.0f);
-    teseOut.height = perlin.w;
-    
-    float steepX = (perlin.x - perlin.w) / EPSILON;
-    float steepY = (perlin.y - perlin.w) / EPSILON;
-    float steepZ = (perlin.z - perlin.w) / EPSILON;
-    
-    teseOut.steepness = sqrt(steepX * steepX + steepY * steepY + steepZ * steepZ); // gradient magnitude
+    teseOut.height = perlin;
     
     vec3 rotatedSpherePosition = rotateZ(spherePosition, rotation);
-    vec3 displacedSpherePosition = normalize(rotatedSpherePosition) * (1.0f + perlin.w * pPerlinScale);
-    gl_Position = vec4(displacedSpherePosition, 1.0f) * uWorldTransform * uViewProj;
+    vec3 displacedSpherePosition = normalize(rotatedSpherePosition) * (1.0f + perlin * pPerlinScale);
+    gl_Position = vec4(displacedSpherePosition, 1.0f);
     
     teseOut.texCoord = interpolate2D(tescOut[0].texCoord, tescOut[1].texCoord, tescOut[2].texCoord);
 }

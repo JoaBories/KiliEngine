@@ -13,11 +13,10 @@ InstanceComponent::InstanceComponent(GameActor* pOwner, const Transform& pTransf
     SetName("InstanceComponent");
 }
 
-void InstanceComponent::Draw(Camera* pCamera, Material* pMaterial)
+void InstanceComponent::Draw(Material* pMaterial)
 {
     if (IsActive())
     {
-        pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
         pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
         pMaterial->SetVec3("uSize", mSize.x * GetWorldTransform().GetScale().x, mSize.y * GetWorldTransform().GetScale().y, 0.0f);
         pMaterial->SetInt("uInstanceCount", mCount);

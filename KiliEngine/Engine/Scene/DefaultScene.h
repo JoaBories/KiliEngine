@@ -34,7 +34,7 @@ public :
 		blades->AddComponent(new MeshComponent(blades, Transform(Vector3(0,0,0), Quaternion(), Vector3(10.0f, 10.0f, 1.0f)), AssetManager::GetMesh("planeBig"), AssetManager::GetTexture("grassSoil")));
 		AddActor(blades);
 		
-		EnviroActor* actor = new EnviroActor(Transform::Origin);
+		EnviroActor* actor = new EnviroActor(Transform(Vector3::zero, Quaternion(), Vector3::unit * 3.0f));
 		actor->AddComponent(new MeshComponent(actor, Transform::Origin, AssetManager::GetMesh("cube"), AssetManager::GetTexture("null"), "Planet"));
 		actor->AddComponent(new MeshComponent(actor, Transform::Origin, AssetManager::GetMesh("cube"), AssetManager::GetTexture("null"), "PlanetGeom"));
 		AddActor(actor);
@@ -43,7 +43,6 @@ public :
 		CreateEnviroActor(Transform(Vector3(10, 3, 0), Quaternion(), Vector3::unit), "plane", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 6, 0), Quaternion(), Vector3::unit), "sphere", "DefaultTexture", "BasicLight");
 		CreateEnviroActor(Transform(Vector3(10, 9, 0), Quaternion(), Vector3::unit), "monkey", "DefaultTexture", "BasicLight");
-		CreateEnviroActor(Transform(Vector3(10, 15, 0), Quaternion(), Vector3::unit), "decimate_mannie", "DefaultTexture", "BasicLight");
 	}
 
 	void OnUpdate() override {

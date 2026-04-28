@@ -18,11 +18,10 @@ FloorComponent::FloorComponent(GameActor* pOwner, const Transform& pTransform, M
     SetName("FloorComponent");
 }
 
-void FloorComponent::Draw(Camera* pCamera, Material* pMaterial)
+void FloorComponent::Draw(Material* pMaterial)
 {
     if (IsActive())
     {
-        pMaterial->SetMatrix4Row("uViewProj", pCamera->GetViewProjMatrix());
         pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
         pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().y, 0.0f);
 
