@@ -6,22 +6,19 @@ uniform mat4 uViewProj;
 uniform mat4 uWorldTransform;
 uniform float uTime;
 
+uniform float uRotateSpeed; // revolution by second
+uniform float uSeaLevel;
+uniform float uPerlinScale;
+
 float PI  = 3.14159265358979f;
 float TAU = 6.28318530717959f;
 float EPSILON = 0.000001f;
 
-float pRotateSpeed = 0.005f; // revolution by second
-float pPerlinScale = 0.05f;
 float pPerlinFrequency = 2.0f;
-float pSeaLevel = -0.1f;
-
-in TescOut{
-    vec2 texCoord;
-} tescOut[];
 
 out TeseOut{
-    vec2 texCoord;
-    float height;
+    vec3 normal;
+    vec3 spherePos;
     float perlin;
 } teseOut;
 
@@ -200,24 +197,20 @@ float perlinOctave(vec3 spherePos)
 
 void main(void)
 {
-    float rotation = fract(uTime * pRotateSpeed) * TAU;
+    float rotation = fract(uTime * uRotateSpeed) * TAU;
     vec3 cubePosition = interpolate3D(gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
     vec3 spherePosition = mapOnSphere(cubePosition);
 
-    vec3 normal = normalize(spherePosition);
-    vec3 perpX = cross(normal, vec3(1,0,0));
-    vec3 perpY = cross(normal, vec3(0,1,0));
-    vec3 perpZ = cross(normal, vec3(0,0,1));
-    normal = rotateZ(normal, rotation);
-
     float perlin = perlinOctave(spherePosition * pPerlinFrequency);
     teseOut.perlin = perlin;
-    perlin = clamp(perlin, pSeaLevel, 1.0f);
-    teseOut.height = perlin;
+    
+    float height = clamp(perlin, uSeaLevel, 1.0f);
+    if (uSeaLevel != 0) height = (height - uSeaLevel) / (1/uSeaLevel);
     
     vec3 rotatedSpherePosition = rotateZ(spherePosition, rotation);
-    vec3 displacedSpherePosition = normalize(rotatedSpherePosition) * (1.0f + perlin * pPerlinScale);
+    vec3 displacedSpherePosition = normalize(rotatedSpherePosition) * (1.0f + height * uPerlinScale);
     gl_Position = vec4(displacedSpherePosition, 1.0f);
     
-    teseOut.texCoord = interpolate2D(tescOut[0].texCoord, tescOut[1].texCoord, tescOut[2].texCoord);
+    teseOut.normal = -normalize(rotatedSpherePosition);
+    teseOut.spherePos = spherePosition;
 }

@@ -7,8 +7,8 @@ uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
 
 in TeseOut{
-    vec2 texCoord;
-    float height;
+    vec3 normal;
+    vec3 spherePos;
     float perlin;
 } teseOut[];
 

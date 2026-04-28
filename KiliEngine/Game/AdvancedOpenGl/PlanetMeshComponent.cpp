@@ -3,10 +3,15 @@
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Scene/SceneManager.h"
 
-PlanetMeshComponent::PlanetMeshComponent(GameActor* pOwner, const float pScale) :
+PlanetMeshComponent::PlanetMeshComponent(
+	GameActor* pOwner, const float pScale, Texture* pSeaTexture, Texture* pGroundTexture,
+	const float pRotateSpeed, const float pSeaLevel, const float pReliefScale) :
+
 	ActorComponent(pOwner, Transform(Vector3::zero, Quaternion(), Vector3::unit * pScale)),
 	mPlanetMeshLod1(AssetManager::GetMesh("cube2")), // subdivided cube
-	mPlanetMeshLod0(AssetManager::GetMesh("cube"))	// normal cube
+	mPlanetMeshLod0(AssetManager::GetMesh("cube")),	// normal cube
+	mSeaTexture(pSeaTexture), mGroundTexture(pGroundTexture),
+	mRotateSpeed(pRotateSpeed), mSeaLevel(pSeaLevel), mReliefScale(pReliefScale)
 {
 	SetName("PlanetMesh");
 	SceneManager::ActiveScene()->GetRenderer()->AddPlanetMesh(this);
@@ -21,6 +26,9 @@ void PlanetMeshComponent::DrawFirst(Material* pMat) // planet
 {
 	pMat->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
 	pMat->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
+	pMat->SetFloat("uRotateSpeed", mRotateSpeed);
+	pMat->SetFloat("uSeaLevel", mSeaLevel);
+	pMat->SetFloat("uPerlinScale", mReliefScale);
 
 	//if(const Texture* texture = GetTexture()) texture->SetActive();
 	
@@ -33,6 +41,9 @@ void PlanetMeshComponent::DrawSecond(Material* pMat) // trees
 {
 	pMat->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
 	pMat->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
+	pMat->SetFloat("uRotateSpeed", mRotateSpeed);
+	pMat->SetFloat("uSeaLevel", mSeaLevel);
+	pMat->SetFloat("uPerlinScale", mReliefScale);
 
 	//if(const Texture* texture = GetTexture()) texture->SetActive();
 	
