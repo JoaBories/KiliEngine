@@ -1,5 +1,7 @@
 #include "FreeCamComponent.h"
 
+#include <algorithm>
+
 #include "Engine/Tools/GameTime.h"
 #include "Engine/Tools/Inputs.h"
 #include "Engine/GameActor.h"
@@ -36,6 +38,20 @@ void FreeCamComponent::OnUpdate()
 
         const Quaternion newRotation = Quaternion(Vector3::unitZ, currentEuler.z) * Quaternion(Vector3::unitY, currentEuler.y) * Quaternion(Vector3::unitX, currentEuler.x); 
         mOwner->SetRotation(newRotation);
+    }
+
+    if (const float wheelInput = static_cast<float>(Inputs::GetScrollY()); wheelInput != 0.0f)
+    {
+        if (wheelInput > 0.0f)
+        {
+            mSpeed *= 1.1f * wheelInput;
+        }
+        else
+        {
+            mSpeed *= 0.9f * -wheelInput;
+        }
+
+        mSpeed = MathUtils::Clamp(mSpeed, 0.01f, 100.0f);
     }
 }
 

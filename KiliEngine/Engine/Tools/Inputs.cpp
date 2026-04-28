@@ -1,4 +1,6 @@
 #include "Inputs.h"
+
+#include "Log.h"
 #include "Engine/Config.h"
 #include "Engine/Renderer/OpenGlRenderer.h"
 
