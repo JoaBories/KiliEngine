@@ -33,7 +33,7 @@ namespace Cfg
     constexpr int WINDOW_WIDTH = 800;
     constexpr int WINDOW_HEIGHT = 800;
     
-    constexpr ScreenMode WINDOW_MODE = ScreenMode::Windowed;
+    constexpr ScreenMode WINDOW_MODE = ScreenMode::Fullscreen;
     constexpr bool WINDOW_BORDERLESS = false;
     constexpr bool WINDOW_ALWAYS_ON_TOP = false;
 

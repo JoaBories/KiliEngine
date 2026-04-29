@@ -5,8 +5,8 @@ out vec4 outColor;
 in GeomOut{
     vec3 normal;
     vec3 spherePos;
-    float perlin;
     float steepness;
+    float height;
 } geomOut;
 
 uniform sampler2D uTexture;
@@ -134,14 +134,13 @@ float cnoise(vec3 P)
 void main()
 {
     float perlin = cnoise(geomOut.spherePos * 2.0f) * 0.5f + 0.5f;
-    
     float latitude = geomOut.spherePos.z;
     
     float temperature = mix(abs(latitude), perlin, 0.2f);
     
-    
-    //Perlin visualization
-    vec3 color = vec3(1-temperature, geomOut.perlin * 0.5f + 0.5f, 0.0f);
+    vec3 color;
+    if (geomOut.height < 0.0f) color = vec3(0.0f, 0.0f, geomOut.height + 1);
+    else color = vec3(0.0f, geomOut.height, 0.0f);
     outColor = vec4(color, 1.0f);
     
     //Normal visualization

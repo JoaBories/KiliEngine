@@ -19,7 +19,7 @@ float pPerlinFrequency = 2.0f;
 out TeseOut{
     vec3 normal;
     vec3 spherePos;
-    float perlin;
+    float height;
 } teseOut;
 
 float interpolate(float f0, float f1, float f2)
@@ -198,11 +198,24 @@ float perlinOctave(vec3 spherePos)
 void main(void)
 {
     float rotation = fract(uTime * uRotateSpeed) * TAU;
+    
     vec3 cubePosition = interpolate3D(gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
     vec3 spherePosition = mapOnSphere(cubePosition);
 
     float perlin = perlinOctave(spherePosition * pPerlinFrequency);
-    teseOut.perlin = perlin;
+    
+    if (uSeaLevel != 0)
+    {
+        if (perlin <= uSeaLevel)
+        {
+            teseOut.height = (perlin + 1) / (uSeaLevel + 1) - 1;
+        }
+        else
+        {
+            teseOut.height = (perlin - uSeaLevel) / (1/uSeaLevel);
+        }
+    }
+    else teseOut.height = perlin;
     
     float height = clamp(perlin, uSeaLevel, 1.0f);
     if (uSeaLevel != 0) height = (height - uSeaLevel) / (1/uSeaLevel);

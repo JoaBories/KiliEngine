@@ -9,7 +9,7 @@ uniform mat4 uViewProj;
 in TeseOut{
     vec3 normal;
     vec3 spherePos;
-    float perlin;
+    float height;
 } teseOut[];
 
 out GeomOut{
@@ -18,7 +18,7 @@ out GeomOut{
 } geomOut;
 
 void main() {
-    float centerPerlin = (teseOut[0].perlin + teseOut[0].perlin + teseOut[0].perlin) / 3.0f;
+    float centerHeight = (teseOut[0].height + teseOut[0].height + teseOut[0].height) / 3.0f;
 
     vec4 pos1 = gl_in[0].gl_Position.xyzw * uWorldTransform;
     vec4 pos2 = gl_in[1].gl_Position.xyzw * uWorldTransform;
@@ -29,7 +29,7 @@ void main() {
 
     geomOut.normal = normalize(cross(Edge1, Edge2));
     
-    if(centerPerlin <= 0.5f && centerPerlin > 0.1f)
+    if(centerHeight <= 0.5f && centerHeight > 0.1f && !(centerHeight < 0.0f))
     {
         vec4 basePos = (pos1 + pos2 + pos3) / 3.0f;
         vec4 topPos = basePos + vec4(geomOut.normal * -0.1f, 0.0f);
