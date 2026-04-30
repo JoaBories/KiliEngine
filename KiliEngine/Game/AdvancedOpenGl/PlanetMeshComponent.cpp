@@ -29,8 +29,15 @@ void PlanetMeshComponent::DrawFirst(Material* pMat) // planet
 	pMat->SetFloat("uRotateSpeed", mRotateSpeed);
 	pMat->SetFloat("uSeaLevel", mSeaLevel);
 	pMat->SetFloat("uPerlinScale", mReliefScale);
-
-	//if(const Texture* texture = GetTexture()) texture->SetActive();
+	
+	pMat->SetInt("GroundTexture", 0);
+	pMat->SetInt("SeaTexture", 1);
+	
+	glActiveTexture(GL_TEXTURE0);
+	mGroundTexture->SetActive();
+	
+	glActiveTexture(GL_TEXTURE1);
+	mSeaTexture->SetActive();
 	
 	mPlanetMeshLod1->GetVertexArray()->SetActive();
 	

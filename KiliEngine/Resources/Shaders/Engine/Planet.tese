@@ -171,8 +171,8 @@ float cnoise(vec3 P)
 }
 
 int octaves = 6;
-float persistence = 0.75f;
-float lacunarity = 1.8f;
+float persistence = 0.8f;
+float lacunarity = 1.6f;
 
 float perlinOctave(vec3 spherePos)
 {

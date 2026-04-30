@@ -282,6 +282,7 @@ void GlRenderer::DrawPlanetMeshes()
 
     material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
     material->SetVec3("uCamDir", mCamera->GetWorldTransform().GetTransform().GetForwardVector());
+    material->SetVec3("uCamPos", mCamera->GetWorldTransform().GetPosition());
     material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
     material->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
 
@@ -332,7 +333,10 @@ void GlRenderer::DrawSprite(GameActor* pActor, const WorldTransform& pTransform,
     mSpriteMaterial->Use();
     mSpriteMaterial->SetMatrix4Row("uWorldTransform", world);
     
+    mSpriteMaterial->SetInt("uTexture", 0);
+    glActiveTexture(GL_TEXTURE0);
     pTex.SetActive();
+    
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 

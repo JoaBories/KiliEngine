@@ -5,13 +5,18 @@ out vec4 outColor;
 in GeomOut{
     vec3 normal;
     vec3 spherePos;
+    vec3 worldPos;
     float steepness;
     float height;
 } geomOut;
 
-uniform sampler2D uTexture;
+uniform vec3 uCamPos;
+uniform vec3 uCamDir;
 uniform vec3 uDirectionalLight;
 uniform float uTime;
+
+uniform sampler2D GroundTexture;
+uniform sampler2D SeaTexture;
 
 //================Colors======================
 
@@ -136,12 +141,39 @@ void main()
     float perlin = cnoise(geomOut.spherePos * 2.0f) * 0.5f + 0.5f;
     float latitude = geomOut.spherePos.z;
     
-    float temperature = mix(abs(latitude), perlin, 0.2f);
+    float v = 1 - pow(mix(abs(latitude), perlin, 0.15f), 0.5f);
     
-    vec3 color;
-    if (geomOut.height < 0.0f) color = vec3(0.0f, 0.0f, geomOut.height + 1);
-    else color = vec3(0.0f, geomOut.height, 0.0f);
-    outColor = vec4(color, 1.0f);
+    vec4 terrainColor;
+    float specularFactor;
+    
+    if (geomOut.height < 0.0f)
+    {
+        float u = pow(geomOut.height + 1, 2.0f);
+        terrainColor = texture2D(SeaTexture, vec2(u,v));
+        specularFactor = 5.0f;
+    }
+    else
+    {
+        float u = pow(geomOut.height, 2.0f);
+        terrainColor = texture2D(GroundTexture, vec2(u,v));
+        specularFactor = 1.0f;
+    }    
+    
+    float diff = max(dot(geomOut.normal, uDirectionalLight), 0.0f);
+    
+    vec3 viewDir = normalize(uCamPos - geomOut.worldPos);
+    vec3 reflectDir = reflect(uDirectionalLight, geomOut.normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0f), specularFactor);
+    
+    outColor = terrainColor * diff + spec;
+    outColor = vec4(spec);
+    
+    //Height visualization
+    //if (geomOut.height < 0.0f) outColor = vec4(0.0f, 0.0f, u, 1.0f);
+    //else outColor = vec4(0.0f, u, 0.0f, 1.0f);
+    
+    //Temperature visualization
+    //outColor = vec4(v, 0.0f, 0.0f, 1.0f);
     
     //Normal visualization
     //outColor = vec4(geomOut.normal * 0.5f + 0.5f, 1.0f);
@@ -149,6 +181,4 @@ void main()
     //Steep visualization
     //vec3 color = vec3(geomOut.steepness / 10.0f);
     //outColor = vec4(color, 1.0f);
-    
-    //outColor = terrainColor * dot(uDirectionalLight, geomOut.normal);
 }

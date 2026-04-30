@@ -86,7 +86,10 @@ void TerrainComponent::Draw(Camera* pCamera, Material* pMaterial)
         pMaterial->SetFloat("uHeightScale", mHeightScale);
         pMaterial->SetFloat("uTime", GameTime::GetTime());
         
+        pMaterial->SetInt("uTexture", 0);
+        glActiveTexture(GL_TEXTURE0);
         mTexture->SetActive();
+        
         mVao->SetActive();
         
         glDrawElements(GL_PATCHES, mVao->GetIndiceCount(), GL_UNSIGNED_INT, nullptr);

@@ -27,7 +27,12 @@ void MeshComponent::Draw(Material* pMaterial)
 	pMaterial->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
 	pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
 
-	if(const Texture* texture = GetTexture()) texture->SetActive();
+	if (const Texture* texture = GetTexture())
+	{
+		pMaterial->SetInt("uTexture", 0);
+		glActiveTexture(GL_TEXTURE0);
+		texture->SetActive();
+	}
 	
 	mMesh->GetVertexArray()->SetActive();
 

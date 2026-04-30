@@ -28,7 +28,12 @@ void BillboardComponent::Draw(Material* pMaterial)
     pMaterial->SetVec3("uScale", GetWorldTransform().GetScale());
     
     mVao->SetActive();
-    if (mTexture) mTexture->SetActive();
+    if (mTexture)
+    {
+        pMaterial->SetInt("uTexture", 0);
+        glActiveTexture(GL_TEXTURE0);
+        mTexture->SetActive();
+    }
     
     glDrawArrays(GL_POINTS, 0, 1);
 }
