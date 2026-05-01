@@ -18,21 +18,6 @@ uniform float uTime;
 uniform sampler2D GroundTexture;
 uniform sampler2D SeaTexture;
 
-//================Colors======================
-
-vec4 pLightBlue = vec4(0.114, 0.635, 0.847, 1.0);
-vec4 pDarkBlue = vec4(0.024, 0.259, 0.451, 1.0);
-
-vec4 pLightSand = vec4(0.965, 0.843, 0.69, 1.0);
-vec4 pDarkSand = vec4(0.906, 0.769, 0.588, 1.0);
-        
-vec4 pSteep = vec4(0.455, 0.447, 0.455, 1.0);
-
-vec4 pLightGrass = vec4(0.255, 0.596, 0.039, 1.0);
-vec4 pDarkGrass = vec4(0.025, 0.2, 0.025, 1.0);
-
-//============================================
-
 // ================Perlin Noise==================
 //
 // GLSL textureless classic 3D noise "cnoise",
@@ -141,32 +126,41 @@ void main()
     float perlin = cnoise(geomOut.spherePos * 2.0f) * 0.5f + 0.5f;
     float latitude = geomOut.spherePos.z;
     
-    float v = 1 - pow(mix(abs(latitude), perlin, 0.15f), 0.5f);
+    vec3 normal = normalize(geomOut.normal);
+    vec3 camDistance = geomOut.worldPos - uCamPos;
+    
+    float u;
+    float v = 1 - pow(mix(abs(latitude), perlin, 0.2f), 0.95f);
     
     vec4 terrainColor;
     float specularFactor;
     
     if (geomOut.height < 0.0f)
     {
-        float u = pow(geomOut.height + 1, 2.0f);
+        u = pow(-geomOut.height, 0.5f);
         terrainColor = texture2D(SeaTexture, vec2(u,v));
-        specularFactor = 5.0f;
+        specularFactor = 1.0f;
     }
     else
     {
-        float u = pow(geomOut.height, 2.0f);
+        u = pow(1-geomOut.height, 3.0f); 
         terrainColor = texture2D(GroundTexture, vec2(u,v));
-        specularFactor = 1.0f;
+        specularFactor = 0.0f;
     }    
     
-    float diff = max(dot(geomOut.normal, uDirectionalLight), 0.0f);
+//= Blinn-Phong diffuse and specular
     
-    vec3 viewDir = normalize(uCamPos - geomOut.worldPos);
-    vec3 reflectDir = reflect(uDirectionalLight, geomOut.normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0f), specularFactor);
+    float diffuse = max(dot(normal, uDirectionalLight), 0.05f);
     
-    outColor = terrainColor * diff + spec;
-    outColor = vec4(spec);
+    vec3 viewDir = normalize(camDistance);
+    vec3 halfwayDir = normalize(uDirectionalLight + viewDir);
+    float specular = pow(max(dot(normal, halfwayDir), 0.0f), 64.0f) * specularFactor * 0.5f;
+    
+//= =====================
+    
+    outColor = vec4(terrainColor.xyz * diffuse + specular, 1.0f);
+
+//= Debug visualization
     
     //Height visualization
     //if (geomOut.height < 0.0f) outColor = vec4(0.0f, 0.0f, u, 1.0f);
@@ -181,4 +175,6 @@ void main()
     //Steep visualization
     //vec3 color = vec3(geomOut.steepness / 10.0f);
     //outColor = vec4(color, 1.0f);
+    
+//= =====================
 }
