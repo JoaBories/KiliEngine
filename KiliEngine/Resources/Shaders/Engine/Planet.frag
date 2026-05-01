@@ -130,7 +130,7 @@ void main()
     vec3 camDistance = geomOut.worldPos - uCamPos;
     
     float u;
-    float v = 1 - pow(mix(abs(latitude), perlin, 0.2f), 0.95f);
+    float v;
     
     vec4 terrainColor;
     float specularFactor;
@@ -138,12 +138,14 @@ void main()
     if (geomOut.height < 0.0f)
     {
         u = pow(-geomOut.height, 0.5f);
+        v = 1 - pow(mix(abs(latitude), perlin, 0.01f), 0.95f);
         terrainColor = texture2D(SeaTexture, vec2(u,v));
         specularFactor = 1.0f;
     }
     else
     {
-        u = pow(1-geomOut.height, 3.0f); 
+        u = pow(1-geomOut.height, 3.0f);
+        v = 1 - pow(mix(abs(latitude), perlin, 0.05f), 0.95f);
         terrainColor = texture2D(GroundTexture, vec2(u,v));
         specularFactor = 0.0f;
     }    
