@@ -125,28 +125,30 @@ void main()
     float temperature = 1 - pow(mix(latitude, perlin, 0.1f), 0.95f);
     
     vec4 terrainColor;
-    float specularFactor;
+    float diffuse = max(dot(geomOut.normal, uDirectionalLight), 0.05f);
+    float specular = 0.0f;
     
     if (geomOut.height < 0.0f)
     {
         float height = pow(-geomOut.height, 0.5f);
         terrainColor = texture2D(SeaTexture, vec2(height,temperature));
-        specularFactor = 0.75f;
+        
+        // Blinn-Phong specular only on water
+        vec3 viewDir = normalize(geomOut.worldPos - uCamPos);
+        vec3 halfwayDir = normalize(uDirectionalLight + viewDir);
+        specular = pow(max(dot(geomOut.normal, halfwayDir), 0.0f), 64.0f) * 0.75f;
     }
     else
     {
         float height = pow(1-geomOut.height, 3.0f);
         terrainColor = texture2D(GroundTexture, vec2(height,temperature));
-        specularFactor = 0.0f;
     }    
     
 //= Blinn-Phong diffuse and specular
     
-    float diffuse = max(dot(geomOut.normal, uDirectionalLight), 0.05f);
+
     
-    vec3 viewDir = normalize(geomOut.worldPos - uCamPos);
-    vec3 halfwayDir = normalize(uDirectionalLight + viewDir);
-    float specular = pow(max(dot(geomOut.normal, halfwayDir), 0.0f), 64.0f) * specularFactor;
+    
     
     outColor = vec4(terrainColor.xyz * diffuse + specular, 1.0f);
     

@@ -225,7 +225,11 @@ void main(void)
             displacement = teseOut.height;
         }
     }
-    else teseOut.height = perlin;
+    else 
+    {
+        teseOut.height = perlin;
+        displacement = clamp(perlin, 0.0f, 1.0f);
+    }
     
     vec3 displacedSpherePosition = rotatedSpherePosition * (1.0f + displacement * uPerlinScale);
     gl_Position = vec4(displacedSpherePosition, 1.0f);
