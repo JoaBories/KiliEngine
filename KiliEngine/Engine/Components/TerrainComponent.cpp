@@ -84,7 +84,7 @@ void TerrainComponent::Draw(Camera* pCamera, Material* pMaterial)
         pMaterial->SetVec3("uCamPos", pCamera->GetWorldTransform().GetPosition());
         pMaterial->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
         pMaterial->SetFloat("uHeightScale", mHeightScale);
-        pMaterial->SetFloat("uTime", GameTime::GetTime());
+        pMaterial->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
         
         pMaterial->SetInt("uTexture", 0);
         glActiveTexture(GL_TEXTURE0);

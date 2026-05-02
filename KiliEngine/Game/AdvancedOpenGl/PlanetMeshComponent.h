@@ -12,12 +12,13 @@ private:
 	float mRotateSpeed;
 	float mSeaLevel; // Between -1 (no sea) and 1 (everything is sea)
 	float mReliefScale;
+	float mMinDiffuse;
 
 protected:
 	void OnUpdate() override {}
 	
 public:
-	PlanetMeshComponent(GameActor* pOwner, float pScale, Texture* pSeaTexture, Texture* pGroundTexture, float pRotateSpeed, float pSeaLevel, float pReliefScale);
+	PlanetMeshComponent(GameActor* pOwner, float pScale, Texture* pSeaTexture, Texture* pGroundTexture, float pRotateSpeed, float pSeaLevel, float pReliefScale, float pMinDiffuse);
 	~PlanetMeshComponent() override;
 
 	void DrawFirst(Material* pMat);

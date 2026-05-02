@@ -11,6 +11,7 @@ in GeomOut{
 
 uniform vec3 uCamPos;
 uniform vec3 uDirectionalLight;
+uniform float uMinDiffuse;
 
 uniform sampler2D GroundTexture;
 uniform sampler2D SeaTexture;
@@ -122,10 +123,11 @@ void main()
 {
     float perlin = cnoise(geomOut.spherePos * 2.0f) * 0.5f + 0.5f;
     float latitude = abs(geomOut.spherePos.z);
-    float temperature = 1 - pow(mix(latitude, perlin, 0.1f), 0.95f);
+    float temperature = 1 - pow(mix(latitude, perlin, 0.1f), 1.25f);
     
     vec4 terrainColor;
-    float diffuse = max(dot(geomOut.normal, uDirectionalLight), 0.05f);
+    
+    float diffuse = max(dot(geomOut.normal, uDirectionalLight), uMinDiffuse);
     float specular = 0.0f;
     
     if (geomOut.height < 0.0f)
@@ -140,19 +142,11 @@ void main()
     }
     else
     {
-        float height = pow(1-geomOut.height, 3.0f);
+        float height = pow(1-geomOut.height, 4.0f);
         terrainColor = texture2D(GroundTexture, vec2(height,temperature));
-    }    
-    
-//= Blinn-Phong diffuse and specular
-    
-
-    
-    
+    }
     
     outColor = vec4(terrainColor.xyz * diffuse + specular, 1.0f);
-    
-//= =====================
 
 //= Debug visualization
     

@@ -30,11 +30,11 @@ namespace Cfg
     const std::string MATERIAL_PATH = "Resources/Materials";
     const std::string MAP_PATH = "Resources/Maps";
 
-    constexpr int WINDOW_WIDTH = 800;
-    constexpr int WINDOW_HEIGHT = 800;
+    constexpr int WINDOW_WIDTH = 1000;
+    constexpr int WINDOW_HEIGHT = 1000;
     
     constexpr ScreenMode WINDOW_MODE = ScreenMode::Windowed;
-    constexpr bool WINDOW_BORDERLESS = false;
+    constexpr bool WINDOW_BORDERLESS = true;
     constexpr bool WINDOW_ALWAYS_ON_TOP = false;
 
     const std::string WINDOW_TITLE = "Kili Engine";
@@ -47,7 +47,7 @@ namespace Cfg
 
     constexpr bool MOUSECAPTURE_DEFAULT= true;
 
-    const Vector3 DIRECTIONAL_LIGHT = Vector3(1, 0, 0).Normalized();
+    const Vector3 DIRECTIONAL_LIGHT = Vector3(1, 0, -0.5f).Normalized();
 
     #ifdef _DEBUG
     constexpr SDL_Keycode EXIT_KEY = SDLK_ESCAPE;

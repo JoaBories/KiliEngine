@@ -11,8 +11,8 @@ class AdvancedOpenGl : public Scene
 {
 	void SpawnSky()
 	{
-		EmptyActor* skybox = new EmptyActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit * 30.0f), "Skybox");
-		skybox->AddComponent(new MeshComponent(skybox, Transform::Origin, AssetManager::GetMesh("Skybox"), AssetManager::GetTexture("DarkSky"), "Basic"));
+		EmptyActor* skybox = new EmptyActor(Transform(Vector3(0,0,0), Quaternion(), Vector3::unit * 1000.0f), "Skybox");
+		skybox->AddComponent(new MeshComponent(skybox, Transform::Origin, AssetManager::GetMesh("Skybox"), AssetManager::GetTexture("StarrySky"), "Basic"));
 		AddActor(skybox);
 	}
 
@@ -38,8 +38,14 @@ public :
 		EmptyActor* planet = new EmptyActor(Transform::Origin, "Planet");
 		planet->AddComponent(new PlanetMeshComponent(planet, 3.0f, 
 			AssetManager::GetTexture("SeaTexture"), AssetManager::GetTexture("GroundTexture"), 
-			0.002f, 0.0f, 0.15f));
+			0.01f, 0.0f, 0.15f, 0.1f));
 		AddActor(planet);
+		
+		EmptyActor* sun = new EmptyActor(Transform(Vector3(-20.0f,0,10.0f), Quaternion(), Vector3::unit), "Sun");
+		sun->AddComponent(new PlanetMeshComponent(sun, 7.5f,
+			nullptr, AssetManager::GetTexture("SunTexture"),
+			-0.005f, -1.0f, 0.25f, 1.0f));
+		AddActor(sun);
 	}
 
 	void OnUpdate() override {
