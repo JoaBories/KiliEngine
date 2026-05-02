@@ -38,7 +38,7 @@ public :
 		EmptyActor* planet = new EmptyActor(Transform::Origin, "Planet");
 		planet->AddComponent(new PlanetMeshComponent(planet, 3.0f, 
 			AssetManager::GetTexture("SeaTexture"), AssetManager::GetTexture("GroundTexture"), 
-			0.002f, 0.0f, 0.05f));
+			0.002f, 0.0f, 0.15f));
 		AddActor(planet);
 	}
 

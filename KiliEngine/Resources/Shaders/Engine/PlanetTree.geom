@@ -9,8 +9,8 @@ uniform mat4 uViewProj;
 in TeseOut{
     vec3 normal;
     vec3 spherePos;
-    vec3 rotatedSpherePos;
     float height;
+    float discardVert;
 } teseOut[];
 
 out GeomOut{
@@ -19,12 +19,14 @@ out GeomOut{
 } geomOut;
 
 void main() {
+    
+    if (teseOut[0].discardVert > 0.5f || teseOut[1].discardVert > 0.5f || teseOut[2].discardVert > 0.5f) return;
+    
+    float centerHeight = (teseOut[0].height + teseOut[1].height + teseOut[2].height) / 3.0f;
 
-    float centerHeight = (teseOut[0].height + teseOut[0].height + teseOut[0].height) / 3.0f;
-
-    vec4 pos1 = gl_in[0].gl_Position.xyzw * uWorldTransform;
-    vec4 pos2 = gl_in[1].gl_Position.xyzw * uWorldTransform;
-    vec4 pos3 = gl_in[2].gl_Position.xyzw * uWorldTransform;
+    vec4 pos1 = gl_in[0].gl_Position * uWorldTransform;
+    vec4 pos2 = gl_in[1].gl_Position * uWorldTransform;
+    vec4 pos3 = gl_in[2].gl_Position * uWorldTransform;
 
     vec3 Edge1 = pos1.xyz - pos2.xyz;
     vec3 Edge2 = pos1.xyz - pos3.xyz;

@@ -15,5 +15,5 @@ vec4 pLeaf = vec4(0.145, 0.349, 0.122, 1.0);
 void main()
 {
     vec4 treeColor = mix(pStump, pLeaf, pow(geomOut.height, 0.5f));
-    outColor = treeColor * dot(uDirectionalLight, geomOut.normal);
+    outColor = treeColor * max(dot(uDirectionalLight, geomOut.normal), 0.1f);
 }

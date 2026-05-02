@@ -2,8 +2,11 @@
 
 layout(triangles, equal_spacing, ccw) in;
 
-uniform vec3 uPlanetCenter;
 uniform float uTime;
+
+uniform mat4 uWorldTransform;
+uniform mat4 uViewProj;
+uniform vec3 uCamPos;
 
 uniform float uRotateSpeed; // revolution by second
 uniform float uSeaLevel;
@@ -18,8 +21,8 @@ float pPerlinFrequency = 2.0f;
 out TeseOut{
     vec3 normal;
     vec3 spherePos;
-    vec3 rotatedSpherePos;
     float height;
+    float discardVert;
 } teseOut;
 
 float interpolate(float f0, float f1, float f2)
@@ -188,34 +191,35 @@ float perlinOctave(vec3 spherePos)
 void main(void)
 {
     vec3 cubePosition = interpolate3D(gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
-    vec3 spherePosition = mapOnSphere(cubePosition);
+    teseOut.spherePos = mapOnSphere(cubePosition);
     
     float rotation = fract(uTime * uRotateSpeed) * TAU;
     
-    vec3 rotatedSpherePosition = rotateZ(spherePosition, rotation);
-    teseOut.rotatedSpherePos = rotatedSpherePosition;
-
-    float perlin = perlinOctave(spherePosition * pPerlinFrequency);
+    vec3 rotatedSpherePosition = rotateZ(teseOut.spherePos, rotation);
     
+    vec4 worldPos = vec4(rotatedSpherePosition, 1.0f) * uWorldTransform;
+    if (dot(rotatedSpherePosition, normalize(uCamPos - worldPos.xyz)) < -0.1f) // discard in geometry if backside of the planet
+    {                                                                          // -0.1f to avoid small apparition at certain angles
+        teseOut.discardVert = 1.0f;
+        return;
+    }
+    else
+    {
+        teseOut.discardVert = 0.0f;    
+    }
+
+    teseOut.normal = -rotatedSpherePosition;
+    
+    float perlin = perlinOctave(teseOut.spherePos * pPerlinFrequency);
+    float displacement = clamp(perlin, uSeaLevel, 1.0f);
     if (uSeaLevel != 0)
     {
-        if (perlin <= uSeaLevel)
-        {
-            teseOut.height = (perlin + 1) / (uSeaLevel + 1) - 1;
-        }
-        else
-        {
-            teseOut.height = (perlin - uSeaLevel) / (1/uSeaLevel);
-        }
+        if (perlin <= uSeaLevel) teseOut.height = (perlin + 1) / (uSeaLevel + 1) - 1;
+        else teseOut.height = (perlin - uSeaLevel) / (1/uSeaLevel);
+        displacement = (displacement - uSeaLevel) / (1/uSeaLevel);
     }
     else teseOut.height = perlin;
     
-    float height = clamp(perlin, uSeaLevel, 1.0f);
-    if (uSeaLevel != 0) height = (height - uSeaLevel) / (1/uSeaLevel);
-    
-    vec3 displacedSpherePosition = rotatedSpherePosition * (1.0f + height * uPerlinScale);
+    vec3 displacedSpherePosition = rotatedSpherePosition * (1.0f + displacement * uPerlinScale);
     gl_Position = vec4(displacedSpherePosition, 1.0f);
-    
-    teseOut.normal = -rotatedSpherePosition;
-    teseOut.spherePos = spherePosition;
 }

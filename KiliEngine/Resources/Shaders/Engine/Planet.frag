@@ -10,9 +10,9 @@ in GeomOut{
 } geomOut;
 
 uniform vec3 uCamPos;
-uniform vec3 uCamDir;
 uniform vec3 uDirectionalLight;
-uniform float uTime;
+
+uniform float uSeaLevel;
 
 uniform sampler2D GroundTexture;
 uniform sampler2D SeaTexture;
@@ -123,43 +123,36 @@ float cnoise(vec3 P)
 void main()
 {
     float perlin = cnoise(geomOut.spherePos * 2.0f) * 0.5f + 0.5f;
-    float latitude = geomOut.spherePos.z;
-    
-    vec3 normal = normalize(geomOut.normal);
-    vec3 camDistance = geomOut.worldPos - uCamPos;
-    
-    float u;
-    float v;
+    float latitude = abs(geomOut.spherePos.z);
+    float temperature = 1 - pow(mix(latitude, perlin, 0.1f), 0.95f);
     
     vec4 terrainColor;
     float specularFactor;
     
-    if (geomOut.height < 0.0f)
+    if (geomOut.height < uSeaLevel)
     {
-        u = pow(-geomOut.height, 0.5f);
-        v = 1 - pow(mix(abs(latitude), perlin, 0.01f), 0.95f);
-        terrainColor = texture2D(SeaTexture, vec2(u,v));
-        specularFactor = 1.0f;
+        float height = pow(-geomOut.height, 0.5f);
+        terrainColor = texture2D(SeaTexture, vec2(height,temperature));
+        specularFactor = 0.75f;
     }
     else
     {
-        u = pow(1-geomOut.height, 3.0f);
-        v = 1 - pow(mix(abs(latitude), perlin, 0.05f), 0.95f);
-        terrainColor = texture2D(GroundTexture, vec2(u,v));
+        float height = pow(1-geomOut.height, 3.0f);
+        terrainColor = texture2D(GroundTexture, vec2(height,temperature));
         specularFactor = 0.0f;
     }    
     
 //= Blinn-Phong diffuse and specular
     
-    float diffuse = max(dot(normal, uDirectionalLight), 0.05f);
+    float diffuse = max(dot(geomOut.normal, uDirectionalLight), 0.05f);
     
-    vec3 viewDir = normalize(camDistance);
+    vec3 viewDir = normalize(geomOut.worldPos - uCamPos);
     vec3 halfwayDir = normalize(uDirectionalLight + viewDir);
-    float specular = pow(max(dot(normal, halfwayDir), 0.0f), 64.0f) * specularFactor * 0.5f;
-    
-//= =====================
+    float specular = pow(max(dot(geomOut.normal, halfwayDir), 0.0f), 64.0f) * specularFactor;
     
     outColor = vec4(terrainColor.xyz * diffuse + specular, 1.0f);
+    
+//= =====================
 
 //= Debug visualization
     

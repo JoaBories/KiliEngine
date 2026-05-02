@@ -10,8 +10,8 @@ uniform vec3 uCamPos;
 in TeseOut{
     vec3 normal;
     vec3 spherePos;
-    vec3 rotatedSpherePos;
     float height;
+    float discardVert;
 } teseOut[];
 
 out GeomOut{
@@ -23,16 +23,11 @@ out GeomOut{
 
 void main() {
 
-    vec3 rotatedSpherePosition = normalize(teseOut[0].rotatedSpherePos + teseOut[1].rotatedSpherePos + teseOut[2].rotatedSpherePos);
-    vec4 worldPos = vec4(rotatedSpherePosition, 1.0f) * uWorldTransform;
-    if (dot(rotatedSpherePosition, normalize(uCamPos - worldPos.xyz)) < -0.1f) // discard in geometry if backside of the planet
-    {                                                                          // -0.1f to avoid small apparition at certain angles
-        return;
-    }
+    if (teseOut[0].discardVert > 0.5f || teseOut[1].discardVert > 0.5f || teseOut[2].discardVert > 0.5f) return;
 
-    vec4 pos1 = gl_in[0].gl_Position.xyzw * uWorldTransform;
-    vec4 pos2 = gl_in[1].gl_Position.xyzw * uWorldTransform;
-    vec4 pos3 = gl_in[2].gl_Position.xyzw * uWorldTransform;
+    vec4 pos1 = gl_in[0].gl_Position * uWorldTransform;
+    vec4 pos2 = gl_in[1].gl_Position * uWorldTransform;
+    vec4 pos3 = gl_in[2].gl_Position * uWorldTransform;
 
     vec3 Edge1 = pos1.xyz - pos2.xyz;
     vec3 Edge2 = pos1.xyz - pos3.xyz;
