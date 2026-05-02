@@ -12,8 +12,6 @@ in GeomOut{
 uniform vec3 uCamPos;
 uniform vec3 uDirectionalLight;
 
-uniform float uSeaLevel;
-
 uniform sampler2D GroundTexture;
 uniform sampler2D SeaTexture;
 
@@ -129,7 +127,7 @@ void main()
     vec4 terrainColor;
     float specularFactor;
     
-    if (geomOut.height < uSeaLevel)
+    if (geomOut.height < 0.0f)
     {
         float height = pow(-geomOut.height, 0.5f);
         terrainColor = texture2D(SeaTexture, vec2(height,temperature));

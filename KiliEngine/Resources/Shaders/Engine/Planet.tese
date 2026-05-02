@@ -211,12 +211,19 @@ void main(void)
     teseOut.normal = -rotatedSpherePosition;
     
     float perlin = perlinOctave(teseOut.spherePos * pPerlinFrequency);
-    float displacement = clamp(perlin, uSeaLevel, 1.0f);
+    float displacement;
     if (uSeaLevel != 0)
     {
-        if (perlin <= uSeaLevel) teseOut.height = (perlin + 1) / (uSeaLevel + 1) - 1;
-        else teseOut.height = (perlin - uSeaLevel) / (1/uSeaLevel);
-        displacement = (displacement - uSeaLevel) / (1/uSeaLevel);
+        if (perlin <= uSeaLevel)
+        {
+            teseOut.height = (perlin - uSeaLevel) / (uSeaLevel + 1.0f);
+            displacement = 0.0f;
+        }
+        else
+        {
+            teseOut.height = (perlin - uSeaLevel) / (1.0f - uSeaLevel);
+            displacement = teseOut.height;
+        }
     }
     else teseOut.height = perlin;
     
