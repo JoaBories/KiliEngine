@@ -151,18 +151,21 @@ void main()
 //= Debug visualization
     
     //Height visualization
-    //if (geomOut.height < 0.0f) outColor = vec4(0.0f, 0.0f, u, 1.0f);
-    //else outColor = vec4(0.0f, u, 0.0f, 1.0f);
+    //if (geomOut.height < 0.0f) outColor = vec4(0.0f, 0.0f, pow(-geomOut.height, 0.5f), 1.0f);
+    //else outColor = vec4(0.0f, pow(1-geomOut.height, 4.0f), 0.0f, 1.0f);
     
     //Temperature visualization
-    //outColor = vec4(v, 0.0f, 0.0f, 1.0f);
+    //outColor = vec4(temperature, 0.0f, 0.0f, 1.0f);
+
+    //Perlin visualization
+    //outColor = vec4(pow(perlin * 0.5f + 0.5f));
     
     //Normal visualization
     //outColor = vec4(geomOut.normal * 0.5f + 0.5f, 1.0f);
-
-    //Steep visualization
-    //vec3 color = vec3(geomOut.steepness / 10.0f);
-    //outColor = vec4(color, 1.0f);
+    
+    //Uv visualization
+    //if (geomOut.height < 0.0f) outColor = vec4(temperature, 0.0f, pow(-geomOut.height, 0.5f), 1.0f);
+    //else outColor = vec4(temperature, 0.0f, pow(1-geomOut.height, 4.0f), 1.0f);
     
 //= =====================
 }
