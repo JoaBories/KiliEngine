@@ -2,8 +2,7 @@
 
 layout(triangles, equal_spacing, ccw) in;
 
-uniform mat4 uViewProj;
-uniform mat4 uWorldTransform;
+uniform vec3 uPlanetCenter;
 uniform float uTime;
 
 uniform float uRotateSpeed; // revolution by second
@@ -19,6 +18,7 @@ float pPerlinFrequency = 2.0f;
 out TeseOut{
     vec3 normal;
     vec3 spherePos;
+    vec3 rotatedSpherePos;
     float height;
 } teseOut;
 
@@ -27,19 +27,9 @@ float interpolate(float f0, float f1, float f2)
     return gl_TessCoord.x * f0 + gl_TessCoord.y * f1 + gl_TessCoord.z * f2;
 }
 
-vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)
-{
-    return vec2(interpolate(v0.x, v1.x, v2.x), interpolate(v0.y, v1.y, v2.y));
-}
-
 vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2)
 {
     return vec3(interpolate(v0.x, v1.x, v2.x), interpolate(v0.y, v1.y, v2.y), interpolate(v0.z, v1.z, v2.z));
-}
-
-vec4 interpolate4D(vec4 v0, vec4 v1, vec4 v2, float w)
-{
-    return vec4(interpolate(v0.x, v1.x, v2.x), interpolate(v0.y, v1.y, v2.y), interpolate(v0.z, v1.z, v2.z), w);
 }
 
 vec3 mapOnSphere(vec3 vec)
@@ -197,10 +187,13 @@ float perlinOctave(vec3 spherePos)
 
 void main(void)
 {
-    float rotation = fract(uTime * uRotateSpeed) * TAU;
-    
     vec3 cubePosition = interpolate3D(gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
     vec3 spherePosition = mapOnSphere(cubePosition);
+    
+    float rotation = fract(uTime * uRotateSpeed) * TAU;
+    
+    vec3 rotatedSpherePosition = rotateZ(spherePosition, rotation);
+    teseOut.rotatedSpherePos = rotatedSpherePosition;
 
     float perlin = perlinOctave(spherePosition * pPerlinFrequency);
     
@@ -220,10 +213,9 @@ void main(void)
     float height = clamp(perlin, uSeaLevel, 1.0f);
     if (uSeaLevel != 0) height = (height - uSeaLevel) / (1/uSeaLevel);
     
-    vec3 rotatedSpherePosition = rotateZ(spherePosition, rotation);
-    vec3 displacedSpherePosition = normalize(rotatedSpherePosition) * (1.0f + height * uPerlinScale);
+    vec3 displacedSpherePosition = rotatedSpherePosition * (1.0f + height * uPerlinScale);
     gl_Position = vec4(displacedSpherePosition, 1.0f);
     
-    teseOut.normal = -normalize(rotatedSpherePosition);
+    teseOut.normal = -rotatedSpherePosition;
     teseOut.spherePos = spherePosition;
 }

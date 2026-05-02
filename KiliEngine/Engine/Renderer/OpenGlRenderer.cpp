@@ -293,12 +293,12 @@ void GlRenderer::DrawPlanetMeshes()
 
     material = AssetManager::GetMaterial("PlanetGeom");
     material->Use();
-
+    
     material->SetMatrix4Row("uViewProj", mCamera->GetViewProjMatrix());
     material->SetVec3("uCamDir", mCamera->GetWorldTransform().GetTransform().GetForwardVector());
     material->SetVec3("uDirectionalLight", Cfg::DIRECTIONAL_LIGHT);
     material->SetFloat("uTime", static_cast<float>(GameTime::GetTime()));
-
+    
     for (const auto& mesh : mPlanetMeshes)
     {
         if (mesh->IsActive()) mesh->DrawSecond(material);

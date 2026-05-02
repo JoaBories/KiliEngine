@@ -6,7 +6,6 @@ in GeomOut{
     vec3 normal;
     vec3 spherePos;
     vec3 worldPos;
-    float steepness;
     float height;
 } geomOut;
 

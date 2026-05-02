@@ -25,6 +25,7 @@ PlanetMeshComponent::~PlanetMeshComponent()
 void PlanetMeshComponent::DrawFirst(Material* pMat) // planet
 {
 	pMat->SetMatrix4Row("uWorldTransform", GetWorldTransform().GetWorldTransformMatrix());
+	pMat->SetVec3("uPlanetCenter", GetWorldTransform().GetPosition());
 	pMat->SetVec3("uScale", GetWorldTransform().GetScale().y, GetWorldTransform().GetScale().x, GetWorldTransform().GetScale().z);
 	pMat->SetFloat("uRotateSpeed", mRotateSpeed);
 	pMat->SetFloat("uSeaLevel", mSeaLevel);
